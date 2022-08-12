@@ -1,0 +1,32 @@
+"""
+!!Generated code!!
+
+Do not modify directly.
+
+Generation script is located @ //farfetchd/bin/generate.py
+"""
+
+from __future__ import annotations
+from dataclasses import dataclass
+
+{% for imp in extra_imports %}
+from {{ imp.module }} import (
+    {% for cls in imp.classes %}
+    {{ cls }},
+    {% endfor %}
+)
+{% endfor %}
+
+{% for type in types if type.is_generic() %}
+{% if loop.first %}
+T = TypeVar("T")
+{% endif %}
+{% endfor %}
+
+{% for type in types %}
+@dataclass
+class {{ type.name }}{% if type.is_generic() %}(Generic[T]){% endif %}:
+    {% for prop in type.properties %}# {{ prop.description.strip() }}
+    {{ prop.name }}: {{ prop.type }}
+    {% endfor %}
+{% endfor %}
