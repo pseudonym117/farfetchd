@@ -1,0 +1,7 @@
+{% for imp in extra_imports %}
+from {{ imp.module }} import (
+    {% for cls in imp.classes %}
+    {{ cls }},
+    {% endfor %}
+)
+{% endfor %}

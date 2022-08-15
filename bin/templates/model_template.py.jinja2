@@ -1,21 +1,9 @@
-"""
-!!Generated code!!
-
-Do not modify directly.
-
-Generation script is located @ //farfetchd/bin/generate.py
-"""
+{% include "generated_code.py.jinja2" %}
 
 from __future__ import annotations
 from dataclasses import dataclass
 
-{% for imp in extra_imports %}
-from {{ imp.module }} import (
-    {% for cls in imp.classes %}
-    {{ cls }},
-    {% endfor %}
-)
-{% endfor %}
+{% include "imports.py.jinja2" %}
 
 {% for type in types if type.is_generic() %}
 {% if loop.first %}

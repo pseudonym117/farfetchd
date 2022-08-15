@@ -11,7 +11,9 @@ from dataclasses import dataclass
 
 
 from typing import (
+    Generic,
     List,
+    TypeVar,
 )
 
 from .berries import (
@@ -58,6 +60,9 @@ from .utility import (
     VersionEncounterDetail,
     VersionGameIndex,
 )
+
+
+T = TypeVar("T")
 
 
 @dataclass
@@ -667,7 +672,7 @@ class TypeRelations:
 
 
 @dataclass
-class TypeRelationsPast:
+class TypeRelationsPast(Generic[T]):
     # The last generation in which the referenced type had the listed damage relations
     generation: NamedAPIResource[Generation]
     # The damage relations the referenced type had up to and including the listed generation

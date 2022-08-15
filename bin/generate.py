@@ -4,13 +4,14 @@ import asyncio
 import collections
 import dataclasses
 import enum
+import json
 import os
 import re
 import sys
 
 from html.parser import HTMLParser
 
-from typing import Dict, List
+from typing import Any, Dict, List
 
 import aiohttp
 import black
@@ -37,24 +38,29 @@ async def main(output_dir: str):
     parser = ApiDefBuilder()
     parser.feed(raw)
 
-    print("writing models...")
-    await write_models(f"{output_dir}/models", parser.section_types)
-
-    print("done")
-
-
-async def write_models(output_dir: str, section_types: Dict[str, List[TypeInfo]]):
-    type_to_section_name = {}
-    for section, types in section_types.items():
-        for type in types:
-            type_to_section_name[type.name] = section
-
     env = jinja2.Environment(
         loader=jinja2.PackageLoader("generate"),
         autoescape=jinja2.select_autoescape(),
         enable_async=True,
     )
-    model_template = env.get_template("model_template.py.tmpl")
+
+    print("writing models...")
+    await write_models(env, f"{output_dir}/models", parser.section_types)
+
+    print("writing APIs...")
+    await write_apis(env, f"{output_dir}/apis", parser.api_spec, parser.section_types)
+
+    print("done")
+
+
+async def write_models(
+    env: jinja2.Environment, output_dir: str, section_types: Dict[str, List[TypeInfo]]
+):
+    type_to_section_name = {}
+    for section, types in section_types.items():
+        for type in types:
+            type_to_section_name[type.name] = section
+    model_template = env.get_template("model_template.py.jinja2")
 
     os.makedirs(output_dir, exist_ok=True)
     for section, types in section_types.items():
@@ -103,15 +109,79 @@ async def write_models(output_dir: str, section_types: Dict[str, List[TypeInfo]]
             pass
 
 
+async def write_apis(
+    env: jinja2.Environment,
+    output_dir: str,
+    api_spec: Dict[str, List[ApiInfo]],
+    section_types: Dict[str, List[TypeInfo]],
+):
+    type_to_section_name = {}
+    for section, types in section_types.items():
+        for type in types:
+            type_to_section_name[type.name] = section
+
+    real_apis = {
+        section: [api for api in apis if api.url]
+        for section, apis in api_spec.items()
+        if apis
+    }
+
+    api_template = env.get_template("api_template.py.jinja2")
+
+    for section, apis in real_apis.items():
+        required_types = set([api.response_typename for api in apis])
+        extra_import_dict = collections.defaultdict(lambda: [])
+
+        if required_types:
+            for required in required_types:
+                from_module = type_to_section_name[required]
+                extra_import_dict[from_module].append(required)
+
+        extra_imports = sorted(
+            [
+                ExtraImport(f"..models.{module}", sorted(classes))
+                for module, classes in extra_import_dict.items()
+            ],
+            key=lambda imp: imp.module,
+        )
+
+        rendered = await api_template.render_async(
+            section=section, endpoints=apis, extra_imports=extra_imports
+        )
+
+        blacked = black.format_str(rendered, mode=black.FileMode())
+        # blacked = rendered
+
+        with open(f"{output_dir}/{section}.py", "w+") as f:
+            f.write(blacked)
+
+    if not os.path.exists(f"{output_dir}/__init__.py"):
+        with open(f"{output_dir}/__init__.py", "w+") as f:
+            pass
+
+    # print(json.dumps(real_apis, indent=2, cls=DataclassJsonEncoder))
+
+
+class DataclassJsonEncoder(json.JSONEncoder):
+    def default(self, o: Any) -> str:
+        if dataclasses.is_dataclass(o):
+            return dataclasses.asdict(o)
+        return super().default(o)
+
+
 class State(enum.Enum):
     NONE = 0
     SECTION = 1
-    API_NAME = 2
-    TYPE_NAME = 3
-    TYPE_INFO_START = 4
-    TYPE_INFO_PROP_NAME = 5
-    TYPE_INFO_DESCRIPTION = 6
-    TYPE_INFO_TYPE = 7
+    API_NAME = 10
+    API_NAME_DONE = 11
+    API_DESC = 12
+    API_DESC_DONE = 13
+    API_URL = 14
+    TYPE_NAME = 20
+    TYPE_INFO_START = 21
+    TYPE_INFO_PROP_NAME = 22
+    TYPE_INFO_DESCRIPTION = 23
+    TYPE_INFO_TYPE = 24
 
 
 type_remapping = {
@@ -170,13 +240,22 @@ class PropertyType:
         return ref
 
 
+generic_types = {
+    "NamedAPIResource",
+    "APIResource",
+    "TypeRelationsPast",
+    # todo: handle adding generic type to this type in APIs
+    "NamedAPIResourceList",
+}
+
+
 @dataclasses.dataclass
 class TypeInfo:
     name: str
     properties: List[PropertyInfo]
 
     def is_generic(self):
-        return self.name == "NamedAPIResource" or self.name == "APIResource"
+        return self.name in generic_types
 
     def uses_lists(self) -> bool:
         return any([prop.type.is_list for prop in self.properties])
@@ -195,21 +274,42 @@ class TypeInfo:
         return [*ref_types, *final_types]
 
 
+@dataclasses.dataclass
+class ApiInfo:
+    name: str
+    description: str
+    url: str
+    response_typename: str
+
+    def url_without_args(self):
+        end_index = self.url.find("{")
+        if end_index == -1:
+            return self.url
+        return self.url[:end_index]
+
+    def args(self) -> List[(str, str)]:
+        match = re.search(r"/\{(id)?( or )?(name)?\}/", self.url)
+        if match:
+            id, multi, name = match.groups()
+            return [i for i in [(id, "int"), (name, "str")] if i[0]]
+        return []
+
+
 class ApiDefBuilder(HTMLParser):
-    section_blocklist = [
+    section_blocklist = {
         "contents",
         "information",
         "fair use policy",
         "slack",
         "wrapper libraries",
-        # todo: need to parse this section in order to support pagination
-        "resource lists/pagination",
-    ]
+    }
+
+    section_without_api = {"pagination"}
 
     def __init__(self) -> None:
         super().__init__()
         # section -> endpoint -> def
-        self.api_spec: Dict[str, Dict[str, any]] = {}
+        self.api_spec: Dict[str, List[ApiInfo]] = {}
 
         # section -> typename -> def
         self.section_types: Dict[str, List[TypeInfo]] = {}
@@ -217,22 +317,31 @@ class ApiDefBuilder(HTMLParser):
         self._state = State.NONE
 
         self._current_section: str | None = None
-
+        self._current_api: ApiInfo | None = None
         self._current_type: TypeInfo | None = None
         self._current_property: PropertyInfo | None = None
 
-    def handle_starttag(self, tag: str, attrs: list[tuple[str, str | None]]) -> None:
+    def handle_starttag(self, tag: str, attrs: list[tuple[str, str | None]]):
         if tag == "h2":
             self._state = State.SECTION
         elif tag == "h3":
-            self._state = State.API_NAME
+            if self._current_section not in self.section_without_api:
+                self._state = State.API_NAME
+        elif tag == "div" and self._state == State.API_NAME_DONE:
+            self._state = State.API_DESC
+        elif tag == "p" and self._state == State.API_DESC_DONE:
+            self._state = State.API_URL
         elif tag == "h4":
             self._state = State.TYPE_NAME
         elif tag == "tbody" and self._state == State.TYPE_INFO_START:
             self._state = State.TYPE_INFO_PROP_NAME
 
-    def handle_endtag(self, tag: str) -> None:
-        if self._state == State.TYPE_INFO_START and tag == "tbody":
+    def handle_endtag(self, tag: str):
+        if self._state == State.API_DESC and tag == "div":
+            self._state = State.API_DESC_DONE
+        elif self._state == State.API_URL and tag == "p":
+            self._state = State.NONE
+        elif self._state == State.TYPE_INFO_START and tag == "tbody":
             self._state = State.NONE
         elif self._state == State.TYPE_INFO_PROP_NAME and tag == "td":
             self._state = State.TYPE_INFO_DESCRIPTION
@@ -246,23 +355,38 @@ class ApiDefBuilder(HTMLParser):
             self._current_property = PropertyInfo("", "", "")
             self._state = State.TYPE_INFO_PROP_NAME
 
-    def handle_data(self, data: str) -> None:
+    def handle_data(self, data: str):
         data = self.sanitize(data)
         if self._state == State.SECTION:
             data = data.lower()
             if data not in self.section_blocklist:
-                self._current_section = data
-                if data not in self.api_spec:
-                    self.api_spec[data] = {}
-                if data not in self.section_types:
-                    self.section_types[data] = []
+                # split on / and take last index to support pagination
+                section_name = data.split("/")[-1]
+                self._current_section = section_name
+                if section_name not in self.api_spec:
+                    self.api_spec[section_name] = []
+                if section_name not in self.section_types:
+                    self.section_types[section_name] = []
             self._state = State.NONE
         elif self._state == State.API_NAME:
+            data = self.correct_api_name(data)
             if self._current_section:
-                self.api_spec[self._current_section][data] = {}
-            self._state = State.NONE
+                self._current_api = ApiInfo(data, "", None, None)
+                # todo: write this at the end instead of immediately
+                self.api_spec[self._current_section].append(self._current_api)
+            self._state = State.API_NAME_DONE
+        elif self._state == State.API_DESC:
+            if self._current_api:
+                self._current_api.description += data
+        elif self._state == State.API_URL:
+            if self._current_api:
+                self._current_api.url = data
         elif self._state == State.TYPE_NAME:
             if self._current_section:
+                # write as API return type if not set
+                if self._current_api and not self._current_api.response_typename:
+                    self._current_api.response_typename = data
+
                 new_type = TypeInfo(data, [])
                 self.section_types[self._current_section].append(new_type)
                 self._current_type = new_type
@@ -288,6 +412,9 @@ class ApiDefBuilder(HTMLParser):
 
     def sanitize(self, data: str) -> str:
         return data.replace("é", "e")
+
+    def correct_api_name(self, data: str) -> str:
+        return "_".join(data.lower().split())
 
 
 if __name__ == "__main__":
