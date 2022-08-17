@@ -11,6 +11,7 @@ async def main():
     print(berry)
     print(type(berry.natural_gift_type))
     print(berry.natural_gift_type)
+    print(await berry.natural_gift_type.resolve())
 
 
 if __name__ == "__main__":

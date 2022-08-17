@@ -12,6 +12,10 @@ from dataclasses import dataclass
 from ..base import Model
 
 
+from .._farfetchd import Farfetchd
+from ..resources import CacheableResource, ResourceIdentifier
+
+
 from typing import Generic, Type, TypeVar
 
 T = TypeVar("T")
@@ -40,6 +44,12 @@ class APIResource(Generic[T]):
 
     # The type that this APIResource resolves to
     type: Type[T] | None = None
+
+    async def resolve(self) -> T:
+        definition = CacheableResource(
+            self.type, ResourceIdentifier("url", self.url), self.url
+        )
+        return await Farfetchd.resolvers.resolve(definition)
 
 
 @dataclass
@@ -115,6 +125,12 @@ class NamedAPIResource(Generic[T]):
 
     # The type that this NamedAPIResource resolves to
     type: Type[T] | None = None
+
+    async def resolve(self) -> T:
+        definition = CacheableResource(
+            self.type, ResourceIdentifier("name", self.name), self.url
+        )
+        return await Farfetchd.resolvers.resolve(definition)
 
 
 @dataclass

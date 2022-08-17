@@ -5,6 +5,14 @@ from dataclasses import dataclass
 
 from ..base import Model
 
+{# special import specifically for APIResource and NamedAPIResource classes #}
+{% for type in types if type.name == "NamedAPIResource" or type.name == "APIResource" %}
+{% if loop.first %}
+from .._farfetchd import Farfetchd
+from ..resources import CacheableResource, ResourceIdentifier
+{% endif %}
+{% endfor %}
+
 {% for type in types if type.is_generic() %}
 {% if loop.first %}
 from typing import Generic, Type, TypeVar
@@ -21,6 +29,19 @@ class {{ type.name }}({% if type.is_generic() %}Generic[T]{% else %}Model["{{ ty
     {% if type.is_generic() %}
     # The type that this {{ type.name }} resolves to
     type: Type[T] | None = None
+    {% endif %}
+
+    {# special case for specifically NamedAPIResource #}
+    {% if type.name == "NamedAPIResource" %}
+    async def resolve(self) -> T:
+        definition = CacheableResource(self.type, ResourceIdentifier("name", self.name), self.url)
+        return await Farfetchd.resolvers.resolve(definition)
+    {% endif %}
+    {# special case for specificall APIResource #}
+    {% if type.name == "APIResource" %}
+    async def resolve(self) -> T:
+        definition = CacheableResource(self.type, ResourceIdentifier("url", self.url), self.url)
+        return await Farfetchd.resolvers.resolve(definition)
     {% endif %}
 {% endfor %}
 
