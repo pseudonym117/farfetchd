@@ -1,5 +1,6 @@
 import aiohttp
 import threading
+import logging
 
 from typing import List, TypeVar
 
@@ -12,6 +13,9 @@ from .resolver import Resolver
 T = TypeVar("T")
 
 
+logger = logging.getLogger(__name__)
+
+
 class ApiResolver(Resolver):
     def __init__(self, deserializer: Deserializer) -> None:
         self.__session_lock = threading.Lock()
@@ -22,6 +26,7 @@ class ApiResolver(Resolver):
         if not self.__session:
             with self.__session_lock:
                 if not self.__session:
+                    logger.info("initializing session")
                     self.__session = aiohttp.ClientSession()
         return self.__session
 
@@ -29,6 +34,7 @@ class ApiResolver(Resolver):
         self, to_resolve: CacheableResource[T] | CacheableResourceList[T]
     ) -> T | List[T] | None:
         session = await self._session()
+        logger.info("fetching %s", to_resolve.resource_url)
         async with session.get(to_resolve.resource_url) as resp:
             data = await resp.json()
 

@@ -1,2 +1,4 @@
-from .network import ApiResolver
 from .resolver import Resolver
+
+from .memory import MemoryCacheResolver
+from .network import ApiResolver

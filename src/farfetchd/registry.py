@@ -55,9 +55,10 @@ class ResolverRegistry:
         to_cache: Deque[Resolver] = collections.deque()
         for _, resolver in resolvers:
             result = await resolver.resolve(to_resolve)
-            if result is None:
-                to_cache.appendleft(resolver)
-                continue
+            if result is not None:
+                break
+
+            to_cache.appendleft(resolver)
 
         if result is not None:
             await asyncio.gather(*[cache.store(result) for cache in to_cache])
