@@ -9,38 +9,11 @@ Generation script is located @ //farfetchd/bin/generate.py
 from __future__ import annotations
 from dataclasses import dataclass
 
-
-from typing import (
-    List,
-)
-
-from .contests import (
-    ContestEffect,
-    ContestType,
-)
-
-from .games import (
-    VersionGroup,
-)
-
-from .pokemon import (
-    AbilityEffectChange,
-    Pokemon,
-)
-
-from .utility import (
-    APIResource,
-    Description,
-    Language,
-    MachineVersionDetail,
-    Name,
-    NamedAPIResource,
-    VerboseEffect,
-)
+from ..base import Model
 
 
 @dataclass
-class Move:
+class Move(Model["Move"]):
     # The identifier for this resource.
     id: int
     # The name for this resource.
@@ -92,7 +65,7 @@ class Move:
 
 
 @dataclass
-class ContestComboSets:
+class ContestComboSets(Model["ContestComboSets"]):
     # A detail of moves this move can be used before or after, granting additional appeal points in contests.
     normal: ContestComboDetail
     # A detail of moves this move can be used before or after, granting additional appeal points in super contests.
@@ -100,7 +73,7 @@ class ContestComboSets:
 
 
 @dataclass
-class ContestComboDetail:
+class ContestComboDetail(Model["ContestComboDetail"]):
     # A list of moves to use before this move.
     use_before: List[NamedAPIResource[Move]]
     # A list of moves to use after this move.
@@ -108,7 +81,7 @@ class ContestComboDetail:
 
 
 @dataclass
-class MoveFlavorText:
+class MoveFlavorText(Model["MoveFlavorText"]):
     # The localized flavor text for an api resource in a specific language.
     flavor_text: str
     # The language this name is in.
@@ -118,7 +91,7 @@ class MoveFlavorText:
 
 
 @dataclass
-class MoveMetaData:
+class MoveMetaData(Model["MoveMetaData"]):
     # The status ailment this move inflicts on its target.
     ailment: NamedAPIResource
     # The category of move this move falls under, e.g. damage or ailment.
@@ -146,7 +119,7 @@ class MoveMetaData:
 
 
 @dataclass
-class MoveStatChange:
+class MoveStatChange(Model["MoveStatChange"]):
     # The amount of change.
     change: int
     # The stat being affected.
@@ -154,7 +127,7 @@ class MoveStatChange:
 
 
 @dataclass
-class PastMoveStatValues:
+class PastMoveStatValues(Model["PastMoveStatValues"]):
     # The percent value of how likely this move is to be successful.
     accuracy: int
     # The percent value of how likely it is this moves effect will take effect.
@@ -172,7 +145,7 @@ class PastMoveStatValues:
 
 
 @dataclass
-class MoveAilment:
+class MoveAilment(Model["MoveAilment"]):
     # The identifier for this resource.
     id: int
     # The name for this resource.
@@ -184,7 +157,7 @@ class MoveAilment:
 
 
 @dataclass
-class MoveBattleStyle:
+class MoveBattleStyle(Model["MoveBattleStyle"]):
     # The identifier for this resource.
     id: int
     # The name for this resource.
@@ -194,7 +167,7 @@ class MoveBattleStyle:
 
 
 @dataclass
-class MoveCategory:
+class MoveCategory(Model["MoveCategory"]):
     # The identifier for this resource.
     id: int
     # The name for this resource.
@@ -206,7 +179,7 @@ class MoveCategory:
 
 
 @dataclass
-class MoveDamageClass:
+class MoveDamageClass(Model["MoveDamageClass"]):
     # The identifier for this resource.
     id: int
     # The name for this resource.
@@ -220,7 +193,7 @@ class MoveDamageClass:
 
 
 @dataclass
-class MoveLearnMethod:
+class MoveLearnMethod(Model["MoveLearnMethod"]):
     # The identifier for this resource.
     id: int
     # The name for this resource.
@@ -234,7 +207,7 @@ class MoveLearnMethod:
 
 
 @dataclass
-class MoveTarget:
+class MoveTarget(Model["MoveTarget"]):
     # The identifier for this resource.
     id: int
     # The name for this resource.
@@ -245,3 +218,34 @@ class MoveTarget:
     moves: List[NamedAPIResource[Move]]
     # The name of this resource listed in different languages.
     names: List[Name]
+
+
+# import all type hints at of file to ensure no circular reference issues
+
+from typing import (
+    List,
+)
+
+from .contests import (
+    ContestEffect,
+    ContestType,
+)
+
+from .games import (
+    VersionGroup,
+)
+
+from .pokemon import (
+    AbilityEffectChange,
+    Pokemon,
+)
+
+from .utility import (
+    APIResource,
+    Description,
+    Language,
+    MachineVersionDetail,
+    Name,
+    NamedAPIResource,
+    VerboseEffect,
+)

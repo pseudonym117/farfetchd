@@ -3,18 +3,26 @@
 from __future__ import annotations
 from dataclasses import dataclass
 
-{% include "imports.py.jinja2" %}
+from ..base import Model
 
 {% for type in types if type.is_generic() %}
 {% if loop.first %}
+from typing import Generic, Type, TypeVar
 T = TypeVar("T")
 {% endif %}
 {% endfor %}
 
 {% for type in types %}
 @dataclass
-class {{ type.name }}{% if type.is_generic() %}(Generic[T]){% endif %}:
+class {{ type.name }}({% if type.is_generic() %}Generic[T]{% else %}Model["{{ type.name }}"]{% endif %}):
     {% for prop in type.properties %}# {{ prop.description.strip() }}
     {{ prop.name }}: {{ prop.type }}
     {% endfor %}
+    {% if type.is_generic() %}
+    # The type that this {{ type.name }} resolves to
+    type: Type[T] | None = None
+    {% endif %}
 {% endfor %}
+
+# import all type hints at of file to ensure no circular reference issues
+{% include "imports.py.jinja2" %}

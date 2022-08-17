@@ -9,19 +9,11 @@ Generation script is located @ //farfetchd/bin/generate.py
 from __future__ import annotations
 from dataclasses import dataclass
 
-
-from typing import (
-    List,
-)
-
-from .utility import (
-    Name,
-    NamedAPIResource,
-)
+from ..base import Model
 
 
 @dataclass
-class EncounterMethod:
+class EncounterMethod(Model["EncounterMethod"]):
     # The identifier for this resource.
     id: int
     # The name for this resource.
@@ -33,7 +25,7 @@ class EncounterMethod:
 
 
 @dataclass
-class EncounterCondition:
+class EncounterCondition(Model["EncounterCondition"]):
     # The identifier for this resource.
     id: int
     # The name for this resource.
@@ -45,7 +37,7 @@ class EncounterCondition:
 
 
 @dataclass
-class EncounterConditionValue:
+class EncounterConditionValue(Model["EncounterConditionValue"]):
     # The identifier for this resource.
     id: int
     # The name for this resource.
@@ -54,3 +46,15 @@ class EncounterConditionValue:
     condition: NamedAPIResource[EncounterCondition]
     # The name of this resource listed in different languages.
     names: List[Name]
+
+
+# import all type hints at of file to ensure no circular reference issues
+
+from typing import (
+    List,
+)
+
+from .utility import (
+    Name,
+    NamedAPIResource,
+)

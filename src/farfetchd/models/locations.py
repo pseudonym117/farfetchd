@@ -9,26 +9,11 @@ Generation script is located @ //farfetchd/bin/generate.py
 from __future__ import annotations
 from dataclasses import dataclass
 
-
-from typing import (
-    List,
-)
-
-from .games import (
-    Pokedex,
-    VersionGroup,
-)
-
-from .utility import (
-    GenerationGameIndex,
-    Name,
-    NamedAPIResource,
-    VersionEncounterDetail,
-)
+from ..base import Model
 
 
 @dataclass
-class Location:
+class Location(Model["Location"]):
     # The identifier for this resource.
     id: int
     # The name for this resource.
@@ -44,7 +29,7 @@ class Location:
 
 
 @dataclass
-class LocationArea:
+class LocationArea(Model["LocationArea"]):
     # The identifier for this resource.
     id: int
     # The name for this resource.
@@ -62,7 +47,7 @@ class LocationArea:
 
 
 @dataclass
-class EncounterMethodRate:
+class EncounterMethodRate(Model["EncounterMethodRate"]):
     # The method in which Pokemon may be encountered in an area..
     encounter_method: NamedAPIResource
     # The chance of the encounter to occur on a version of the game.
@@ -70,7 +55,7 @@ class EncounterMethodRate:
 
 
 @dataclass
-class EncounterVersionDetails:
+class EncounterVersionDetails(Model["EncounterVersionDetails"]):
     # The chance of an encounter to occur.
     rate: int
     # The version of the game in which the encounter can occur with the given chance.
@@ -78,7 +63,7 @@ class EncounterVersionDetails:
 
 
 @dataclass
-class PokemonEncounter:
+class PokemonEncounter(Model["PokemonEncounter"]):
     # The Pokemon being encountered.
     pokemon: NamedAPIResource
     # A list of versions and encounters with Pokemon that might happen in the referenced location area.
@@ -86,7 +71,7 @@ class PokemonEncounter:
 
 
 @dataclass
-class PalParkArea:
+class PalParkArea(Model["PalParkArea"]):
     # The identifier for this resource.
     id: int
     # The name for this resource.
@@ -98,7 +83,7 @@ class PalParkArea:
 
 
 @dataclass
-class PalParkEncounterSpecies:
+class PalParkEncounterSpecies(Model["PalParkEncounterSpecies"]):
     # The base score given to the player when this Pokemon is caught during a pal park run.
     base_score: int
     # The base rate for encountering this Pokemon in this pal park area.
@@ -108,7 +93,7 @@ class PalParkEncounterSpecies:
 
 
 @dataclass
-class Region:
+class Region(Model["Region"]):
     # The identifier for this resource.
     id: int
     # A list of locations that can be found in this region.
@@ -123,3 +108,22 @@ class Region:
     pokedexes: List[NamedAPIResource[Pokedex]]
     # A list of version groups where this region can be visited.
     version_groups: List[NamedAPIResource[VersionGroup]]
+
+
+# import all type hints at of file to ensure no circular reference issues
+
+from typing import (
+    List,
+)
+
+from .games import (
+    Pokedex,
+    VersionGroup,
+)
+
+from .utility import (
+    GenerationGameIndex,
+    Name,
+    NamedAPIResource,
+    VersionEncounterDetail,
+)

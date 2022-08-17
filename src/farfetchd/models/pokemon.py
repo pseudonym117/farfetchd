@@ -9,64 +9,16 @@ Generation script is located @ //farfetchd/bin/generate.py
 from __future__ import annotations
 from dataclasses import dataclass
 
+from ..base import Model
 
-from typing import (
-    Generic,
-    List,
-    TypeVar,
-)
 
-from .berries import (
-    BerryFlavor,
-)
-
-from .evolution import (
-    EvolutionChain,
-)
-
-from .games import (
-    Generation,
-    Pokedex,
-    Version,
-    VersionGroup,
-)
-
-from .items import (
-    Item,
-)
-
-from .locations import (
-    LocationArea,
-    PalParkArea,
-)
-
-from .moves import (
-    Move,
-    MoveBattleStyle,
-    MoveDamageClass,
-    MoveLearnMethod,
-)
-
-from .utility import (
-    APIResource,
-    Description,
-    Effect,
-    FlavorText,
-    GenerationGameIndex,
-    Language,
-    Name,
-    NamedAPIResource,
-    VerboseEffect,
-    VersionEncounterDetail,
-    VersionGameIndex,
-)
-
+from typing import Generic, Type, TypeVar
 
 T = TypeVar("T")
 
 
 @dataclass
-class Ability:
+class Ability(Model["Ability"]):
     # The identifier for this resource.
     id: int
     # The name for this resource.
@@ -88,7 +40,7 @@ class Ability:
 
 
 @dataclass
-class AbilityEffectChange:
+class AbilityEffectChange(Model["AbilityEffectChange"]):
     # The previous effect of this ability listed in different languages.
     effect_entries: List[Effect]
     # The version group in which the previous effect of this ability originated.
@@ -96,7 +48,7 @@ class AbilityEffectChange:
 
 
 @dataclass
-class AbilityFlavorText:
+class AbilityFlavorText(Model["AbilityFlavorText"]):
     # The localized name for an API resource in a specific language.
     flavor_text: str
     # The language this text resource is in.
@@ -106,7 +58,7 @@ class AbilityFlavorText:
 
 
 @dataclass
-class AbilityPokemon:
+class AbilityPokemon(Model["AbilityPokemon"]):
     # Whether or not this a hidden ability for the referenced Pokemon.
     is_hidden: bool
     # Pokemon have 3 ability 'slots' which hold references to possible abilities they could have. This is the slot of this ability for the referenced pokemon.
@@ -116,7 +68,7 @@ class AbilityPokemon:
 
 
 @dataclass
-class Characteristic:
+class Characteristic(Model["Characteristic"]):
     # The identifier for this resource.
     id: int
     # The remainder of the highest stat/IV divided by 5.
@@ -126,7 +78,7 @@ class Characteristic:
 
 
 @dataclass
-class EggGroup:
+class EggGroup(Model["EggGroup"]):
     # The identifier for this resource.
     id: int
     # The name for this resource.
@@ -138,7 +90,7 @@ class EggGroup:
 
 
 @dataclass
-class Gender:
+class Gender(Model["Gender"]):
     # The identifier for this resource.
     id: int
     # The name for this resource.
@@ -150,7 +102,7 @@ class Gender:
 
 
 @dataclass
-class PokemonSpeciesGender:
+class PokemonSpeciesGender(Model["PokemonSpeciesGender"]):
     # The chance of this Pokemon being female, in eighths; or -1 for genderless.
     rate: int
     # A Pokemon species that can be the referenced gender.
@@ -158,7 +110,7 @@ class PokemonSpeciesGender:
 
 
 @dataclass
-class GrowthRate:
+class GrowthRate(Model["GrowthRate"]):
     # The identifier for this resource.
     id: int
     # The name for this resource.
@@ -174,7 +126,7 @@ class GrowthRate:
 
 
 @dataclass
-class GrowthRateExperienceLevel:
+class GrowthRateExperienceLevel(Model["GrowthRateExperienceLevel"]):
     # The level gained.
     level: int
     # The amount of experience required to reach the referenced level.
@@ -182,7 +134,7 @@ class GrowthRateExperienceLevel:
 
 
 @dataclass
-class Nature:
+class Nature(Model["Nature"]):
     # The identifier for this resource.
     id: int
     # The name for this resource.
@@ -204,7 +156,7 @@ class Nature:
 
 
 @dataclass
-class NatureStatChange:
+class NatureStatChange(Model["NatureStatChange"]):
     # The amount of change.
     max_change: int
     # The stat being affected.
@@ -212,7 +164,7 @@ class NatureStatChange:
 
 
 @dataclass
-class MoveBattleStylePreference:
+class MoveBattleStylePreference(Model["MoveBattleStylePreference"]):
     # Chance of using the move, in percent, if HP is under one half.
     low_hp_preference: int
     # Chance of using the move, in percent, if HP is over one half.
@@ -222,7 +174,7 @@ class MoveBattleStylePreference:
 
 
 @dataclass
-class PokeathlonStat:
+class PokeathlonStat(Model["PokeathlonStat"]):
     # The identifier for this resource.
     id: int
     # The name for this resource.
@@ -234,7 +186,7 @@ class PokeathlonStat:
 
 
 @dataclass
-class NaturePokeathlonStatAffectSets:
+class NaturePokeathlonStatAffectSets(Model["NaturePokeathlonStatAffectSets"]):
     # A list of natures and how they change the referenced Pokeathlon stat.
     increase: List[NaturePokeathlonStatAffect]
     # A list of natures and how they change the referenced Pokeathlon stat.
@@ -242,7 +194,7 @@ class NaturePokeathlonStatAffectSets:
 
 
 @dataclass
-class NaturePokeathlonStatAffect:
+class NaturePokeathlonStatAffect(Model["NaturePokeathlonStatAffect"]):
     # The maximum amount of change to the referenced Pokeathlon stat.
     max_change: int
     # The nature causing the change.
@@ -250,7 +202,7 @@ class NaturePokeathlonStatAffect:
 
 
 @dataclass
-class Pokemon:
+class Pokemon(Model["Pokemon"]):
     # The identifier for this resource.
     id: int
     # The name for this resource.
@@ -290,7 +242,7 @@ class Pokemon:
 
 
 @dataclass
-class PokemonAbility:
+class PokemonAbility(Model["PokemonAbility"]):
     # Whether or not this is a hidden ability.
     is_hidden: bool
     # The slot this ability occupies in this Pokemon species.
@@ -300,7 +252,7 @@ class PokemonAbility:
 
 
 @dataclass
-class PokemonType:
+class PokemonType(Model["PokemonType"]):
     # The order the Pokemon's types are listed in.
     slot: int
     # The type the referenced Pokemon has.
@@ -308,7 +260,7 @@ class PokemonType:
 
 
 @dataclass
-class PokemonFormType:
+class PokemonFormType(Model["PokemonFormType"]):
     # The order the Pokemon's types are listed in.
     slot: int
     # The type the referenced Form has.
@@ -316,7 +268,7 @@ class PokemonFormType:
 
 
 @dataclass
-class PokemonTypePast:
+class PokemonTypePast(Model["PokemonTypePast"]):
     # The last generation in which the referenced pokemon had the listed types.
     generation: NamedAPIResource[Generation]
     # The types the referenced pokemon had up to and including the listed generation.
@@ -324,7 +276,7 @@ class PokemonTypePast:
 
 
 @dataclass
-class PokemonHeldItem:
+class PokemonHeldItem(Model["PokemonHeldItem"]):
     # The item the referenced Pokemon holds.
     item: NamedAPIResource[Item]
     # The details of the different versions in which the item is held.
@@ -332,7 +284,7 @@ class PokemonHeldItem:
 
 
 @dataclass
-class PokemonHeldItemVersion:
+class PokemonHeldItemVersion(Model["PokemonHeldItemVersion"]):
     # The version in which the item is held.
     version: NamedAPIResource[Version]
     # How often the item is held.
@@ -340,7 +292,7 @@ class PokemonHeldItemVersion:
 
 
 @dataclass
-class PokemonMove:
+class PokemonMove(Model["PokemonMove"]):
     # The move the Pokemon can learn.
     move: NamedAPIResource[Move]
     # The details of the version in which the Pokemon can learn the move.
@@ -348,7 +300,7 @@ class PokemonMove:
 
 
 @dataclass
-class PokemonMoveVersion:
+class PokemonMoveVersion(Model["PokemonMoveVersion"]):
     # The method by which the move is learned.
     move_learn_method: NamedAPIResource[MoveLearnMethod]
     # The version group in which the move is learned.
@@ -358,7 +310,7 @@ class PokemonMoveVersion:
 
 
 @dataclass
-class PokemonStat:
+class PokemonStat(Model["PokemonStat"]):
     # The stat the Pokemon has.
     stat: NamedAPIResource[Stat]
     # The effort points (EV) the Pokemon has in the stat.
@@ -368,7 +320,7 @@ class PokemonStat:
 
 
 @dataclass
-class PokemonSprites:
+class PokemonSprites(Model["PokemonSprites"]):
     # The default depiction of this Pokemon from the front in battle.
     front_default: str
     # The shiny depiction of this Pokemon from the front in battle.
@@ -388,7 +340,7 @@ class PokemonSprites:
 
 
 @dataclass
-class LocationAreaEncounter:
+class LocationAreaEncounter(Model["LocationAreaEncounter"]):
     # The location area the referenced Pokemon can be encountered in.
     location_area: NamedAPIResource[LocationArea]
     # A list of versions and encounters with the referenced Pokemon that might happen.
@@ -396,7 +348,7 @@ class LocationAreaEncounter:
 
 
 @dataclass
-class PokemonColor:
+class PokemonColor(Model["PokemonColor"]):
     # The identifier for this resource.
     id: int
     # The name for this resource.
@@ -408,7 +360,7 @@ class PokemonColor:
 
 
 @dataclass
-class PokemonForm:
+class PokemonForm(Model["PokemonForm"]):
     # The identifier for this resource.
     id: int
     # The name for this resource.
@@ -440,7 +392,7 @@ class PokemonForm:
 
 
 @dataclass
-class PokemonFormSprites:
+class PokemonFormSprites(Model["PokemonFormSprites"]):
     # The default depiction of this Pokemon form from the front in battle.
     front_default: str
     # The shiny depiction of this Pokemon form from the front in battle.
@@ -452,7 +404,7 @@ class PokemonFormSprites:
 
 
 @dataclass
-class PokemonHabitat:
+class PokemonHabitat(Model["PokemonHabitat"]):
     # The identifier for this resource.
     id: int
     # The name for this resource.
@@ -464,7 +416,7 @@ class PokemonHabitat:
 
 
 @dataclass
-class PokemonShape:
+class PokemonShape(Model["PokemonShape"]):
     # The identifier for this resource.
     id: int
     # The name for this resource.
@@ -478,7 +430,7 @@ class PokemonShape:
 
 
 @dataclass
-class AwesomeName:
+class AwesomeName(Model["AwesomeName"]):
     # The localized "scientific" name for an API resource in a specific language.
     awesome_name: str
     # The language this "scientific" name is in.
@@ -486,7 +438,7 @@ class AwesomeName:
 
 
 @dataclass
-class PokemonSpecies:
+class PokemonSpecies(Model["PokemonSpecies"]):
     # The identifier for this resource.
     id: int
     # The name for this resource.
@@ -544,7 +496,7 @@ class PokemonSpecies:
 
 
 @dataclass
-class Genus:
+class Genus(Model["Genus"]):
     # The localized genus for the referenced Pokemon species
     genus: str
     # The language this genus is in.
@@ -552,7 +504,7 @@ class Genus:
 
 
 @dataclass
-class PokemonSpeciesDexEntry:
+class PokemonSpeciesDexEntry(Model["PokemonSpeciesDexEntry"]):
     # The index number within the Pokedex.
     entry_number: int
     # The Pokedex the referenced Pokemon species can be found in.
@@ -560,7 +512,7 @@ class PokemonSpeciesDexEntry:
 
 
 @dataclass
-class PalParkEncounterArea:
+class PalParkEncounterArea(Model["PalParkEncounterArea"]):
     # The base score given to the player when the referenced Pokemon is caught during a pal park run.
     base_score: int
     # The base rate for encountering the referenced Pokemon in this pal park area.
@@ -570,7 +522,7 @@ class PalParkEncounterArea:
 
 
 @dataclass
-class PokemonSpeciesVariety:
+class PokemonSpeciesVariety(Model["PokemonSpeciesVariety"]):
     # Whether this variety is the default variety.
     is_default: bool
     # The Pokemon variety.
@@ -578,7 +530,7 @@ class PokemonSpeciesVariety:
 
 
 @dataclass
-class Stat:
+class Stat(Model["Stat"]):
     # The identifier for this resource.
     id: int
     # The name for this resource.
@@ -600,7 +552,7 @@ class Stat:
 
 
 @dataclass
-class MoveStatAffectSets:
+class MoveStatAffectSets(Model["MoveStatAffectSets"]):
     # A list of moves and how they change the referenced stat.
     increase: List[MoveStatAffect]
     # A list of moves and how they change the referenced stat.
@@ -608,7 +560,7 @@ class MoveStatAffectSets:
 
 
 @dataclass
-class MoveStatAffect:
+class MoveStatAffect(Model["MoveStatAffect"]):
     # The maximum amount of change to the referenced stat.
     change: int
     # The move causing the change.
@@ -616,7 +568,7 @@ class MoveStatAffect:
 
 
 @dataclass
-class NatureStatAffectSets:
+class NatureStatAffectSets(Model["NatureStatAffectSets"]):
     # A list of natures and how they change the referenced stat.
     increase: List[NamedAPIResource[Nature]]
     # A list of nature sand how they change the referenced stat.
@@ -624,7 +576,7 @@ class NatureStatAffectSets:
 
 
 @dataclass
-class Type:
+class Type(Model["Type"]):
     # The identifier for this resource.
     id: int
     # The name for this resource.
@@ -648,7 +600,7 @@ class Type:
 
 
 @dataclass
-class TypePokemon:
+class TypePokemon(Model["TypePokemon"]):
     # The order the Pokemon's types are listed in.
     slot: int
     # The Pokemon that has the referenced type.
@@ -656,7 +608,7 @@ class TypePokemon:
 
 
 @dataclass
-class TypeRelations:
+class TypeRelations(Model["TypeRelations"]):
     # A list of types this type has no effect on.
     no_damage_to: List[NamedAPIResource[Type]]
     # A list of types this type is not very effect against.
@@ -677,3 +629,58 @@ class TypeRelationsPast(Generic[T]):
     generation: NamedAPIResource[Generation]
     # The damage relations the referenced type had up to and including the listed generation
     damage_relations: TypeRelations
+
+    # The type that this TypeRelationsPast resolves to
+    type: Type[T] | None = None
+
+
+# import all type hints at of file to ensure no circular reference issues
+
+from typing import (
+    List,
+)
+
+from .berries import (
+    BerryFlavor,
+)
+
+from .evolution import (
+    EvolutionChain,
+)
+
+from .games import (
+    Generation,
+    Pokedex,
+    Version,
+    VersionGroup,
+)
+
+from .items import (
+    Item,
+)
+
+from .locations import (
+    LocationArea,
+    PalParkArea,
+)
+
+from .moves import (
+    Move,
+    MoveBattleStyle,
+    MoveDamageClass,
+    MoveLearnMethod,
+)
+
+from .utility import (
+    APIResource,
+    Description,
+    Effect,
+    FlavorText,
+    GenerationGameIndex,
+    Language,
+    Name,
+    NamedAPIResource,
+    VerboseEffect,
+    VersionEncounterDetail,
+    VersionGameIndex,
+)

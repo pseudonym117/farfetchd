@@ -47,8 +47,8 @@ async def main(output_dir: str):
     print("writing models...")
     await write_models(env, f"{output_dir}/models", parser.section_types)
 
-    print("writing APIs...")
-    await write_apis(env, f"{output_dir}/apis", parser.api_spec, parser.section_types)
+    print("writing definitions...")
+    await write_defs(env, f"{output_dir}/defs", parser.api_spec, parser.section_types)
 
     print("done")
 
@@ -63,53 +63,52 @@ async def write_models(
     model_template = env.get_template("model_template.py.jinja2")
 
     os.makedirs(output_dir, exist_ok=True)
-    for section, types in section_types.items():
-        required_types = set()
-        for type in types:
-            for imp in type.extra_type_imports():
-                required_types.add(imp)
+    with open(f"{output_dir}/__init__.py", "w+") as init_py:
+        for section, types in section_types.items():
+            required_types = set()
+            for type in types:
+                for imp in type.extra_type_imports():
+                    required_types.add(imp)
 
-        extra_import_dict = collections.defaultdict(lambda: [])
+            extra_import_dict = collections.defaultdict(lambda: [])
 
-        if required_types:
-            for required in required_types:
-                from_module = type_to_section_name[required]
-                extra_import_dict[from_module].append(required)
+            if required_types:
+                for required in required_types:
+                    from_module = type_to_section_name[required]
+                    extra_import_dict[from_module].append(required)
 
-        if section in extra_import_dict:
-            del extra_import_dict[section]
+            if section in extra_import_dict:
+                del extra_import_dict[section]
 
-        extra_imports = sorted(
-            [
-                ExtraImport(f".{module}", sorted(classes))
-                for module, classes in extra_import_dict.items()
-            ],
-            key=lambda imp: imp.module,
-        )
+            extra_imports = sorted(
+                [
+                    ExtraImport(f".{module}", sorted(classes))
+                    for module, classes in extra_import_dict.items()
+                ],
+                key=lambda imp: imp.module,
+            )
 
-        typing_imports = []
-        if any([type.uses_lists() for type in types]):
-            typing_imports.append("List")
-        if any([type.is_generic() for type in types]):
-            typing_imports.extend(["Generic", "TypeVar"])
-        if typing_imports:
-            extra_imports.insert(0, ExtraImport("typing", sorted(typing_imports)))
+            typing_imports = []
+            if any([type.uses_lists() for type in types]):
+                typing_imports.append("List")
+            if typing_imports:
+                extra_imports.insert(0, ExtraImport("typing", sorted(typing_imports)))
 
-        rendered = await model_template.render_async(
-            types=types, extra_imports=extra_imports
-        )
+            rendered = await model_template.render_async(
+                types=types, extra_imports=extra_imports
+            )
 
-        blacked = black.format_str(rendered, mode=black.FileMode())
+            blacked = black.format_str(rendered, mode=black.FileMode())
 
-        with open(f"{output_dir}/{section}.py", "w+") as f:
-            f.write(blacked)
+            with open(f"{output_dir}/{section}.py", "w+") as f:
+                f.write(blacked)
 
-    if not os.path.exists(f"{output_dir}/__init__.py"):
-        with open(f"{output_dir}/__init__.py", "w+") as f:
-            pass
+            init_py.write(
+                f"from .{section} import {', '.join(sorted([model.name for model in types]))}\n"
+            )
 
 
-async def write_apis(
+async def write_defs(
     env: jinja2.Environment,
     output_dir: str,
     api_spec: Dict[str, List[ApiInfo]],
@@ -128,36 +127,38 @@ async def write_apis(
 
     api_template = env.get_template("api_template.py.jinja2")
 
-    for section, apis in real_apis.items():
-        required_types = set([api.response_typename for api in apis])
-        extra_import_dict = collections.defaultdict(lambda: [])
+    os.makedirs(output_dir, exist_ok=True)
+    with open(f"{output_dir}/__init__.py", "w+") as init_py:
+        for section, apis in real_apis.items():
+            required_types = set([api.response_typename for api in apis])
+            extra_import_dict = collections.defaultdict(lambda: [])
 
-        if required_types:
-            for required in required_types:
-                from_module = type_to_section_name[required]
-                extra_import_dict[from_module].append(required)
+            if required_types:
+                for required in required_types:
+                    from_module = type_to_section_name[required]
+                    extra_import_dict[from_module].append(required)
 
-        extra_imports = sorted(
-            [
-                ExtraImport(f"..models.{module}", sorted(classes))
-                for module, classes in extra_import_dict.items()
-            ],
-            key=lambda imp: imp.module,
-        )
+            extra_imports = sorted(
+                [
+                    ExtraImport(f"..models.{module}", sorted(classes))
+                    for module, classes in extra_import_dict.items()
+                ],
+                key=lambda imp: imp.module,
+            )
 
-        rendered = await api_template.render_async(
-            section=section, endpoints=apis, extra_imports=extra_imports
-        )
+            rendered = await api_template.render_async(
+                section=section, endpoints=apis, extra_imports=extra_imports
+            )
 
-        blacked = black.format_str(rendered, mode=black.FileMode())
-        # blacked = rendered
+            blacked = black.format_str(rendered, mode=black.FileMode())
+            # blacked = rendered
 
-        with open(f"{output_dir}/{section}.py", "w+") as f:
-            f.write(blacked)
+            with open(f"{output_dir}/{section}.py", "w+") as f:
+                f.write(blacked)
 
-    if not os.path.exists(f"{output_dir}/__init__.py"):
-        with open(f"{output_dir}/__init__.py", "w+") as f:
-            pass
+            init_py.write(
+                f"from .{section} import {', '.join(sorted([api.name for api in apis]))}\n"
+            )
 
     # print(json.dumps(real_apis, indent=2, cls=DataclassJsonEncoder))
 

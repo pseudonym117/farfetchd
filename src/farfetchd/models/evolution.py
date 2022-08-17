@@ -9,36 +9,11 @@ Generation script is located @ //farfetchd/bin/generate.py
 from __future__ import annotations
 from dataclasses import dataclass
 
-
-from typing import (
-    List,
-)
-
-from .items import (
-    Item,
-)
-
-from .locations import (
-    Location,
-)
-
-from .moves import (
-    Move,
-)
-
-from .pokemon import (
-    PokemonSpecies,
-    Type,
-)
-
-from .utility import (
-    Name,
-    NamedAPIResource,
-)
+from ..base import Model
 
 
 @dataclass
-class EvolutionChain:
+class EvolutionChain(Model["EvolutionChain"]):
     # The identifier for this resource.
     id: int
     # The item that a Pokemon would be holding when mating that would trigger the egg hatching a baby Pokemon rather than a basic Pokemon.
@@ -48,7 +23,7 @@ class EvolutionChain:
 
 
 @dataclass
-class ChainLink:
+class ChainLink(Model["ChainLink"]):
     # Whether or not this link is for a baby Pokemon. This would only ever be true on the base link.
     is_baby: bool
     # The Pokemon species at this point in the evolution chain.
@@ -60,7 +35,7 @@ class ChainLink:
 
 
 @dataclass
-class EvolutionDetail:
+class EvolutionDetail(Model["EvolutionDetail"]):
     # The item required to cause evolution this into Pokemon species.
     item: NamedAPIResource[Item]
     # The type of event that triggers evolution into this Pokemon species.
@@ -100,7 +75,7 @@ class EvolutionDetail:
 
 
 @dataclass
-class EvolutionTrigger:
+class EvolutionTrigger(Model["EvolutionTrigger"]):
     # The identifier for this resource.
     id: int
     # The name for this resource.
@@ -109,3 +84,32 @@ class EvolutionTrigger:
     names: List[Name]
     # A list of pokemon species that result from this evolution trigger.
     pokemon_species: List[NamedAPIResource[PokemonSpecies]]
+
+
+# import all type hints at of file to ensure no circular reference issues
+
+from typing import (
+    List,
+)
+
+from .items import (
+    Item,
+)
+
+from .locations import (
+    Location,
+)
+
+from .moves import (
+    Move,
+)
+
+from .pokemon import (
+    PokemonSpecies,
+    Type,
+)
+
+from .utility import (
+    Name,
+    NamedAPIResource,
+)

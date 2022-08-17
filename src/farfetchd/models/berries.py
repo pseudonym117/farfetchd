@@ -9,31 +9,11 @@ Generation script is located @ //farfetchd/bin/generate.py
 from __future__ import annotations
 from dataclasses import dataclass
 
-
-from typing import (
-    List,
-)
-
-from .contests import (
-    ContestType,
-)
-
-from .items import (
-    Item,
-)
-
-from .pokemon import (
-    Type,
-)
-
-from .utility import (
-    Name,
-    NamedAPIResource,
-)
+from ..base import Model
 
 
 @dataclass
-class Berry:
+class Berry(Model["Berry"]):
     # The identifier for this resource.
     id: int
     # The name for this resource.
@@ -61,7 +41,7 @@ class Berry:
 
 
 @dataclass
-class BerryFlavorMap:
+class BerryFlavorMap(Model["BerryFlavorMap"]):
     # How powerful the referenced flavor is for this berry.
     potency: int
     # The referenced berry flavor.
@@ -69,7 +49,7 @@ class BerryFlavorMap:
 
 
 @dataclass
-class BerryFirmness:
+class BerryFirmness(Model["BerryFirmness"]):
     # The identifier for this resource.
     id: int
     # The name for this resource.
@@ -81,7 +61,7 @@ class BerryFirmness:
 
 
 @dataclass
-class BerryFlavor:
+class BerryFlavor(Model["BerryFlavor"]):
     # The identifier for this resource.
     id: int
     # The name for this resource.
@@ -95,8 +75,32 @@ class BerryFlavor:
 
 
 @dataclass
-class FlavorBerryMap:
+class FlavorBerryMap(Model["FlavorBerryMap"]):
     # How powerful the referenced flavor is for this berry.
     potency: int
     # The berry with the referenced flavor.
     berry: NamedAPIResource[Berry]
+
+
+# import all type hints at of file to ensure no circular reference issues
+
+from typing import (
+    List,
+)
+
+from .contests import (
+    ContestType,
+)
+
+from .items import (
+    Item,
+)
+
+from .pokemon import (
+    Type,
+)
+
+from .utility import (
+    Name,
+    NamedAPIResource,
+)

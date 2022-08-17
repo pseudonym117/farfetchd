@@ -9,38 +9,11 @@ Generation script is located @ //farfetchd/bin/generate.py
 from __future__ import annotations
 from dataclasses import dataclass
 
-
-from typing import (
-    List,
-)
-
-from .evolution import (
-    EvolutionChain,
-)
-
-from .games import (
-    Version,
-)
-
-from .pokemon import (
-    Pokemon,
-)
-
-from .utility import (
-    APIResource,
-    Description,
-    Effect,
-    GenerationGameIndex,
-    MachineVersionDetail,
-    Name,
-    NamedAPIResource,
-    VerboseEffect,
-    VersionGroupFlavorText,
-)
+from ..base import Model
 
 
 @dataclass
-class Item:
+class Item(Model["Item"]):
     # The identifier for this resource.
     id: int
     # The name for this resource.
@@ -74,13 +47,13 @@ class Item:
 
 
 @dataclass
-class ItemSprites:
+class ItemSprites(Model["ItemSprites"]):
     # The default depiction of this item.
     default: str
 
 
 @dataclass
-class ItemHolderPokemon:
+class ItemHolderPokemon(Model["ItemHolderPokemon"]):
     # The Pokemon that holds this item.
     pokemon: NamedAPIResource[Pokemon]
     # The details for the version that this item is held in by the Pokemon.
@@ -88,7 +61,7 @@ class ItemHolderPokemon:
 
 
 @dataclass
-class ItemHolderPokemonVersionDetail:
+class ItemHolderPokemonVersionDetail(Model["ItemHolderPokemonVersionDetail"]):
     # How often this Pokemon holds this item in this version.
     rarity: int
     # The version that this item is held in by the Pokemon.
@@ -96,7 +69,7 @@ class ItemHolderPokemonVersionDetail:
 
 
 @dataclass
-class ItemAttribute:
+class ItemAttribute(Model["ItemAttribute"]):
     # The identifier for this resource.
     id: int
     # The name for this resource.
@@ -110,7 +83,7 @@ class ItemAttribute:
 
 
 @dataclass
-class ItemCategory:
+class ItemCategory(Model["ItemCategory"]):
     # The identifier for this resource.
     id: int
     # The name for this resource.
@@ -124,7 +97,7 @@ class ItemCategory:
 
 
 @dataclass
-class ItemFlingEffect:
+class ItemFlingEffect(Model["ItemFlingEffect"]):
     # The identifier for this resource.
     id: int
     # The name for this resource.
@@ -136,7 +109,7 @@ class ItemFlingEffect:
 
 
 @dataclass
-class ItemPocket:
+class ItemPocket(Model["ItemPocket"]):
     # The identifier for this resource.
     id: int
     # The name for this resource.
@@ -145,3 +118,34 @@ class ItemPocket:
     categories: List[NamedAPIResource[ItemCategory]]
     # The name of this resource listed in different languages.
     names: List[Name]
+
+
+# import all type hints at of file to ensure no circular reference issues
+
+from typing import (
+    List,
+)
+
+from .evolution import (
+    EvolutionChain,
+)
+
+from .games import (
+    Version,
+)
+
+from .pokemon import (
+    Pokemon,
+)
+
+from .utility import (
+    APIResource,
+    Description,
+    Effect,
+    GenerationGameIndex,
+    MachineVersionDetail,
+    Name,
+    NamedAPIResource,
+    VerboseEffect,
+    VersionGroupFlavorText,
+)

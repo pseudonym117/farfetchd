@@ -1,46 +1,47 @@
 {% include "generated_code.py.jinja2" %}
 
 # todo: rename this file, or just move class
+from ..decorators import defines
 from ..resources import CacheableResource, CacheableResourceList, PaginationArguments, ResourceIdentifier
 
 {% include "imports.py.jinja2" %}
 
-class {{ section.capitalize() }}Api:
-    {% for endpoint in endpoints %}
-    def {{ endpoint.name }}(self,
-        {% for name, type in endpoint.args() %}
-            {{ name }}: {{ type }} | None = None,
-        {% endfor %}
-            pagination: PaginationArguments | None = None,
-    ) -> CacheableResource[{{ endpoint.response_typename }}] | CacheableResourceList[{{ endpoint.response_typename }}]:
-        """
-        {{ endpoint.description.strip() }}
-        """
-        {% if endpoint.args()|length > 1 %}
-        if not self._exactly_one_non_none(
-            {% for arg_name, _ in endpoint.args() %}
-                {{ arg_name }},
-            {% endfor %}
-                pagination,
-        ):
-            raise ValueError(
-                'Invalid arguments; exactly one of [{% for arg_name, _ in endpoint.args() %}{{ arg_name }}, {% endfor %}pagination] must not be None'
-            )
-        {% endif %}
-        {% for arg_name, _ in endpoint.args() %}
-        if {{ arg_name }} is not None:
-            return CacheableResource({{ endpoint.response_typename }}, ResourceIdentifier("{{ arg_name }}", {{ arg_name }}), f"{{ endpoint.url_without_args() }}{{ "{" }}{{ arg_name }}{{ "}" }}")
-        {% endfor %}
-        if pagination is not None:
-            return CacheableResourceList({{ endpoint.response_typename }}, pagination, "{{ endpoint.url_without_args() }}")
-        raise ValueError("this exception should be impossible")
+{% for endpoint in endpoints %}
+@defines({{ endpoint.response_typename }})
+def {{ endpoint.name }}(
+    {% for name, type in endpoint.args() %}
+        {{ name }}: {{ type }} | None = None,
     {% endfor %}
+        pagination: PaginationArguments | None = None,
+) -> CacheableResource[{{ endpoint.response_typename }}] | CacheableResourceList[{{ endpoint.response_typename }}]:
+    """
+    {{ endpoint.description.strip() }}
+    """
+    {% if endpoint.args()|length > 1 %}
+    if not _exactly_one_non_none(
+        {% for arg_name, _ in endpoint.args() %}
+            {{ arg_name }},
+        {% endfor %}
+            pagination,
+    ):
+        raise ValueError(
+            'Invalid arguments; exactly one of [{% for arg_name, _ in endpoint.args() %}{{ arg_name }}, {% endfor %}pagination] must not be None'
+        )
+    {% endif %}
+    {% for arg_name, _ in endpoint.args() %}
+    if {{ arg_name }} is not None:
+        return CacheableResource({{ endpoint.response_typename }}, ResourceIdentifier("{{ arg_name }}", {{ arg_name }}), f"{{ endpoint.url_without_args() }}{{ "{" }}{{ arg_name }}{{ "}" }}")
+    {% endfor %}
+    if pagination is not None:
+        return CacheableResourceList({{ endpoint.response_typename }}, pagination, "{{ endpoint.url_without_args() }}")
+    raise ValueError("this exception should be impossible")
+{% endfor %}
 
-    def _exactly_one_non_none(self, *args) -> bool:
-        has_non_none = False
-        for arg in args:
-            if arg is not None:
-                if has_non_none:
-                    return False
-                has_non_none = True
-        return has_non_none
+def _exactly_one_non_none(*args) -> bool:
+    has_non_none = False
+    for arg in args:
+        if arg is not None:
+            if has_non_none:
+                return False
+            has_non_none = True
+    return has_non_none
