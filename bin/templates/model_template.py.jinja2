@@ -3,13 +3,9 @@
 from __future__ import annotations
 from dataclasses import dataclass
 
-from ..base import Model
-
-{# special import specifically for APIResource and NamedAPIResource classes #}
-{% for type in types if type.name == "NamedAPIResource" or type.name == "APIResource" %}
+{% for type in types if not type.is_generic() %}
 {% if loop.first %}
-from .._farfetchd import Farfetchd
-from ..resources import CacheableResource, ResourceIdentifier
+from ..base import Model
 {% endif %}
 {% endfor %}
 
@@ -24,7 +20,12 @@ T = TypeVar("T")
 @dataclass
 class {{ type.name }}({% if type.is_generic() %}Generic[T]{% else %}Model["{{ type.name }}"]{% endif %}):
     {% for prop in type.properties %}# {{ prop.description.strip() }}
+    {%- if type.name == "NamedAPIResourceList" and prop.name == "results" %}
+    {# special case specifically for resource lists which do not have sensible generic info on the definition page #}
+    results: List[NamedAPIResource[T]]
+    {%- else %}
     {{ prop.name }}: {{ prop.type }}
+    {%- endif %}
     {% endfor %}
     {% if type.is_generic() %}
     # The type that this {{ type.name }} resolves to
@@ -34,14 +35,12 @@ class {{ type.name }}({% if type.is_generic() %}Generic[T]{% else %}Model["{{ ty
     {# special case for specifically NamedAPIResource #}
     {% if type.name == "NamedAPIResource" %}
     async def resolve(self) -> T:
-        definition = CacheableResource(self.type, ResourceIdentifier("name", self.name), self.url)
-        return await Farfetchd.resolvers.resolve(definition)
+        return await self.type.objects.get(name=self.name)
     {% endif %}
     {# special case for specificall APIResource #}
     {% if type.name == "APIResource" %}
     async def resolve(self) -> T:
-        definition = CacheableResource(self.type, ResourceIdentifier("url", self.url), self.url)
-        return await Farfetchd.resolvers.resolve(definition)
+        return await self.type.objects.get(url=self.url)
     {% endif %}
 {% endfor %}
 

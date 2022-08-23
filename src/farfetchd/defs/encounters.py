@@ -28,6 +28,7 @@ def encounter_methods(
     id: int | None = None,
     name: str | None = None,
     pagination: PaginationArguments | None = None,
+    url: str | None = None,
 ) -> CacheableResource[EncounterMethod] | CacheableResourceList[EncounterMethod]:
     """
     Methods by which the player might can encounter Pokemon in the wild, e.g., walking in tall grass. Check out Bulbapedia for greater detail.
@@ -37,9 +38,10 @@ def encounter_methods(
         id,
         name,
         pagination,
+        url,
     ):
         raise ValueError(
-            "Invalid arguments; exactly one of [id, name, pagination] must not be None"
+            "Invalid arguments; exactly one of [id, name, pagination, url] must not be None"
         )
 
     if id is not None:
@@ -60,6 +62,9 @@ def encounter_methods(
         return CacheableResourceList(
             EncounterMethod, pagination, "https://pokeapi.co/api/v2/encounter-method/"
         )
+
+    if url is not None:
+        return CacheableResource(EncounterMethod, ResourceIdentifier("url", url), url)
     raise ValueError("this exception should be impossible")
 
 
@@ -68,6 +73,7 @@ def encounter_conditions(
     id: int | None = None,
     name: str | None = None,
     pagination: PaginationArguments | None = None,
+    url: str | None = None,
 ) -> CacheableResource[EncounterCondition] | CacheableResourceList[EncounterCondition]:
     """
     Conditions which affect what pokemon might appear in the wild, e.g., day or night.
@@ -77,9 +83,10 @@ def encounter_conditions(
         id,
         name,
         pagination,
+        url,
     ):
         raise ValueError(
-            "Invalid arguments; exactly one of [id, name, pagination] must not be None"
+            "Invalid arguments; exactly one of [id, name, pagination, url] must not be None"
         )
 
     if id is not None:
@@ -102,6 +109,11 @@ def encounter_conditions(
             pagination,
             "https://pokeapi.co/api/v2/encounter-condition/",
         )
+
+    if url is not None:
+        return CacheableResource(
+            EncounterCondition, ResourceIdentifier("url", url), url
+        )
     raise ValueError("this exception should be impossible")
 
 
@@ -110,6 +122,7 @@ def encounter_condition_values(
     id: int | None = None,
     name: str | None = None,
     pagination: PaginationArguments | None = None,
+    url: str | None = None,
 ) -> CacheableResource[EncounterConditionValue] | CacheableResourceList[
     EncounterConditionValue
 ]:
@@ -121,9 +134,10 @@ def encounter_condition_values(
         id,
         name,
         pagination,
+        url,
     ):
         raise ValueError(
-            "Invalid arguments; exactly one of [id, name, pagination] must not be None"
+            "Invalid arguments; exactly one of [id, name, pagination, url] must not be None"
         )
 
     if id is not None:
@@ -145,6 +159,11 @@ def encounter_condition_values(
             EncounterConditionValue,
             pagination,
             "https://pokeapi.co/api/v2/encounter-condition-value/",
+        )
+
+    if url is not None:
+        return CacheableResource(
+            EncounterConditionValue, ResourceIdentifier("url", url), url
         )
     raise ValueError("this exception should be impossible")
 

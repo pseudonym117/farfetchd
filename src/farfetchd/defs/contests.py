@@ -28,6 +28,7 @@ def contest_types(
     id: int | None = None,
     name: str | None = None,
     pagination: PaginationArguments | None = None,
+    url: str | None = None,
 ) -> CacheableResource[ContestType] | CacheableResourceList[ContestType]:
     """
     Contest types are categories judges used to weigh a Pokemon's condition in Pokemon contests. Check out Bulbapedia for greater detail.
@@ -37,9 +38,10 @@ def contest_types(
         id,
         name,
         pagination,
+        url,
     ):
         raise ValueError(
-            "Invalid arguments; exactly one of [id, name, pagination] must not be None"
+            "Invalid arguments; exactly one of [id, name, pagination, url] must not be None"
         )
 
     if id is not None:
@@ -60,6 +62,9 @@ def contest_types(
         return CacheableResourceList(
             ContestType, pagination, "https://pokeapi.co/api/v2/contest-type/"
         )
+
+    if url is not None:
+        return CacheableResource(ContestType, ResourceIdentifier("url", url), url)
     raise ValueError("this exception should be impossible")
 
 
@@ -67,6 +72,7 @@ def contest_types(
 def contest_effects(
     id: int | None = None,
     pagination: PaginationArguments | None = None,
+    url: str | None = None,
 ) -> CacheableResource[ContestEffect] | CacheableResourceList[ContestEffect]:
     """
     Contest effects refer to the effects of moves when used in contests.
@@ -83,6 +89,9 @@ def contest_effects(
         return CacheableResourceList(
             ContestEffect, pagination, "https://pokeapi.co/api/v2/contest-effect/"
         )
+
+    if url is not None:
+        return CacheableResource(ContestEffect, ResourceIdentifier("url", url), url)
     raise ValueError("this exception should be impossible")
 
 
@@ -90,6 +99,7 @@ def contest_effects(
 def super_contest_effects(
     id: int | None = None,
     pagination: PaginationArguments | None = None,
+    url: str | None = None,
 ) -> CacheableResource[SuperContestEffect] | CacheableResourceList[SuperContestEffect]:
     """
     Super contest effects refer to the effects of moves when used in super contests.
@@ -107,6 +117,11 @@ def super_contest_effects(
             SuperContestEffect,
             pagination,
             "https://pokeapi.co/api/v2/super-contest-effect/",
+        )
+
+    if url is not None:
+        return CacheableResource(
+            SuperContestEffect, ResourceIdentifier("url", url), url
         )
     raise ValueError("this exception should be impossible")
 

@@ -41,6 +41,7 @@ def abilities(
     id: int | None = None,
     name: str | None = None,
     pagination: PaginationArguments | None = None,
+    url: str | None = None,
 ) -> CacheableResource[Ability] | CacheableResourceList[Ability]:
     """
     Abilities provide passive effects for Pokemon in battle or in the overworld. Pokemon have multiple possible abilities but can have only one ability at a time. Check out Bulbapedia for greater detail.
@@ -50,9 +51,10 @@ def abilities(
         id,
         name,
         pagination,
+        url,
     ):
         raise ValueError(
-            "Invalid arguments; exactly one of [id, name, pagination] must not be None"
+            "Invalid arguments; exactly one of [id, name, pagination, url] must not be None"
         )
 
     if id is not None:
@@ -73,6 +75,9 @@ def abilities(
         return CacheableResourceList(
             Ability, pagination, "https://pokeapi.co/api/v2/ability/"
         )
+
+    if url is not None:
+        return CacheableResource(Ability, ResourceIdentifier("url", url), url)
     raise ValueError("this exception should be impossible")
 
 
@@ -80,6 +85,7 @@ def abilities(
 def characteristics(
     id: int | None = None,
     pagination: PaginationArguments | None = None,
+    url: str | None = None,
 ) -> CacheableResource[Characteristic] | CacheableResourceList[Characteristic]:
     """
     Characteristics indicate which stat contains a Pokemon's highest IV. A Pokemon's Characteristic is determined by the remainder of its highest IV divided by 5 (gene_modulo). Check out Bulbapedia for greater detail.
@@ -96,6 +102,9 @@ def characteristics(
         return CacheableResourceList(
             Characteristic, pagination, "https://pokeapi.co/api/v2/characteristic/"
         )
+
+    if url is not None:
+        return CacheableResource(Characteristic, ResourceIdentifier("url", url), url)
     raise ValueError("this exception should be impossible")
 
 
@@ -104,6 +113,7 @@ def egg_groups(
     id: int | None = None,
     name: str | None = None,
     pagination: PaginationArguments | None = None,
+    url: str | None = None,
 ) -> CacheableResource[EggGroup] | CacheableResourceList[EggGroup]:
     """
     Egg Groups are categories which determine which Pokemon are able to interbreed. Pokemon may belong to either one or two Egg Groups. Check out Bulbapedia for greater detail.
@@ -113,9 +123,10 @@ def egg_groups(
         id,
         name,
         pagination,
+        url,
     ):
         raise ValueError(
-            "Invalid arguments; exactly one of [id, name, pagination] must not be None"
+            "Invalid arguments; exactly one of [id, name, pagination, url] must not be None"
         )
 
     if id is not None:
@@ -136,6 +147,9 @@ def egg_groups(
         return CacheableResourceList(
             EggGroup, pagination, "https://pokeapi.co/api/v2/egg-group/"
         )
+
+    if url is not None:
+        return CacheableResource(EggGroup, ResourceIdentifier("url", url), url)
     raise ValueError("this exception should be impossible")
 
 
@@ -144,6 +158,7 @@ def genders(
     id: int | None = None,
     name: str | None = None,
     pagination: PaginationArguments | None = None,
+    url: str | None = None,
 ) -> CacheableResource[Gender] | CacheableResourceList[Gender]:
     """
     Genders were introduced in Generation II for the purposes of breeding Pokemon but can also result in visual differences or even different evolutionary lines. Check out Bulbapedia for greater detail.
@@ -153,9 +168,10 @@ def genders(
         id,
         name,
         pagination,
+        url,
     ):
         raise ValueError(
-            "Invalid arguments; exactly one of [id, name, pagination] must not be None"
+            "Invalid arguments; exactly one of [id, name, pagination, url] must not be None"
         )
 
     if id is not None:
@@ -176,6 +192,9 @@ def genders(
         return CacheableResourceList(
             Gender, pagination, "https://pokeapi.co/api/v2/gender/"
         )
+
+    if url is not None:
+        return CacheableResource(Gender, ResourceIdentifier("url", url), url)
     raise ValueError("this exception should be impossible")
 
 
@@ -184,6 +203,7 @@ def growth_rates(
     id: int | None = None,
     name: str | None = None,
     pagination: PaginationArguments | None = None,
+    url: str | None = None,
 ) -> CacheableResource[GrowthRate] | CacheableResourceList[GrowthRate]:
     """
     Growth rates are the speed with which Pokemon gain levels through experience. Check out Bulbapedia for greater detail.
@@ -193,9 +213,10 @@ def growth_rates(
         id,
         name,
         pagination,
+        url,
     ):
         raise ValueError(
-            "Invalid arguments; exactly one of [id, name, pagination] must not be None"
+            "Invalid arguments; exactly one of [id, name, pagination, url] must not be None"
         )
 
     if id is not None:
@@ -216,6 +237,9 @@ def growth_rates(
         return CacheableResourceList(
             GrowthRate, pagination, "https://pokeapi.co/api/v2/growth-rate/"
         )
+
+    if url is not None:
+        return CacheableResource(GrowthRate, ResourceIdentifier("url", url), url)
     raise ValueError("this exception should be impossible")
 
 
@@ -224,6 +248,7 @@ def natures(
     id: int | None = None,
     name: str | None = None,
     pagination: PaginationArguments | None = None,
+    url: str | None = None,
 ) -> CacheableResource[Nature] | CacheableResourceList[Nature]:
     """
     Natures influence how a Pokemon's stats grow. See Bulbapedia for greater detail.
@@ -233,9 +258,10 @@ def natures(
         id,
         name,
         pagination,
+        url,
     ):
         raise ValueError(
-            "Invalid arguments; exactly one of [id, name, pagination] must not be None"
+            "Invalid arguments; exactly one of [id, name, pagination, url] must not be None"
         )
 
     if id is not None:
@@ -256,6 +282,9 @@ def natures(
         return CacheableResourceList(
             Nature, pagination, "https://pokeapi.co/api/v2/nature/"
         )
+
+    if url is not None:
+        return CacheableResource(Nature, ResourceIdentifier("url", url), url)
     raise ValueError("this exception should be impossible")
 
 
@@ -264,6 +293,7 @@ def pokeathlon_stats(
     id: int | None = None,
     name: str | None = None,
     pagination: PaginationArguments | None = None,
+    url: str | None = None,
 ) -> CacheableResource[PokeathlonStat] | CacheableResourceList[PokeathlonStat]:
     """
     Pokeathlon Stats are different attributes of a Pokemon's performance in Pokeathlons. In Pokeathlons, competitions happen on different courses; one for each of the different Pokeathlon stats. See Bulbapedia for greater detail.
@@ -273,9 +303,10 @@ def pokeathlon_stats(
         id,
         name,
         pagination,
+        url,
     ):
         raise ValueError(
-            "Invalid arguments; exactly one of [id, name, pagination] must not be None"
+            "Invalid arguments; exactly one of [id, name, pagination, url] must not be None"
         )
 
     if id is not None:
@@ -296,6 +327,9 @@ def pokeathlon_stats(
         return CacheableResourceList(
             PokeathlonStat, pagination, "https://pokeapi.co/api/v2/pokeathlon-stat/"
         )
+
+    if url is not None:
+        return CacheableResource(PokeathlonStat, ResourceIdentifier("url", url), url)
     raise ValueError("this exception should be impossible")
 
 
@@ -304,6 +338,7 @@ def pokemon(
     id: int | None = None,
     name: str | None = None,
     pagination: PaginationArguments | None = None,
+    url: str | None = None,
 ) -> CacheableResource[Pokemon] | CacheableResourceList[Pokemon]:
     """
     Pokemon are the creatures that inhabit the world of the Pokemon games. They can be caught using Pokeballs and trained by battling with other Pokemon.  Each Pokemon belongs to a specific species but may take on a variant which makes it differ from other Pokemon of the same species, such as base stats, available abilities and typings. See Bulbapedia for greater detail.
@@ -313,9 +348,10 @@ def pokemon(
         id,
         name,
         pagination,
+        url,
     ):
         raise ValueError(
-            "Invalid arguments; exactly one of [id, name, pagination] must not be None"
+            "Invalid arguments; exactly one of [id, name, pagination, url] must not be None"
         )
 
     if id is not None:
@@ -336,6 +372,9 @@ def pokemon(
         return CacheableResourceList(
             Pokemon, pagination, "https://pokeapi.co/api/v2/pokemon/"
         )
+
+    if url is not None:
+        return CacheableResource(Pokemon, ResourceIdentifier("url", url), url)
     raise ValueError("this exception should be impossible")
 
 
@@ -344,6 +383,7 @@ def pokemon_location_areas(
     id: int | None = None,
     name: str | None = None,
     pagination: PaginationArguments | None = None,
+    url: str | None = None,
 ) -> CacheableResource[LocationAreaEncounter] | CacheableResourceList[
     LocationAreaEncounter
 ]:
@@ -355,9 +395,10 @@ def pokemon_location_areas(
         id,
         name,
         pagination,
+        url,
     ):
         raise ValueError(
-            "Invalid arguments; exactly one of [id, name, pagination] must not be None"
+            "Invalid arguments; exactly one of [id, name, pagination, url] must not be None"
         )
 
     if id is not None:
@@ -378,6 +419,11 @@ def pokemon_location_areas(
         return CacheableResourceList(
             LocationAreaEncounter, pagination, "https://pokeapi.co/api/v2/pokemon/"
         )
+
+    if url is not None:
+        return CacheableResource(
+            LocationAreaEncounter, ResourceIdentifier("url", url), url
+        )
     raise ValueError("this exception should be impossible")
 
 
@@ -386,6 +432,7 @@ def pokemon_colors(
     id: int | None = None,
     name: str | None = None,
     pagination: PaginationArguments | None = None,
+    url: str | None = None,
 ) -> CacheableResource[PokemonColor] | CacheableResourceList[PokemonColor]:
     """
     Colors used for sorting Pokemon in a Pokedex. The color listed in the Pokedex is usually the color most apparent or covering each Pokemon's body. No orange category exists; Pokemon that are primarily orange are listed as red or brown.
@@ -395,9 +442,10 @@ def pokemon_colors(
         id,
         name,
         pagination,
+        url,
     ):
         raise ValueError(
-            "Invalid arguments; exactly one of [id, name, pagination] must not be None"
+            "Invalid arguments; exactly one of [id, name, pagination, url] must not be None"
         )
 
     if id is not None:
@@ -418,6 +466,9 @@ def pokemon_colors(
         return CacheableResourceList(
             PokemonColor, pagination, "https://pokeapi.co/api/v2/pokemon-color/"
         )
+
+    if url is not None:
+        return CacheableResource(PokemonColor, ResourceIdentifier("url", url), url)
     raise ValueError("this exception should be impossible")
 
 
@@ -426,6 +477,7 @@ def pokemon_forms(
     id: int | None = None,
     name: str | None = None,
     pagination: PaginationArguments | None = None,
+    url: str | None = None,
 ) -> CacheableResource[PokemonForm] | CacheableResourceList[PokemonForm]:
     """
     Some Pokemon may appear in one of multiple, visually different forms. These differences are purely cosmetic. For variations within a Pokemon species, which do differ in more than just visuals, the 'Pokemon' entity is used to represent such a variety.
@@ -435,9 +487,10 @@ def pokemon_forms(
         id,
         name,
         pagination,
+        url,
     ):
         raise ValueError(
-            "Invalid arguments; exactly one of [id, name, pagination] must not be None"
+            "Invalid arguments; exactly one of [id, name, pagination, url] must not be None"
         )
 
     if id is not None:
@@ -458,6 +511,9 @@ def pokemon_forms(
         return CacheableResourceList(
             PokemonForm, pagination, "https://pokeapi.co/api/v2/pokemon-form/"
         )
+
+    if url is not None:
+        return CacheableResource(PokemonForm, ResourceIdentifier("url", url), url)
     raise ValueError("this exception should be impossible")
 
 
@@ -466,6 +522,7 @@ def pokemon_habitats(
     id: int | None = None,
     name: str | None = None,
     pagination: PaginationArguments | None = None,
+    url: str | None = None,
 ) -> CacheableResource[PokemonHabitat] | CacheableResourceList[PokemonHabitat]:
     """
     Habitats are generally different terrain Pokemon can be found in but can also be areas designated for rare or legendary Pokemon.
@@ -475,9 +532,10 @@ def pokemon_habitats(
         id,
         name,
         pagination,
+        url,
     ):
         raise ValueError(
-            "Invalid arguments; exactly one of [id, name, pagination] must not be None"
+            "Invalid arguments; exactly one of [id, name, pagination, url] must not be None"
         )
 
     if id is not None:
@@ -498,6 +556,9 @@ def pokemon_habitats(
         return CacheableResourceList(
             PokemonHabitat, pagination, "https://pokeapi.co/api/v2/pokemon-habitat/"
         )
+
+    if url is not None:
+        return CacheableResource(PokemonHabitat, ResourceIdentifier("url", url), url)
     raise ValueError("this exception should be impossible")
 
 
@@ -506,6 +567,7 @@ def pokemon_shapes(
     id: int | None = None,
     name: str | None = None,
     pagination: PaginationArguments | None = None,
+    url: str | None = None,
 ) -> CacheableResource[PokemonShape] | CacheableResourceList[PokemonShape]:
     """
     Shapes used for sorting Pokemon in a Pokedex.
@@ -515,9 +577,10 @@ def pokemon_shapes(
         id,
         name,
         pagination,
+        url,
     ):
         raise ValueError(
-            "Invalid arguments; exactly one of [id, name, pagination] must not be None"
+            "Invalid arguments; exactly one of [id, name, pagination, url] must not be None"
         )
 
     if id is not None:
@@ -538,6 +601,9 @@ def pokemon_shapes(
         return CacheableResourceList(
             PokemonShape, pagination, "https://pokeapi.co/api/v2/pokemon-shape/"
         )
+
+    if url is not None:
+        return CacheableResource(PokemonShape, ResourceIdentifier("url", url), url)
     raise ValueError("this exception should be impossible")
 
 
@@ -546,6 +612,7 @@ def pokemon_species(
     id: int | None = None,
     name: str | None = None,
     pagination: PaginationArguments | None = None,
+    url: str | None = None,
 ) -> CacheableResource[PokemonSpecies] | CacheableResourceList[PokemonSpecies]:
     """
     A Pokemon Species forms the basis for at least one Pokemon. Attributes of a Pokemon species are shared across all varieties of Pokemon within the species. A good example is Wormadam; Wormadam is the species which can be found in three different varieties, Wormadam-Trash, Wormadam-Sandy and Wormadam-Plant.
@@ -555,9 +622,10 @@ def pokemon_species(
         id,
         name,
         pagination,
+        url,
     ):
         raise ValueError(
-            "Invalid arguments; exactly one of [id, name, pagination] must not be None"
+            "Invalid arguments; exactly one of [id, name, pagination, url] must not be None"
         )
 
     if id is not None:
@@ -578,6 +646,9 @@ def pokemon_species(
         return CacheableResourceList(
             PokemonSpecies, pagination, "https://pokeapi.co/api/v2/pokemon-species/"
         )
+
+    if url is not None:
+        return CacheableResource(PokemonSpecies, ResourceIdentifier("url", url), url)
     raise ValueError("this exception should be impossible")
 
 
@@ -586,6 +657,7 @@ def stats(
     id: int | None = None,
     name: str | None = None,
     pagination: PaginationArguments | None = None,
+    url: str | None = None,
 ) -> CacheableResource[Stat] | CacheableResourceList[Stat]:
     """
     Stats determine certain aspects of battles. Each Pokemon has a value for each stat which grows as they gain levels and can be altered momentarily by effects in battles.
@@ -595,9 +667,10 @@ def stats(
         id,
         name,
         pagination,
+        url,
     ):
         raise ValueError(
-            "Invalid arguments; exactly one of [id, name, pagination] must not be None"
+            "Invalid arguments; exactly one of [id, name, pagination, url] must not be None"
         )
 
     if id is not None:
@@ -616,6 +689,9 @@ def stats(
         return CacheableResourceList(
             Stat, pagination, "https://pokeapi.co/api/v2/stat/"
         )
+
+    if url is not None:
+        return CacheableResource(Stat, ResourceIdentifier("url", url), url)
     raise ValueError("this exception should be impossible")
 
 
@@ -624,6 +700,7 @@ def types(
     id: int | None = None,
     name: str | None = None,
     pagination: PaginationArguments | None = None,
+    url: str | None = None,
 ) -> CacheableResource[Type] | CacheableResourceList[Type]:
     """
     Types are properties for Pokemon and their moves. Each type has three properties: which types of Pokemon it is super effective against, which types of Pokemon it is not very effective against, and which types of Pokemon it is completely ineffective against.
@@ -633,9 +710,10 @@ def types(
         id,
         name,
         pagination,
+        url,
     ):
         raise ValueError(
-            "Invalid arguments; exactly one of [id, name, pagination] must not be None"
+            "Invalid arguments; exactly one of [id, name, pagination, url] must not be None"
         )
 
     if id is not None:
@@ -654,6 +732,9 @@ def types(
         return CacheableResourceList(
             Type, pagination, "https://pokeapi.co/api/v2/type/"
         )
+
+    if url is not None:
+        return CacheableResource(Type, ResourceIdentifier("url", url), url)
     raise ValueError("this exception should be impossible")
 
 

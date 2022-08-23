@@ -30,6 +30,7 @@ def item(
     id: int | None = None,
     name: str | None = None,
     pagination: PaginationArguments | None = None,
+    url: str | None = None,
 ) -> CacheableResource[Item] | CacheableResourceList[Item]:
     """
     An item is an object in the games which the player can pick up, keep in their bag, and use in some manner. They have various uses, including healing, powering up, helping catch Pokemon, or to access a new area.
@@ -39,9 +40,10 @@ def item(
         id,
         name,
         pagination,
+        url,
     ):
         raise ValueError(
-            "Invalid arguments; exactly one of [id, name, pagination] must not be None"
+            "Invalid arguments; exactly one of [id, name, pagination, url] must not be None"
         )
 
     if id is not None:
@@ -60,6 +62,9 @@ def item(
         return CacheableResourceList(
             Item, pagination, "https://pokeapi.co/api/v2/item/"
         )
+
+    if url is not None:
+        return CacheableResource(Item, ResourceIdentifier("url", url), url)
     raise ValueError("this exception should be impossible")
 
 
@@ -68,6 +73,7 @@ def item_attributes(
     id: int | None = None,
     name: str | None = None,
     pagination: PaginationArguments | None = None,
+    url: str | None = None,
 ) -> CacheableResource[ItemAttribute] | CacheableResourceList[ItemAttribute]:
     """
     Item attributes define particular aspects of items, e.g. "usable in battle" or "consumable".
@@ -77,9 +83,10 @@ def item_attributes(
         id,
         name,
         pagination,
+        url,
     ):
         raise ValueError(
-            "Invalid arguments; exactly one of [id, name, pagination] must not be None"
+            "Invalid arguments; exactly one of [id, name, pagination, url] must not be None"
         )
 
     if id is not None:
@@ -100,6 +107,9 @@ def item_attributes(
         return CacheableResourceList(
             ItemAttribute, pagination, "https://pokeapi.co/api/v2/item-attribute/"
         )
+
+    if url is not None:
+        return CacheableResource(ItemAttribute, ResourceIdentifier("url", url), url)
     raise ValueError("this exception should be impossible")
 
 
@@ -108,6 +118,7 @@ def item_categories(
     id: int | None = None,
     name: str | None = None,
     pagination: PaginationArguments | None = None,
+    url: str | None = None,
 ) -> CacheableResource[ItemCategory] | CacheableResourceList[ItemCategory]:
     """
     Item categories determine where items will be placed in the players bag.
@@ -117,9 +128,10 @@ def item_categories(
         id,
         name,
         pagination,
+        url,
     ):
         raise ValueError(
-            "Invalid arguments; exactly one of [id, name, pagination] must not be None"
+            "Invalid arguments; exactly one of [id, name, pagination, url] must not be None"
         )
 
     if id is not None:
@@ -140,6 +152,9 @@ def item_categories(
         return CacheableResourceList(
             ItemCategory, pagination, "https://pokeapi.co/api/v2/item-category/"
         )
+
+    if url is not None:
+        return CacheableResource(ItemCategory, ResourceIdentifier("url", url), url)
     raise ValueError("this exception should be impossible")
 
 
@@ -148,6 +163,7 @@ def item_fling_effects(
     id: int | None = None,
     name: str | None = None,
     pagination: PaginationArguments | None = None,
+    url: str | None = None,
 ) -> CacheableResource[ItemFlingEffect] | CacheableResourceList[ItemFlingEffect]:
     """
     The various effects of the move "Fling" when used with different items.
@@ -157,9 +173,10 @@ def item_fling_effects(
         id,
         name,
         pagination,
+        url,
     ):
         raise ValueError(
-            "Invalid arguments; exactly one of [id, name, pagination] must not be None"
+            "Invalid arguments; exactly one of [id, name, pagination, url] must not be None"
         )
 
     if id is not None:
@@ -180,6 +197,9 @@ def item_fling_effects(
         return CacheableResourceList(
             ItemFlingEffect, pagination, "https://pokeapi.co/api/v2/item-fling-effect/"
         )
+
+    if url is not None:
+        return CacheableResource(ItemFlingEffect, ResourceIdentifier("url", url), url)
     raise ValueError("this exception should be impossible")
 
 
@@ -188,6 +208,7 @@ def item_pockets(
     id: int | None = None,
     name: str | None = None,
     pagination: PaginationArguments | None = None,
+    url: str | None = None,
 ) -> CacheableResource[ItemPocket] | CacheableResourceList[ItemPocket]:
     """
     Pockets within the players bag used for storing items by category.
@@ -197,9 +218,10 @@ def item_pockets(
         id,
         name,
         pagination,
+        url,
     ):
         raise ValueError(
-            "Invalid arguments; exactly one of [id, name, pagination] must not be None"
+            "Invalid arguments; exactly one of [id, name, pagination, url] must not be None"
         )
 
     if id is not None:
@@ -220,6 +242,9 @@ def item_pockets(
         return CacheableResourceList(
             ItemPocket, pagination, "https://pokeapi.co/api/v2/item-pocket/"
         )
+
+    if url is not None:
+        return CacheableResource(ItemPocket, ResourceIdentifier("url", url), url)
     raise ValueError("this exception should be impossible")
 
 

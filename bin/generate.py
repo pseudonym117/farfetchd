@@ -56,6 +56,20 @@ async def main(output_dir: str):
 async def write_models(
     env: jinja2.Environment, output_dir: str, section_types: Dict[str, List[TypeInfo]]
 ):
+    # move generic models into separate file
+    assert "generic" not in section_types
+
+    generic_section_types = []
+    for types in section_types.values():
+        to_move = []
+        for type in types:
+            if type.is_generic():
+                to_move.append(type)
+        for type in to_move:
+            types.remove(type)
+        generic_section_types.extend(to_move)
+    section_types["generic"] = generic_section_types
+
     type_to_section_name = {}
     for section, types in section_types.items():
         for type in types:
@@ -65,6 +79,9 @@ async def write_models(
     os.makedirs(output_dir, exist_ok=True)
     with open(f"{output_dir}/__init__.py", "w+") as init_py:
         for section, types in section_types.items():
+            if not types:
+                continue
+
             required_types = set()
             for type in types:
                 for imp in type.extra_type_imports():
@@ -103,9 +120,9 @@ async def write_models(
             with open(f"{output_dir}/{section}.py", "w+") as f:
                 f.write(blacked)
 
-            init_py.write(
-                f"from .{section} import {', '.join(sorted([model.name for model in types]))}\n"
-            )
+            # init_py.write(
+            #     f"from .{section} import {', '.join(sorted([model.name for model in types]))}\n"
+            # )
 
 
 async def write_defs(
@@ -244,7 +261,6 @@ class PropertyType:
 generic_types = {
     "NamedAPIResource",
     "APIResource",
-    "TypeRelationsPast",
     # todo: handle adding generic type to this type in APIs
     "NamedAPIResourceList",
 }

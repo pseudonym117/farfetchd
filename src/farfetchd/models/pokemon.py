@@ -9,12 +9,8 @@ Generation script is located @ //farfetchd/bin/generate.py
 from __future__ import annotations
 from dataclasses import dataclass
 
+
 from ..base import Model
-
-
-from typing import Generic, Type, TypeVar
-
-T = TypeVar("T")
 
 
 @dataclass
@@ -624,14 +620,11 @@ class TypeRelations(Model["TypeRelations"]):
 
 
 @dataclass
-class TypeRelationsPast(Generic[T]):
+class TypeRelationsPast(Model["TypeRelationsPast"]):
     # The last generation in which the referenced type had the listed damage relations
     generation: NamedAPIResource[Generation]
     # The damage relations the referenced type had up to and including the listed generation
     damage_relations: TypeRelations
-
-    # The type that this TypeRelationsPast resolves to
-    type: Type[T] | None = None
 
 
 # import all type hints at of file to ensure no circular reference issues
@@ -655,6 +648,11 @@ from .games import (
     VersionGroup,
 )
 
+from .generic import (
+    APIResource,
+    NamedAPIResource,
+)
+
 from .items import (
     Item,
 )
@@ -672,14 +670,12 @@ from .moves import (
 )
 
 from .utility import (
-    APIResource,
     Description,
     Effect,
     FlavorText,
     GenerationGameIndex,
     Language,
     Name,
-    NamedAPIResource,
     VerboseEffect,
     VersionEncounterDetail,
     VersionGameIndex,

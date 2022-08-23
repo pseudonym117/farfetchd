@@ -26,6 +26,7 @@ def languages(
     id: int | None = None,
     name: str | None = None,
     pagination: PaginationArguments | None = None,
+    url: str | None = None,
 ) -> CacheableResource[Language] | CacheableResourceList[Language]:
     """
     Languages for translations of API resource information.
@@ -35,9 +36,10 @@ def languages(
         id,
         name,
         pagination,
+        url,
     ):
         raise ValueError(
-            "Invalid arguments; exactly one of [id, name, pagination] must not be None"
+            "Invalid arguments; exactly one of [id, name, pagination, url] must not be None"
         )
 
     if id is not None:
@@ -58,6 +60,9 @@ def languages(
         return CacheableResourceList(
             Language, pagination, "https://pokeapi.co/api/v2/language/"
         )
+
+    if url is not None:
+        return CacheableResource(Language, ResourceIdentifier("url", url), url)
     raise ValueError("this exception should be impossible")
 
 

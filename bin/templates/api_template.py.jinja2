@@ -13,6 +13,7 @@ def {{ endpoint.name }}(
         {{ name }}: {{ type }} | None = None,
     {% endfor %}
         pagination: PaginationArguments | None = None,
+        url: str | None = None,
 ) -> CacheableResource[{{ endpoint.response_typename }}] | CacheableResourceList[{{ endpoint.response_typename }}]:
     """
     {{ endpoint.description.strip() }}
@@ -23,9 +24,10 @@ def {{ endpoint.name }}(
             {{ arg_name }},
         {% endfor %}
             pagination,
+            url,
     ):
         raise ValueError(
-            'Invalid arguments; exactly one of [{% for arg_name, _ in endpoint.args() %}{{ arg_name }}, {% endfor %}pagination] must not be None'
+            'Invalid arguments; exactly one of [{% for arg_name, _ in endpoint.args() %}{{ arg_name }}, {% endfor %}pagination, url] must not be None'
         )
     {% endif %}
     {% for arg_name, _ in endpoint.args() %}
@@ -34,6 +36,9 @@ def {{ endpoint.name }}(
     {% endfor %}
     if pagination is not None:
         return CacheableResourceList({{ endpoint.response_typename }}, pagination, "{{ endpoint.url_without_args() }}")
+
+    if url is not None:
+        return CacheableResource({{ endpoint.response_typename }}, ResourceIdentifier("url", url), url)
     raise ValueError("this exception should be impossible")
 {% endfor %}
 

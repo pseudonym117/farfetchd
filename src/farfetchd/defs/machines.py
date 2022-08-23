@@ -25,6 +25,7 @@ from ..models.machines import (
 def machines(
     id: int | None = None,
     pagination: PaginationArguments | None = None,
+    url: str | None = None,
 ) -> CacheableResource[Machine] | CacheableResourceList[Machine]:
     """
     Machines are the representation of items that teach moves to Pokemon. They vary from version to version, so it is not certain that one specific TM or HM corresponds to a single Machine.
@@ -41,6 +42,9 @@ def machines(
         return CacheableResourceList(
             Machine, pagination, "https://pokeapi.co/api/v2/machine/"
         )
+
+    if url is not None:
+        return CacheableResource(Machine, ResourceIdentifier("url", url), url)
     raise ValueError("this exception should be impossible")
 
 

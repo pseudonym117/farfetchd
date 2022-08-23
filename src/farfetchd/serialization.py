@@ -5,6 +5,8 @@ from pydoc import locate
 
 from typing import Any, Dict, TypeVar, Type
 
+from .decorators import memoize
+
 
 T = TypeVar("T")
 
@@ -41,7 +43,7 @@ class DataclassDeserializer(Deserializer):
         fields = dataclasses.fields(model_type)
         for field in fields:
             if field.name in values:
-                parsed = self._parse_generic_type_hint(field.type)
+                parsed = DataclassDeserializer._parse_generic_type_hint(field.type)
                 if parsed.type in self._primatives:
                     transformed[field.name] = values[field.name]
                     continue
@@ -76,7 +78,9 @@ class DataclassDeserializer(Deserializer):
 
         return model_type(**transformed)
 
-    def _parse_generic_type_hint(self, type_hint: str) -> TypeHint:
+    @staticmethod
+    @memoize
+    def _parse_generic_type_hint(type_hint: str) -> TypeHint:
         # todo: does NOT work with multi-type generics
         hint_stack = collections.deque()
 
@@ -98,6 +102,8 @@ class DataclassDeserializer(Deserializer):
             builtin_type = locate(t)
             if builtin_type:
                 t = builtin_type
+            elif t == "List":
+                t = list
             else:
                 from . import models
 
@@ -105,18 +111,29 @@ class DataclassDeserializer(Deserializer):
                 if model_type:
                     t = model_type
                 else:
-                    from . import resources
+                    submodules = [sub for sub in dir(models) if not sub.startswith("_")]
 
-                    cache_type = locate(f"{resources.__name__}.{t}")
-                    if cache_type:
-                        t = cache_type
+                    found = None
+                    for sub in submodules:
+                        model_type = locate(f"{models.__name__}.{sub}.{t}")
+                        if model_type:
+                            found = model_type
+                            break
+                    if found:
+                        t = found
                     else:
-                        lowered_t = t.lower()
-                        builtin_type = locate(lowered_t)
-                        if builtin_type:
-                            t = builtin_type
+                        from . import resources
+
+                        cache_type = locate(f"{resources.__name__}.{t}")
+                        if cache_type:
+                            t = cache_type
                         else:
-                            raise ValueError(f'could not locate type "{t}"')
+                            lowered_t = t.lower()
+                            builtin_type = locate(lowered_t)
+                            if builtin_type:
+                                t = builtin_type
+                            else:
+                                raise ValueError(f'could not locate type "{t}"')
 
             hint = TypeHint(t, hint)
 

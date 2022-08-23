@@ -9,16 +9,8 @@ Generation script is located @ //farfetchd/bin/generate.py
 from __future__ import annotations
 from dataclasses import dataclass
 
+
 from ..base import Model
-
-
-from .._farfetchd import Farfetchd
-from ..resources import CacheableResource, ResourceIdentifier
-
-
-from typing import Generic, Type, TypeVar
-
-T = TypeVar("T")
 
 
 @dataclass
@@ -35,21 +27,6 @@ class Language(Model["Language"]):
     iso3166: str
     # The name of this resource listed in different languages.
     names: List[Name]
-
-
-@dataclass
-class APIResource(Generic[T]):
-    # The URL of the referenced resource.
-    url: str
-
-    # The type that this APIResource resolves to
-    type: Type[T] | None = None
-
-    async def resolve(self) -> T:
-        definition = CacheableResource(
-            self.type, ResourceIdentifier("url", self.url), self.url
-        )
-        return await Farfetchd.resolvers.resolve(definition)
 
 
 @dataclass
@@ -117,23 +94,6 @@ class Name(Model["Name"]):
 
 
 @dataclass
-class NamedAPIResource(Generic[T]):
-    # The name of the referenced resource.
-    name: str
-    # The URL of the referenced resource.
-    url: str
-
-    # The type that this NamedAPIResource resolves to
-    type: Type[T] | None = None
-
-    async def resolve(self) -> T:
-        definition = CacheableResource(
-            self.type, ResourceIdentifier("name", self.name), self.url
-        )
-        return await Farfetchd.resolvers.resolve(definition)
-
-
-@dataclass
 class VerboseEffect(Model["VerboseEffect"]):
     # The localized effect text for an API resource in a specific language.
     effect: str
@@ -186,4 +146,9 @@ from .games import (
     Generation,
     Version,
     VersionGroup,
+)
+
+from .generic import (
+    APIResource,
+    NamedAPIResource,
 )
