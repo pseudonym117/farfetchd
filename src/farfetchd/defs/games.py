@@ -29,6 +29,7 @@ def generations(
     id: int | None = None,
     name: str | None = None,
     pagination: PaginationArguments | None = None,
+    url: str | None = None,
 ) -> CacheableResource[Generation] | CacheableResourceList[Generation]:
     """
     A generation is a grouping of the Pokemon games that separates them based on the Pokemon they include. In each generation, a new set of Pokemon, Moves, Abilities and Types that did not exist in the previous generation are released.
@@ -38,9 +39,10 @@ def generations(
         id,
         name,
         pagination,
+        url,
     ):
         raise ValueError(
-            "Invalid arguments; exactly one of [id, name, pagination] must not be None"
+            "Invalid arguments; exactly one of [id, name, pagination, url] must not be None"
         )
 
     if id is not None:
@@ -61,6 +63,9 @@ def generations(
         return CacheableResourceList(
             Generation, pagination, "https://pokeapi.co/api/v2/generation/"
         )
+
+    if url is not None:
+        return CacheableResource(Generation, ResourceIdentifier("url", url), url)
     raise ValueError("this exception should be impossible")
 
 
@@ -69,6 +74,7 @@ def pokedexes(
     id: int | None = None,
     name: str | None = None,
     pagination: PaginationArguments | None = None,
+    url: str | None = None,
 ) -> CacheableResource[Pokedex] | CacheableResourceList[Pokedex]:
     """
     A Pokedex is a handheld electronic encyclopedia device; one which is capable of recording and retaining information of the various Pokemon in a given region with the exception of the national dex and some smaller dexes related to portions of a region. See Bulbapedia for greater detail.
@@ -78,9 +84,10 @@ def pokedexes(
         id,
         name,
         pagination,
+        url,
     ):
         raise ValueError(
-            "Invalid arguments; exactly one of [id, name, pagination] must not be None"
+            "Invalid arguments; exactly one of [id, name, pagination, url] must not be None"
         )
 
     if id is not None:
@@ -101,6 +108,9 @@ def pokedexes(
         return CacheableResourceList(
             Pokedex, pagination, "https://pokeapi.co/api/v2/pokedex/"
         )
+
+    if url is not None:
+        return CacheableResource(Pokedex, ResourceIdentifier("url", url), url)
     raise ValueError("this exception should be impossible")
 
 
@@ -109,6 +119,7 @@ def version(
     id: int | None = None,
     name: str | None = None,
     pagination: PaginationArguments | None = None,
+    url: str | None = None,
 ) -> CacheableResource[Version] | CacheableResourceList[Version]:
     """
     Versions of the games, e.g., Red, Blue or Yellow.
@@ -118,9 +129,10 @@ def version(
         id,
         name,
         pagination,
+        url,
     ):
         raise ValueError(
-            "Invalid arguments; exactly one of [id, name, pagination] must not be None"
+            "Invalid arguments; exactly one of [id, name, pagination, url] must not be None"
         )
 
     if id is not None:
@@ -141,6 +153,9 @@ def version(
         return CacheableResourceList(
             Version, pagination, "https://pokeapi.co/api/v2/version/"
         )
+
+    if url is not None:
+        return CacheableResource(Version, ResourceIdentifier("url", url), url)
     raise ValueError("this exception should be impossible")
 
 
@@ -149,6 +164,7 @@ def version_groups(
     id: int | None = None,
     name: str | None = None,
     pagination: PaginationArguments | None = None,
+    url: str | None = None,
 ) -> CacheableResource[VersionGroup] | CacheableResourceList[VersionGroup]:
     """
     Version groups categorize highly similar versions of the games.
@@ -158,9 +174,10 @@ def version_groups(
         id,
         name,
         pagination,
+        url,
     ):
         raise ValueError(
-            "Invalid arguments; exactly one of [id, name, pagination] must not be None"
+            "Invalid arguments; exactly one of [id, name, pagination, url] must not be None"
         )
 
     if id is not None:
@@ -181,6 +198,9 @@ def version_groups(
         return CacheableResourceList(
             VersionGroup, pagination, "https://pokeapi.co/api/v2/version-group/"
         )
+
+    if url is not None:
+        return CacheableResource(VersionGroup, ResourceIdentifier("url", url), url)
     raise ValueError("this exception should be impossible")
 
 

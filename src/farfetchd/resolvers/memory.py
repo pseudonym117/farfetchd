@@ -3,10 +3,12 @@ import logging
 import threading
 
 from datetime import datetime, timedelta
-from typing import Dict, Generic, List, Type, TypeVar
+from typing import Dict, Generic, List, Type, TypeVar, overload
+
 
 from .resolver import Resolver
 from ..base import Model
+from ..models.generic import NamedAPIResourceList
 from ..resources import CacheableResource, CacheableResourceList
 
 T = TypeVar("T")
@@ -37,12 +39,26 @@ class MemoryCacheResolver(Resolver):
         # type -> key-name -> key -> entry
         self._cache: Dict[Type, Dict[str, Dict[str, CacheEntry[Model]]]] = {}
 
+    @overload
+    async def resolve(self, to_resolve: CacheableResource[T]) -> T | None:
+        ...
+
+    @overload
+    async def resolve(
+        self, to_resolve: CacheableResourceList[T]
+    ) -> NamedAPIResourceList[T] | None:
+        ...
+
     async def resolve(
         self, to_resolve: CacheableResource[T] | CacheableResourceList[T]
-    ) -> T | List[T] | None:
+    ) -> T | NamedAPIResourceList[T] | None:
         obj_type = to_resolve.resource_type
         obj_cache = self._cache.get(obj_type)
         if obj_cache is None:
+            return None
+
+        if isinstance(to_resolve, CacheableResourceList):
+            # CacheableResourceList not supported currently
             return None
 
         resource_id = to_resolve.resource_id

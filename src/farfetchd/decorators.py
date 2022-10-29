@@ -1,5 +1,5 @@
 import functools
-from typing import Callable, ParamSpec, TypeVar, Type
+from typing import Callable, Dict, ParamSpec, TypeVar, Type
 
 from .resources import CacheableResource, CacheableResourceList
 from ._farfetchd import Farfetchd
@@ -20,3 +20,23 @@ def defines(type: Type[T]):
         return decorated
 
     return decorator
+
+
+def memoize(function: Callable[P, T]) -> Callable[P, T]:
+    # todo: allow multiple arguments
+    # todo: allow this to empty when memory is low
+    usage_cache: Dict[str, T] = {}
+
+    @functools.wraps(function)
+    def decorated(arg):
+        if arg in usage_cache:
+            return usage_cache[arg]
+        result = function(arg)
+
+        # do not memoize None
+        if result is not None:
+            usage_cache[arg] = result
+
+        return result
+
+    return decorated

@@ -28,6 +28,7 @@ def berries(
     id: int | None = None,
     name: str | None = None,
     pagination: PaginationArguments | None = None,
+    url: str | None = None,
 ) -> CacheableResource[Berry] | CacheableResourceList[Berry]:
     """
     Berries are small fruits that can provide HP and status condition restoration, stat enhancement, and even damage negation when eaten by Pokemon. Check out Bulbapedia for greater detail.
@@ -37,9 +38,10 @@ def berries(
         id,
         name,
         pagination,
+        url,
     ):
         raise ValueError(
-            "Invalid arguments; exactly one of [id, name, pagination] must not be None"
+            "Invalid arguments; exactly one of [id, name, pagination, url] must not be None"
         )
 
     if id is not None:
@@ -58,6 +60,9 @@ def berries(
         return CacheableResourceList(
             Berry, pagination, "https://pokeapi.co/api/v2/berry/"
         )
+
+    if url is not None:
+        return CacheableResource(Berry, ResourceIdentifier("url", url), url)
     raise ValueError("this exception should be impossible")
 
 
@@ -66,6 +71,7 @@ def berry_firmnesses(
     id: int | None = None,
     name: str | None = None,
     pagination: PaginationArguments | None = None,
+    url: str | None = None,
 ) -> CacheableResource[BerryFirmness] | CacheableResourceList[BerryFirmness]:
     """
     Berries can be soft or hard. Check out Bulbapedia for greater detail.
@@ -75,9 +81,10 @@ def berry_firmnesses(
         id,
         name,
         pagination,
+        url,
     ):
         raise ValueError(
-            "Invalid arguments; exactly one of [id, name, pagination] must not be None"
+            "Invalid arguments; exactly one of [id, name, pagination, url] must not be None"
         )
 
     if id is not None:
@@ -98,6 +105,9 @@ def berry_firmnesses(
         return CacheableResourceList(
             BerryFirmness, pagination, "https://pokeapi.co/api/v2/berry-firmness/"
         )
+
+    if url is not None:
+        return CacheableResource(BerryFirmness, ResourceIdentifier("url", url), url)
     raise ValueError("this exception should be impossible")
 
 
@@ -106,6 +116,7 @@ def berry_flavors(
     id: int | None = None,
     name: str | None = None,
     pagination: PaginationArguments | None = None,
+    url: str | None = None,
 ) -> CacheableResource[BerryFlavor] | CacheableResourceList[BerryFlavor]:
     """
     Flavors determine whether a Pokemon will benefit or suffer from eating a berry based on their nature. Check out Bulbapedia for greater detail.
@@ -115,9 +126,10 @@ def berry_flavors(
         id,
         name,
         pagination,
+        url,
     ):
         raise ValueError(
-            "Invalid arguments; exactly one of [id, name, pagination] must not be None"
+            "Invalid arguments; exactly one of [id, name, pagination, url] must not be None"
         )
 
     if id is not None:
@@ -138,6 +150,9 @@ def berry_flavors(
         return CacheableResourceList(
             BerryFlavor, pagination, "https://pokeapi.co/api/v2/berry-flavor/"
         )
+
+    if url is not None:
+        return CacheableResource(BerryFlavor, ResourceIdentifier("url", url), url)
     raise ValueError("this exception should be impossible")
 
 

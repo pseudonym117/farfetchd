@@ -9,6 +9,7 @@ Generation script is located @ //farfetchd/bin/generate.py
 from __future__ import annotations
 from dataclasses import dataclass
 
+
 from ..base import Model
 
 
@@ -54,7 +55,10 @@ from typing import (
     List,
 )
 
+from .generic import (
+    NamedAPIResource,
+)
+
 from .utility import (
     Name,
-    NamedAPIResource,
 )

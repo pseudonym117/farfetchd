@@ -2,8 +2,19 @@ import asyncio
 import collections
 import threading
 
-from typing import Callable, Deque, List, ParamSpec, Tuple, Type, TypeVar, TypedDict
+from typing import (
+    Callable,
+    Deque,
+    List,
+    ParamSpec,
+    Tuple,
+    Type,
+    TypeVar,
+    TypedDict,
+    overload,
+)
 
+from .models.generic import NamedAPIResourceList
 from .resolvers import Resolver
 from .resources import CacheableResource, CacheableResourceList
 
@@ -46,9 +57,19 @@ class ResolverRegistry:
             self._registry.append((priority, resolver))
             self._registry.sort(key=lambda kv: kv[0], reverse=True)
 
+    @overload
+    async def resolve(self, to_resolve: CacheableResource[T]) -> T | None:
+        ...
+
+    @overload
+    async def resolve(
+        self, to_resolve: CacheableResourceList[T]
+    ) -> NamedAPIResourceList[T] | None:
+        ...
+
     async def resolve(
         self, to_resolve: CacheableResource[T] | CacheableResourceList[T]
-    ) -> T | List[T] | None:
+    ) -> T | NamedAPIResourceList[T] | None:
         with self._registry_lock:
             resolvers = self._registry[:]
 

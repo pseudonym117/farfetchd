@@ -29,6 +29,7 @@ def locations(
     id: int | None = None,
     name: str | None = None,
     pagination: PaginationArguments | None = None,
+    url: str | None = None,
 ) -> CacheableResource[Location] | CacheableResourceList[Location]:
     """
     Locations that can be visited within the games. Locations make up sizable portions of regions, like cities or routes.
@@ -38,9 +39,10 @@ def locations(
         id,
         name,
         pagination,
+        url,
     ):
         raise ValueError(
-            "Invalid arguments; exactly one of [id, name, pagination] must not be None"
+            "Invalid arguments; exactly one of [id, name, pagination, url] must not be None"
         )
 
     if id is not None:
@@ -61,6 +63,9 @@ def locations(
         return CacheableResourceList(
             Location, pagination, "https://pokeapi.co/api/v2/location/"
         )
+
+    if url is not None:
+        return CacheableResource(Location, ResourceIdentifier("url", url), url)
     raise ValueError("this exception should be impossible")
 
 
@@ -69,6 +74,7 @@ def location_areas(
     id: int | None = None,
     name: str | None = None,
     pagination: PaginationArguments | None = None,
+    url: str | None = None,
 ) -> CacheableResource[LocationArea] | CacheableResourceList[LocationArea]:
     """
     Location areas are sections of areas, such as floors in a building or cave. Each area has its own set of possible Pokemon encounters.
@@ -78,9 +84,10 @@ def location_areas(
         id,
         name,
         pagination,
+        url,
     ):
         raise ValueError(
-            "Invalid arguments; exactly one of [id, name, pagination] must not be None"
+            "Invalid arguments; exactly one of [id, name, pagination, url] must not be None"
         )
 
     if id is not None:
@@ -101,6 +108,9 @@ def location_areas(
         return CacheableResourceList(
             LocationArea, pagination, "https://pokeapi.co/api/v2/location-area/"
         )
+
+    if url is not None:
+        return CacheableResource(LocationArea, ResourceIdentifier("url", url), url)
     raise ValueError("this exception should be impossible")
 
 
@@ -109,6 +119,7 @@ def pal_park_areas(
     id: int | None = None,
     name: str | None = None,
     pagination: PaginationArguments | None = None,
+    url: str | None = None,
 ) -> CacheableResource[PalParkArea] | CacheableResourceList[PalParkArea]:
     """
     Areas used for grouping Pokemon encounters in Pal Park. They're like habitats that are specific to Pal Park.
@@ -118,9 +129,10 @@ def pal_park_areas(
         id,
         name,
         pagination,
+        url,
     ):
         raise ValueError(
-            "Invalid arguments; exactly one of [id, name, pagination] must not be None"
+            "Invalid arguments; exactly one of [id, name, pagination, url] must not be None"
         )
 
     if id is not None:
@@ -141,6 +153,9 @@ def pal_park_areas(
         return CacheableResourceList(
             PalParkArea, pagination, "https://pokeapi.co/api/v2/pal-park-area/"
         )
+
+    if url is not None:
+        return CacheableResource(PalParkArea, ResourceIdentifier("url", url), url)
     raise ValueError("this exception should be impossible")
 
 
@@ -149,6 +164,7 @@ def regions(
     id: int | None = None,
     name: str | None = None,
     pagination: PaginationArguments | None = None,
+    url: str | None = None,
 ) -> CacheableResource[Region] | CacheableResourceList[Region]:
     """
     A region is an organized area of the Pokemon world. Most often, the main difference between regions is the species of Pokemon that can be encountered within them.
@@ -158,9 +174,10 @@ def regions(
         id,
         name,
         pagination,
+        url,
     ):
         raise ValueError(
-            "Invalid arguments; exactly one of [id, name, pagination] must not be None"
+            "Invalid arguments; exactly one of [id, name, pagination, url] must not be None"
         )
 
     if id is not None:
@@ -181,6 +198,9 @@ def regions(
         return CacheableResourceList(
             Region, pagination, "https://pokeapi.co/api/v2/region/"
         )
+
+    if url is not None:
+        return CacheableResource(Region, ResourceIdentifier("url", url), url)
     raise ValueError("this exception should be impossible")
 
 

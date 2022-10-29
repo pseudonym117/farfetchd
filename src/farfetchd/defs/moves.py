@@ -32,6 +32,7 @@ def moves(
     id: int | None = None,
     name: str | None = None,
     pagination: PaginationArguments | None = None,
+    url: str | None = None,
 ) -> CacheableResource[Move] | CacheableResourceList[Move]:
     """
     Moves are the skills of Pokemon in battle. In battle, a Pokemon uses one move each turn. Some moves (including those learned by Hidden Machine) can be used outside of battle as well, usually for the purpose of removing obstacles or exploring new areas.
@@ -41,9 +42,10 @@ def moves(
         id,
         name,
         pagination,
+        url,
     ):
         raise ValueError(
-            "Invalid arguments; exactly one of [id, name, pagination] must not be None"
+            "Invalid arguments; exactly one of [id, name, pagination, url] must not be None"
         )
 
     if id is not None:
@@ -62,6 +64,9 @@ def moves(
         return CacheableResourceList(
             Move, pagination, "https://pokeapi.co/api/v2/move/"
         )
+
+    if url is not None:
+        return CacheableResource(Move, ResourceIdentifier("url", url), url)
     raise ValueError("this exception should be impossible")
 
 
@@ -70,6 +75,7 @@ def move_ailments(
     id: int | None = None,
     name: str | None = None,
     pagination: PaginationArguments | None = None,
+    url: str | None = None,
 ) -> CacheableResource[MoveAilment] | CacheableResourceList[MoveAilment]:
     """
     Move Ailments are status conditions caused by moves used during battle. See Bulbapedia for greater detail.
@@ -79,9 +85,10 @@ def move_ailments(
         id,
         name,
         pagination,
+        url,
     ):
         raise ValueError(
-            "Invalid arguments; exactly one of [id, name, pagination] must not be None"
+            "Invalid arguments; exactly one of [id, name, pagination, url] must not be None"
         )
 
     if id is not None:
@@ -102,6 +109,9 @@ def move_ailments(
         return CacheableResourceList(
             MoveAilment, pagination, "https://pokeapi.co/api/v2/move-ailment/"
         )
+
+    if url is not None:
+        return CacheableResource(MoveAilment, ResourceIdentifier("url", url), url)
     raise ValueError("this exception should be impossible")
 
 
@@ -110,6 +120,7 @@ def move_battle_styles(
     id: int | None = None,
     name: str | None = None,
     pagination: PaginationArguments | None = None,
+    url: str | None = None,
 ) -> CacheableResource[MoveBattleStyle] | CacheableResourceList[MoveBattleStyle]:
     """
     Styles of moves when used in the Battle Palace. See Bulbapedia for greater detail.
@@ -119,9 +130,10 @@ def move_battle_styles(
         id,
         name,
         pagination,
+        url,
     ):
         raise ValueError(
-            "Invalid arguments; exactly one of [id, name, pagination] must not be None"
+            "Invalid arguments; exactly one of [id, name, pagination, url] must not be None"
         )
 
     if id is not None:
@@ -142,6 +154,9 @@ def move_battle_styles(
         return CacheableResourceList(
             MoveBattleStyle, pagination, "https://pokeapi.co/api/v2/move-battle-style/"
         )
+
+    if url is not None:
+        return CacheableResource(MoveBattleStyle, ResourceIdentifier("url", url), url)
     raise ValueError("this exception should be impossible")
 
 
@@ -150,6 +165,7 @@ def move_categories(
     id: int | None = None,
     name: str | None = None,
     pagination: PaginationArguments | None = None,
+    url: str | None = None,
 ) -> CacheableResource[MoveCategory] | CacheableResourceList[MoveCategory]:
     """
     Very general categories that loosely group move effects.
@@ -159,9 +175,10 @@ def move_categories(
         id,
         name,
         pagination,
+        url,
     ):
         raise ValueError(
-            "Invalid arguments; exactly one of [id, name, pagination] must not be None"
+            "Invalid arguments; exactly one of [id, name, pagination, url] must not be None"
         )
 
     if id is not None:
@@ -182,6 +199,9 @@ def move_categories(
         return CacheableResourceList(
             MoveCategory, pagination, "https://pokeapi.co/api/v2/move-category/"
         )
+
+    if url is not None:
+        return CacheableResource(MoveCategory, ResourceIdentifier("url", url), url)
     raise ValueError("this exception should be impossible")
 
 
@@ -190,6 +210,7 @@ def move_damage_classes(
     id: int | None = None,
     name: str | None = None,
     pagination: PaginationArguments | None = None,
+    url: str | None = None,
 ) -> CacheableResource[MoveDamageClass] | CacheableResourceList[MoveDamageClass]:
     """
     Damage classes moves can have, e.g. physical, special, or non-damaging.
@@ -199,9 +220,10 @@ def move_damage_classes(
         id,
         name,
         pagination,
+        url,
     ):
         raise ValueError(
-            "Invalid arguments; exactly one of [id, name, pagination] must not be None"
+            "Invalid arguments; exactly one of [id, name, pagination, url] must not be None"
         )
 
     if id is not None:
@@ -222,6 +244,9 @@ def move_damage_classes(
         return CacheableResourceList(
             MoveDamageClass, pagination, "https://pokeapi.co/api/v2/move-damage-class/"
         )
+
+    if url is not None:
+        return CacheableResource(MoveDamageClass, ResourceIdentifier("url", url), url)
     raise ValueError("this exception should be impossible")
 
 
@@ -230,6 +255,7 @@ def move_learn_methods(
     id: int | None = None,
     name: str | None = None,
     pagination: PaginationArguments | None = None,
+    url: str | None = None,
 ) -> CacheableResource[MoveLearnMethod] | CacheableResourceList[MoveLearnMethod]:
     """
     Methods by which Pokemon can learn moves.
@@ -239,9 +265,10 @@ def move_learn_methods(
         id,
         name,
         pagination,
+        url,
     ):
         raise ValueError(
-            "Invalid arguments; exactly one of [id, name, pagination] must not be None"
+            "Invalid arguments; exactly one of [id, name, pagination, url] must not be None"
         )
 
     if id is not None:
@@ -262,6 +289,9 @@ def move_learn_methods(
         return CacheableResourceList(
             MoveLearnMethod, pagination, "https://pokeapi.co/api/v2/move-learn-method/"
         )
+
+    if url is not None:
+        return CacheableResource(MoveLearnMethod, ResourceIdentifier("url", url), url)
     raise ValueError("this exception should be impossible")
 
 
@@ -270,6 +300,7 @@ def move_targets(
     id: int | None = None,
     name: str | None = None,
     pagination: PaginationArguments | None = None,
+    url: str | None = None,
 ) -> CacheableResource[MoveTarget] | CacheableResourceList[MoveTarget]:
     """
     Targets moves can be directed at during battle. Targets can be Pokemon, environments or even other moves.
@@ -279,9 +310,10 @@ def move_targets(
         id,
         name,
         pagination,
+        url,
     ):
         raise ValueError(
-            "Invalid arguments; exactly one of [id, name, pagination] must not be None"
+            "Invalid arguments; exactly one of [id, name, pagination, url] must not be None"
         )
 
     if id is not None:
@@ -302,6 +334,9 @@ def move_targets(
         return CacheableResourceList(
             MoveTarget, pagination, "https://pokeapi.co/api/v2/move-target/"
         )
+
+    if url is not None:
+        return CacheableResource(MoveTarget, ResourceIdentifier("url", url), url)
     raise ValueError("this exception should be impossible")
 
 

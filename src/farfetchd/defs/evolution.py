@@ -26,6 +26,7 @@ from ..models.evolution import (
 def evolution_chains(
     id: int | None = None,
     pagination: PaginationArguments | None = None,
+    url: str | None = None,
 ) -> CacheableResource[EvolutionChain] | CacheableResourceList[EvolutionChain]:
     """
     Evolution chains are essentially family trees. They start with the lowest stage within a family and detail evolution conditions for each as well as Pokemon they can evolve into up through the hierarchy.
@@ -42,6 +43,9 @@ def evolution_chains(
         return CacheableResourceList(
             EvolutionChain, pagination, "https://pokeapi.co/api/v2/evolution-chain/"
         )
+
+    if url is not None:
+        return CacheableResource(EvolutionChain, ResourceIdentifier("url", url), url)
     raise ValueError("this exception should be impossible")
 
 
@@ -50,6 +54,7 @@ def evolution_triggers(
     id: int | None = None,
     name: str | None = None,
     pagination: PaginationArguments | None = None,
+    url: str | None = None,
 ) -> CacheableResource[EvolutionTrigger] | CacheableResourceList[EvolutionTrigger]:
     """
     Evolution triggers are the events and conditions that cause a Pokemon to evolve. Check out Bulbapedia for greater detail.
@@ -59,9 +64,10 @@ def evolution_triggers(
         id,
         name,
         pagination,
+        url,
     ):
         raise ValueError(
-            "Invalid arguments; exactly one of [id, name, pagination] must not be None"
+            "Invalid arguments; exactly one of [id, name, pagination, url] must not be None"
         )
 
     if id is not None:
@@ -82,6 +88,9 @@ def evolution_triggers(
         return CacheableResourceList(
             EvolutionTrigger, pagination, "https://pokeapi.co/api/v2/evolution-trigger/"
         )
+
+    if url is not None:
+        return CacheableResource(EvolutionTrigger, ResourceIdentifier("url", url), url)
     raise ValueError("this exception should be impossible")
 
 

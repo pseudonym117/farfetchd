@@ -6,8 +6,8 @@ T = TypeVar("T")
 
 @dataclass
 class PaginationArguments:
-    limit: int
-    offset: int
+    limit: int | None = None
+    offset: int | None = None
 
 
 @dataclass
