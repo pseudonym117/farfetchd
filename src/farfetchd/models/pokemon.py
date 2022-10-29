@@ -453,7 +453,7 @@ class PokemonSpecies(Model["PokemonSpecies"]):
     is_legendary: bool
     # Whether or not this is a mythical Pokemon.
     is_mythical: bool
-    # Initial hatch counter: one must walk 255 × (hatch_counter + 1) steps before this Pokemon's egg hatches, unless utilizing bonuses like Flame Body's.
+    # Initial hatch counter: one must walk 255 Ã— (hatch_counter + 1) steps before this Pokemon's egg hatches, unless utilizing bonuses like Flame Body's.
     hatch_counter: int
     # Whether or not this Pokemon has visual gender differences.
     has_gender_differences: bool

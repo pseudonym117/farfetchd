@@ -87,8 +87,8 @@ class DataclassDeserializer(Deserializer):
         current = type_hint
         generic_index = current.find("[")
         while generic_index != -1:
-            t = current[:generic_index]
-            hint_stack.append(t)
+            type_name = current[:generic_index]
+            hint_stack.append(type_name)
             # remove ']' as well - this does not work with multipart generics
             current = current[generic_index + 1 : -1]
             generic_index = current.find("[")
@@ -97,44 +97,49 @@ class DataclassDeserializer(Deserializer):
 
         hint = None
         while hint_stack:
-            t = hint_stack.pop()
+            type_name = hint_stack.pop()
 
-            builtin_type = locate(t)
+            builtin_type = locate(type_name)
             if builtin_type:
-                t = builtin_type
-            elif t == "List":
-                t = list
+                type_name = builtin_type
+            elif type_name == "List":
+                type_name = list
             else:
-                from . import models
+                # import needs to be done here in order to avoid circular dependencies
+                from . import models  # pylint: disable=import-outside-toplevel
 
-                model_type = locate(f"{models.__name__}.{t}")
+                model_type = locate(f"{models.__name__}.{type_name}")
                 if model_type:
-                    t = model_type
+                    type_name = model_type
                 else:
                     submodules = [sub for sub in dir(models) if not sub.startswith("_")]
 
                     found = None
                     for sub in submodules:
-                        model_type = locate(f"{models.__name__}.{sub}.{t}")
+                        model_type = locate(f"{models.__name__}.{sub}.{type_name}")
                         if model_type:
                             found = model_type
                             break
                     if found:
-                        t = found
+                        type_name = found
                     else:
-                        from . import resources
+                        # import needs to be done here in order to avoid
+                        # circular dependencies
+                        from . import (  # pylint: disable=import-outside-toplevel
+                            resources,
+                        )
 
-                        cache_type = locate(f"{resources.__name__}.{t}")
+                        cache_type = locate(f"{resources.__name__}.{type_name}")
                         if cache_type:
-                            t = cache_type
+                            type_name = cache_type
                         else:
-                            lowered_t = t.lower()
+                            lowered_t = type_name.lower()
                             builtin_type = locate(lowered_t)
                             if builtin_type:
-                                t = builtin_type
+                                type_name = builtin_type
                             else:
-                                raise ValueError(f'could not locate type "{t}"')
+                                raise ValueError(f'could not locate type "{type_name}"')
 
-            hint = TypeHint(t, hint)
+            hint = TypeHint(type_name, hint)
 
         return hint

@@ -10,13 +10,13 @@ P = ParamSpec("P")
 CachedT = CacheableResource[T] | CacheableResourceList[T]
 
 
-def defines(type: Type[T]):
+def defines(defined_type: Type[T]):
     def decorator(function: Callable[P, CachedT]) -> Callable[P, CachedT]:
         @functools.wraps(function)
         def decorated(*args, **kwargs):
             return function(*args, **kwargs)
 
-        Farfetchd.definers.register(type, decorated)
+        Farfetchd.definers.register(defined_type, decorated)
         return decorated
 
     return decorator

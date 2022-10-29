@@ -1,5 +1,6 @@
-import aiohttp
 from threading import Lock
+
+import aiohttp
 
 from .registry import Registry, ResolverRegistry
 

@@ -29,19 +29,21 @@ class Registry:
 
     def register(
         self,
-        type: Type[T],
+        registered_type: Type[T],
         provider: Callable[P, CacheableResource[T] | CacheableResourceList[T]],
     ) -> None:
         with self._registry_lock:
-            if type in self._registry:
-                raise ValueError(f"provider for type {type} already registered")
-            self._registry[type] = provider
+            if registered_type in self._registry:
+                raise ValueError(
+                    f"provider for type {registered_type} already registered"
+                )
+            self._registry[registered_type] = provider
 
     def get(
-        self, type: Type[T]
+        self, type_to_get: Type[T]
     ) -> Callable[P, CacheableResource[T] | CacheableResourceList[T]] | None:
         with self._registry_lock:
-            return self._registry.get(type)
+            return self._registry.get(type_to_get)
 
 
 class ResolverRegistry:
