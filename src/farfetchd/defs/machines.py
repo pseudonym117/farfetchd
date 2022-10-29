@@ -5,8 +5,6 @@ Do not modify directly.
 
 Generation script is located @ //farfetchd/bin/generate.py
 """
-
-# todo: rename this file, or just move class
 from ..decorators import defines
 from ..resources import (
     CacheableResource,
@@ -23,12 +21,13 @@ from ..models.machines import (
 
 @defines(Machine)
 def machines(
-    id: int | None = None,
+    id: int | None = None,  # pylint: disable=invalid-name,redefined-builtin
     pagination: PaginationArguments | None = None,
     url: str | None = None,
 ) -> CacheableResource[Machine] | CacheableResourceList[Machine]:
     """
-    Machines are the representation of items that teach moves to Pokemon. They vary from version to version, so it is not certain that one specific TM or HM corresponds to a single Machine.
+    Machines are the representation of items that teach moves to Pokemon. They vary from
+    to version, so it is not certain that one specific TM or HM corresponds to a single
     """
 
     if id is not None:

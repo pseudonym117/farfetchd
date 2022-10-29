@@ -43,6 +43,7 @@ async def main(output_dir: str):
         autoescape=jinja2.select_autoescape(),
         enable_async=True,
     )
+    env.filters["formatted_py_comment"] = formatted_py_comment_filter
 
     print("writing models...")
     await write_models(env, f"{output_dir}/models", parser.section_types)
@@ -179,6 +180,41 @@ async def write_defs(
         init_py.write(blacked)
 
     # print(json.dumps(real_apis, indent=2, cls=DataclassJsonEncoder))
+
+
+def formatted_py_comment_filter(
+    value: str, prepend: str = "#", current_indent: int = 0, line_length: int = 88
+) -> str:
+    words = list(reversed(value.strip().split()))
+
+    max_length = line_length - current_indent
+
+    lines = []
+    cur_line = prepend
+    while words:
+        next_word = words.pop()
+        if len(cur_line) + len(next_word) + 1 > max_length:
+            if cur_line == prepend:
+                # if there is only 1 word on this line, there is no other option;
+                # we must exceed the max line length
+                cur_line += (" " if cur_line else "") + next_word
+            lines.append(cur_line)
+            cur_line = prepend
+        else:
+            cur_line += (" " if cur_line else "") + next_word
+    if cur_line != prepend:
+        lines.append(cur_line)
+
+    if not lines:
+        # seems almost impossible, but i may be missing something...
+        return ""
+    if len(lines) == 1:
+        return lines[0]
+    return (
+        lines[0]
+        + "\n"
+        + "\n".join([f"{' ' * current_indent}{line}" for line in lines[1:]])
+    )
 
 
 class DataclassJsonEncoder(json.JSONEncoder):

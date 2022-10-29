@@ -5,8 +5,6 @@ Do not modify directly.
 
 Generation script is located @ //farfetchd/bin/generate.py
 """
-
-# todo: rename this file, or just move class
 from ..decorators import defines
 from ..resources import (
     CacheableResource,
@@ -25,15 +23,15 @@ from ..models.berries import (
 
 @defines(Berry)
 def berries(
-    id: int | None = None,
+    id: int | None = None,  # pylint: disable=invalid-name,redefined-builtin
     name: str | None = None,
     pagination: PaginationArguments | None = None,
     url: str | None = None,
 ) -> CacheableResource[Berry] | CacheableResourceList[Berry]:
     """
-    Berries are small fruits that can provide HP and status condition restoration, stat enhancement, and even damage negation when eaten by Pokemon. Check out Bulbapedia for greater detail.
+    Berries are small fruits that can provide HP and status condition restoration, stat
+    and even damage negation when eaten by Pokemon. Check out Bulbapedia for greater
     """
-
     if not _exactly_one_non_none(
         id,
         name,
@@ -41,7 +39,8 @@ def berries(
         url,
     ):
         raise ValueError(
-            "Invalid arguments; exactly one of [id, name, pagination, url] must not be None"
+            "Invalid arguments; "
+            + "exactly one of [id, name, pagination, url] must not be None"
         )
 
     if id is not None:
@@ -68,7 +67,7 @@ def berries(
 
 @defines(BerryFirmness)
 def berry_firmnesses(
-    id: int | None = None,
+    id: int | None = None,  # pylint: disable=invalid-name,redefined-builtin
     name: str | None = None,
     pagination: PaginationArguments | None = None,
     url: str | None = None,
@@ -76,7 +75,6 @@ def berry_firmnesses(
     """
     Berries can be soft or hard. Check out Bulbapedia for greater detail.
     """
-
     if not _exactly_one_non_none(
         id,
         name,
@@ -84,7 +82,8 @@ def berry_firmnesses(
         url,
     ):
         raise ValueError(
-            "Invalid arguments; exactly one of [id, name, pagination, url] must not be None"
+            "Invalid arguments; "
+            + "exactly one of [id, name, pagination, url] must not be None"
         )
 
     if id is not None:
@@ -113,15 +112,15 @@ def berry_firmnesses(
 
 @defines(BerryFlavor)
 def berry_flavors(
-    id: int | None = None,
+    id: int | None = None,  # pylint: disable=invalid-name,redefined-builtin
     name: str | None = None,
     pagination: PaginationArguments | None = None,
     url: str | None = None,
 ) -> CacheableResource[BerryFlavor] | CacheableResourceList[BerryFlavor]:
     """
-    Flavors determine whether a Pokemon will benefit or suffer from eating a berry based on their nature. Check out Bulbapedia for greater detail.
+    Flavors determine whether a Pokemon will benefit or suffer from eating a berry based
+    their nature. Check out Bulbapedia for greater detail.
     """
-
     if not _exactly_one_non_none(
         id,
         name,
@@ -129,7 +128,8 @@ def berry_flavors(
         url,
     ):
         raise ValueError(
-            "Invalid arguments; exactly one of [id, name, pagination, url] must not be None"
+            "Invalid arguments; "
+            + "exactly one of [id, name, pagination, url] must not be None"
         )
 
     if id is not None:

@@ -5,8 +5,6 @@ Do not modify directly.
 
 Generation script is located @ //farfetchd/bin/generate.py
 """
-
-# todo: rename this file, or just move class
 from ..decorators import defines
 from ..resources import (
     CacheableResource,
@@ -25,15 +23,15 @@ from ..models.encounters import (
 
 @defines(EncounterMethod)
 def encounter_methods(
-    id: int | None = None,
+    id: int | None = None,  # pylint: disable=invalid-name,redefined-builtin
     name: str | None = None,
     pagination: PaginationArguments | None = None,
     url: str | None = None,
 ) -> CacheableResource[EncounterMethod] | CacheableResourceList[EncounterMethod]:
     """
-    Methods by which the player might can encounter Pokemon in the wild, e.g., walking in tall grass. Check out Bulbapedia for greater detail.
+    Methods by which the player might can encounter Pokemon in the wild, e.g., walking
+    tall grass. Check out Bulbapedia for greater detail.
     """
-
     if not _exactly_one_non_none(
         id,
         name,
@@ -41,7 +39,8 @@ def encounter_methods(
         url,
     ):
         raise ValueError(
-            "Invalid arguments; exactly one of [id, name, pagination, url] must not be None"
+            "Invalid arguments; "
+            + "exactly one of [id, name, pagination, url] must not be None"
         )
 
     if id is not None:
@@ -70,7 +69,7 @@ def encounter_methods(
 
 @defines(EncounterCondition)
 def encounter_conditions(
-    id: int | None = None,
+    id: int | None = None,  # pylint: disable=invalid-name,redefined-builtin
     name: str | None = None,
     pagination: PaginationArguments | None = None,
     url: str | None = None,
@@ -78,7 +77,6 @@ def encounter_conditions(
     """
     Conditions which affect what pokemon might appear in the wild, e.g., day or night.
     """
-
     if not _exactly_one_non_none(
         id,
         name,
@@ -86,7 +84,8 @@ def encounter_conditions(
         url,
     ):
         raise ValueError(
-            "Invalid arguments; exactly one of [id, name, pagination, url] must not be None"
+            "Invalid arguments; "
+            + "exactly one of [id, name, pagination, url] must not be None"
         )
 
     if id is not None:
@@ -119,7 +118,7 @@ def encounter_conditions(
 
 @defines(EncounterConditionValue)
 def encounter_condition_values(
-    id: int | None = None,
+    id: int | None = None,  # pylint: disable=invalid-name,redefined-builtin
     name: str | None = None,
     pagination: PaginationArguments | None = None,
     url: str | None = None,
@@ -127,9 +126,9 @@ def encounter_condition_values(
     EncounterConditionValue
 ]:
     """
-    Encounter condition values are the various states that an encounter condition can have, i.e., time of day can be either day or night.
+    Encounter condition values are the various states that an encounter condition can
+    i.e., time of day can be either day or night.
     """
-
     if not _exactly_one_non_none(
         id,
         name,
@@ -137,7 +136,8 @@ def encounter_condition_values(
         url,
     ):
         raise ValueError(
-            "Invalid arguments; exactly one of [id, name, pagination, url] must not be None"
+            "Invalid arguments; "
+            + "exactly one of [id, name, pagination, url] must not be None"
         )
 
     if id is not None:

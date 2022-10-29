@@ -5,8 +5,6 @@ Do not modify directly.
 
 Generation script is located @ //farfetchd/bin/generate.py
 """
-
-# todo: rename this file, or just move class
 from ..decorators import defines
 from ..resources import (
     CacheableResource,
@@ -25,15 +23,15 @@ from ..models.contests import (
 
 @defines(ContestType)
 def contest_types(
-    id: int | None = None,
+    id: int | None = None,  # pylint: disable=invalid-name,redefined-builtin
     name: str | None = None,
     pagination: PaginationArguments | None = None,
     url: str | None = None,
 ) -> CacheableResource[ContestType] | CacheableResourceList[ContestType]:
     """
-    Contest types are categories judges used to weigh a Pokemon's condition in Pokemon contests. Check out Bulbapedia for greater detail.
+    Contest types are categories judges used to weigh a Pokemon's condition in Pokemon
+    Check out Bulbapedia for greater detail.
     """
-
     if not _exactly_one_non_none(
         id,
         name,
@@ -41,7 +39,8 @@ def contest_types(
         url,
     ):
         raise ValueError(
-            "Invalid arguments; exactly one of [id, name, pagination, url] must not be None"
+            "Invalid arguments; "
+            + "exactly one of [id, name, pagination, url] must not be None"
         )
 
     if id is not None:
@@ -70,7 +69,7 @@ def contest_types(
 
 @defines(ContestEffect)
 def contest_effects(
-    id: int | None = None,
+    id: int | None = None,  # pylint: disable=invalid-name,redefined-builtin
     pagination: PaginationArguments | None = None,
     url: str | None = None,
 ) -> CacheableResource[ContestEffect] | CacheableResourceList[ContestEffect]:
@@ -97,7 +96,7 @@ def contest_effects(
 
 @defines(SuperContestEffect)
 def super_contest_effects(
-    id: int | None = None,
+    id: int | None = None,  # pylint: disable=invalid-name,redefined-builtin
     pagination: PaginationArguments | None = None,
     url: str | None = None,
 ) -> CacheableResource[SuperContestEffect] | CacheableResourceList[SuperContestEffect]:

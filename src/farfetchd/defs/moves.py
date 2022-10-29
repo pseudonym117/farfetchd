@@ -5,8 +5,6 @@ Do not modify directly.
 
 Generation script is located @ //farfetchd/bin/generate.py
 """
-
-# todo: rename this file, or just move class
 from ..decorators import defines
 from ..resources import (
     CacheableResource,
@@ -29,15 +27,16 @@ from ..models.moves import (
 
 @defines(Move)
 def moves(
-    id: int | None = None,
+    id: int | None = None,  # pylint: disable=invalid-name,redefined-builtin
     name: str | None = None,
     pagination: PaginationArguments | None = None,
     url: str | None = None,
 ) -> CacheableResource[Move] | CacheableResourceList[Move]:
     """
-    Moves are the skills of Pokemon in battle. In battle, a Pokemon uses one move each turn. Some moves (including those learned by Hidden Machine) can be used outside of battle as well, usually for the purpose of removing obstacles or exploring new areas.
+    Moves are the skills of Pokemon in battle. In battle, a Pokemon uses one move each
+    Some moves (including those learned by Hidden Machine) can be used outside of battle
+    well, usually for the purpose of removing obstacles or exploring new areas.
     """
-
     if not _exactly_one_non_none(
         id,
         name,
@@ -45,7 +44,8 @@ def moves(
         url,
     ):
         raise ValueError(
-            "Invalid arguments; exactly one of [id, name, pagination, url] must not be None"
+            "Invalid arguments; "
+            + "exactly one of [id, name, pagination, url] must not be None"
         )
 
     if id is not None:
@@ -72,15 +72,15 @@ def moves(
 
 @defines(MoveAilment)
 def move_ailments(
-    id: int | None = None,
+    id: int | None = None,  # pylint: disable=invalid-name,redefined-builtin
     name: str | None = None,
     pagination: PaginationArguments | None = None,
     url: str | None = None,
 ) -> CacheableResource[MoveAilment] | CacheableResourceList[MoveAilment]:
     """
-    Move Ailments are status conditions caused by moves used during battle. See Bulbapedia for greater detail.
+    Move Ailments are status conditions caused by moves used during battle. See
+    for greater detail.
     """
-
     if not _exactly_one_non_none(
         id,
         name,
@@ -88,7 +88,8 @@ def move_ailments(
         url,
     ):
         raise ValueError(
-            "Invalid arguments; exactly one of [id, name, pagination, url] must not be None"
+            "Invalid arguments; "
+            + "exactly one of [id, name, pagination, url] must not be None"
         )
 
     if id is not None:
@@ -117,7 +118,7 @@ def move_ailments(
 
 @defines(MoveBattleStyle)
 def move_battle_styles(
-    id: int | None = None,
+    id: int | None = None,  # pylint: disable=invalid-name,redefined-builtin
     name: str | None = None,
     pagination: PaginationArguments | None = None,
     url: str | None = None,
@@ -125,7 +126,6 @@ def move_battle_styles(
     """
     Styles of moves when used in the Battle Palace. See Bulbapedia for greater detail.
     """
-
     if not _exactly_one_non_none(
         id,
         name,
@@ -133,7 +133,8 @@ def move_battle_styles(
         url,
     ):
         raise ValueError(
-            "Invalid arguments; exactly one of [id, name, pagination, url] must not be None"
+            "Invalid arguments; "
+            + "exactly one of [id, name, pagination, url] must not be None"
         )
 
     if id is not None:
@@ -162,7 +163,7 @@ def move_battle_styles(
 
 @defines(MoveCategory)
 def move_categories(
-    id: int | None = None,
+    id: int | None = None,  # pylint: disable=invalid-name,redefined-builtin
     name: str | None = None,
     pagination: PaginationArguments | None = None,
     url: str | None = None,
@@ -170,7 +171,6 @@ def move_categories(
     """
     Very general categories that loosely group move effects.
     """
-
     if not _exactly_one_non_none(
         id,
         name,
@@ -178,7 +178,8 @@ def move_categories(
         url,
     ):
         raise ValueError(
-            "Invalid arguments; exactly one of [id, name, pagination, url] must not be None"
+            "Invalid arguments; "
+            + "exactly one of [id, name, pagination, url] must not be None"
         )
 
     if id is not None:
@@ -207,7 +208,7 @@ def move_categories(
 
 @defines(MoveDamageClass)
 def move_damage_classes(
-    id: int | None = None,
+    id: int | None = None,  # pylint: disable=invalid-name,redefined-builtin
     name: str | None = None,
     pagination: PaginationArguments | None = None,
     url: str | None = None,
@@ -215,7 +216,6 @@ def move_damage_classes(
     """
     Damage classes moves can have, e.g. physical, special, or non-damaging.
     """
-
     if not _exactly_one_non_none(
         id,
         name,
@@ -223,7 +223,8 @@ def move_damage_classes(
         url,
     ):
         raise ValueError(
-            "Invalid arguments; exactly one of [id, name, pagination, url] must not be None"
+            "Invalid arguments; "
+            + "exactly one of [id, name, pagination, url] must not be None"
         )
 
     if id is not None:
@@ -252,7 +253,7 @@ def move_damage_classes(
 
 @defines(MoveLearnMethod)
 def move_learn_methods(
-    id: int | None = None,
+    id: int | None = None,  # pylint: disable=invalid-name,redefined-builtin
     name: str | None = None,
     pagination: PaginationArguments | None = None,
     url: str | None = None,
@@ -260,7 +261,6 @@ def move_learn_methods(
     """
     Methods by which Pokemon can learn moves.
     """
-
     if not _exactly_one_non_none(
         id,
         name,
@@ -268,7 +268,8 @@ def move_learn_methods(
         url,
     ):
         raise ValueError(
-            "Invalid arguments; exactly one of [id, name, pagination, url] must not be None"
+            "Invalid arguments; "
+            + "exactly one of [id, name, pagination, url] must not be None"
         )
 
     if id is not None:
@@ -297,15 +298,15 @@ def move_learn_methods(
 
 @defines(MoveTarget)
 def move_targets(
-    id: int | None = None,
+    id: int | None = None,  # pylint: disable=invalid-name,redefined-builtin
     name: str | None = None,
     pagination: PaginationArguments | None = None,
     url: str | None = None,
 ) -> CacheableResource[MoveTarget] | CacheableResourceList[MoveTarget]:
     """
-    Targets moves can be directed at during battle. Targets can be Pokemon, environments or even other moves.
+    Targets moves can be directed at during battle. Targets can be Pokemon, environments
+    even other moves.
     """
-
     if not _exactly_one_non_none(
         id,
         name,
@@ -313,7 +314,8 @@ def move_targets(
         url,
     ):
         raise ValueError(
-            "Invalid arguments; exactly one of [id, name, pagination, url] must not be None"
+            "Invalid arguments; "
+            + "exactly one of [id, name, pagination, url] must not be None"
         )
 
     if id is not None:

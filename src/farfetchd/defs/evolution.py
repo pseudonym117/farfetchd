@@ -5,8 +5,6 @@ Do not modify directly.
 
 Generation script is located @ //farfetchd/bin/generate.py
 """
-
-# todo: rename this file, or just move class
 from ..decorators import defines
 from ..resources import (
     CacheableResource,
@@ -24,12 +22,14 @@ from ..models.evolution import (
 
 @defines(EvolutionChain)
 def evolution_chains(
-    id: int | None = None,
+    id: int | None = None,  # pylint: disable=invalid-name,redefined-builtin
     pagination: PaginationArguments | None = None,
     url: str | None = None,
 ) -> CacheableResource[EvolutionChain] | CacheableResourceList[EvolutionChain]:
     """
-    Evolution chains are essentially family trees. They start with the lowest stage within a family and detail evolution conditions for each as well as Pokemon they can evolve into up through the hierarchy.
+    Evolution chains are essentially family trees. They start with the lowest stage
+    a family and detail evolution conditions for each as well as Pokemon they can evolve
+    up through the hierarchy.
     """
 
     if id is not None:
@@ -51,15 +51,15 @@ def evolution_chains(
 
 @defines(EvolutionTrigger)
 def evolution_triggers(
-    id: int | None = None,
+    id: int | None = None,  # pylint: disable=invalid-name,redefined-builtin
     name: str | None = None,
     pagination: PaginationArguments | None = None,
     url: str | None = None,
 ) -> CacheableResource[EvolutionTrigger] | CacheableResourceList[EvolutionTrigger]:
     """
-    Evolution triggers are the events and conditions that cause a Pokemon to evolve. Check out Bulbapedia for greater detail.
+    Evolution triggers are the events and conditions that cause a Pokemon to evolve.
+    out Bulbapedia for greater detail.
     """
-
     if not _exactly_one_non_none(
         id,
         name,
@@ -67,7 +67,8 @@ def evolution_triggers(
         url,
     ):
         raise ValueError(
-            "Invalid arguments; exactly one of [id, name, pagination, url] must not be None"
+            "Invalid arguments; "
+            + "exactly one of [id, name, pagination, url] must not be None"
         )
 
     if id is not None:

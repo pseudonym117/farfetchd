@@ -5,8 +5,6 @@ Do not modify directly.
 
 Generation script is located @ //farfetchd/bin/generate.py
 """
-
-# todo: rename this file, or just move class
 from ..decorators import defines
 from ..resources import (
     CacheableResource,
@@ -26,15 +24,15 @@ from ..models.locations import (
 
 @defines(Location)
 def locations(
-    id: int | None = None,
+    id: int | None = None,  # pylint: disable=invalid-name,redefined-builtin
     name: str | None = None,
     pagination: PaginationArguments | None = None,
     url: str | None = None,
 ) -> CacheableResource[Location] | CacheableResourceList[Location]:
     """
-    Locations that can be visited within the games. Locations make up sizable portions of regions, like cities or routes.
+    Locations that can be visited within the games. Locations make up sizable portions
+    regions, like cities or routes.
     """
-
     if not _exactly_one_non_none(
         id,
         name,
@@ -42,7 +40,8 @@ def locations(
         url,
     ):
         raise ValueError(
-            "Invalid arguments; exactly one of [id, name, pagination, url] must not be None"
+            "Invalid arguments; "
+            + "exactly one of [id, name, pagination, url] must not be None"
         )
 
     if id is not None:
@@ -71,15 +70,15 @@ def locations(
 
 @defines(LocationArea)
 def location_areas(
-    id: int | None = None,
+    id: int | None = None,  # pylint: disable=invalid-name,redefined-builtin
     name: str | None = None,
     pagination: PaginationArguments | None = None,
     url: str | None = None,
 ) -> CacheableResource[LocationArea] | CacheableResourceList[LocationArea]:
     """
-    Location areas are sections of areas, such as floors in a building or cave. Each area has its own set of possible Pokemon encounters.
+    Location areas are sections of areas, such as floors in a building or cave. Each
+    has its own set of possible Pokemon encounters.
     """
-
     if not _exactly_one_non_none(
         id,
         name,
@@ -87,7 +86,8 @@ def location_areas(
         url,
     ):
         raise ValueError(
-            "Invalid arguments; exactly one of [id, name, pagination, url] must not be None"
+            "Invalid arguments; "
+            + "exactly one of [id, name, pagination, url] must not be None"
         )
 
     if id is not None:
@@ -116,15 +116,15 @@ def location_areas(
 
 @defines(PalParkArea)
 def pal_park_areas(
-    id: int | None = None,
+    id: int | None = None,  # pylint: disable=invalid-name,redefined-builtin
     name: str | None = None,
     pagination: PaginationArguments | None = None,
     url: str | None = None,
 ) -> CacheableResource[PalParkArea] | CacheableResourceList[PalParkArea]:
     """
-    Areas used for grouping Pokemon encounters in Pal Park. They're like habitats that are specific to Pal Park.
+    Areas used for grouping Pokemon encounters in Pal Park. They're like habitats that
+    specific to Pal Park.
     """
-
     if not _exactly_one_non_none(
         id,
         name,
@@ -132,7 +132,8 @@ def pal_park_areas(
         url,
     ):
         raise ValueError(
-            "Invalid arguments; exactly one of [id, name, pagination, url] must not be None"
+            "Invalid arguments; "
+            + "exactly one of [id, name, pagination, url] must not be None"
         )
 
     if id is not None:
@@ -161,15 +162,15 @@ def pal_park_areas(
 
 @defines(Region)
 def regions(
-    id: int | None = None,
+    id: int | None = None,  # pylint: disable=invalid-name,redefined-builtin
     name: str | None = None,
     pagination: PaginationArguments | None = None,
     url: str | None = None,
 ) -> CacheableResource[Region] | CacheableResourceList[Region]:
     """
-    A region is an organized area of the Pokemon world. Most often, the main difference between regions is the species of Pokemon that can be encountered within them.
+    A region is an organized area of the Pokemon world. Most often, the main difference
+    regions is the species of Pokemon that can be encountered within them.
     """
-
     if not _exactly_one_non_none(
         id,
         name,
@@ -177,7 +178,8 @@ def regions(
         url,
     ):
         raise ValueError(
-            "Invalid arguments; exactly one of [id, name, pagination, url] must not be None"
+            "Invalid arguments; "
+            + "exactly one of [id, name, pagination, url] must not be None"
         )
 
     if id is not None:

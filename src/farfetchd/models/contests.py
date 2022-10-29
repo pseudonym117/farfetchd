@@ -16,7 +16,7 @@ from ..base import Model
 @dataclass
 class ContestType(Model["ContestType"]):
     # The identifier for this resource.
-    id: int
+    id: int  # pylint: disable=invalid-name
     # The name for this resource.
     name: str
     # The berry flavor that correlates with this contest type.
@@ -38,7 +38,7 @@ class ContestName(Model["ContestName"]):
 @dataclass
 class ContestEffect(Model["ContestEffect"]):
     # The identifier for this resource.
-    id: int
+    id: int  # pylint: disable=invalid-name
     # The base number of hearts the user of this move gets.
     appeal: int
     # The base number of hearts the user's opponent loses.
@@ -52,7 +52,7 @@ class ContestEffect(Model["ContestEffect"]):
 @dataclass
 class SuperContestEffect(Model["SuperContestEffect"]):
     # The identifier for this resource.
-    id: int
+    id: int  # pylint: disable=invalid-name
     # The level of appeal this super contest effect has.
     appeal: int
     # The flavor text of this super contest effect listed in different languages.
@@ -62,6 +62,7 @@ class SuperContestEffect(Model["SuperContestEffect"]):
 
 
 # import all type hints at of file to ensure no circular reference issues
+# pylint: disable=wrong-import-position,wrong-import-order
 
 from typing import (
     List,

@@ -16,7 +16,7 @@ from ..base import Model
 @dataclass
 class Item(Model["Item"]):
     # The identifier for this resource.
-    id: int
+    id: int  # pylint: disable=invalid-name
     # The name for this resource.
     name: str
     # The price of this item in stores.
@@ -72,7 +72,7 @@ class ItemHolderPokemonVersionDetail(Model["ItemHolderPokemonVersionDetail"]):
 @dataclass
 class ItemAttribute(Model["ItemAttribute"]):
     # The identifier for this resource.
-    id: int
+    id: int  # pylint: disable=invalid-name
     # The name for this resource.
     name: str
     # A list of items that have this attribute.
@@ -86,7 +86,7 @@ class ItemAttribute(Model["ItemAttribute"]):
 @dataclass
 class ItemCategory(Model["ItemCategory"]):
     # The identifier for this resource.
-    id: int
+    id: int  # pylint: disable=invalid-name
     # The name for this resource.
     name: str
     # A list of items that are a part of this category.
@@ -100,7 +100,7 @@ class ItemCategory(Model["ItemCategory"]):
 @dataclass
 class ItemFlingEffect(Model["ItemFlingEffect"]):
     # The identifier for this resource.
-    id: int
+    id: int  # pylint: disable=invalid-name
     # The name for this resource.
     name: str
     # The result of this fling effect listed in different languages.
@@ -112,7 +112,7 @@ class ItemFlingEffect(Model["ItemFlingEffect"]):
 @dataclass
 class ItemPocket(Model["ItemPocket"]):
     # The identifier for this resource.
-    id: int
+    id: int  # pylint: disable=invalid-name
     # The name for this resource.
     name: str
     # A list of item categories that are relevant to this item pocket.
@@ -122,6 +122,7 @@ class ItemPocket(Model["ItemPocket"]):
 
 
 # import all type hints at of file to ensure no circular reference issues
+# pylint: disable=wrong-import-position,wrong-import-order
 
 from typing import (
     List,

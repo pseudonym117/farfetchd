@@ -5,8 +5,6 @@ Do not modify directly.
 
 Generation script is located @ //farfetchd/bin/generate.py
 """
-
-# todo: rename this file, or just move class
 from ..decorators import defines
 from ..resources import (
     CacheableResource,
@@ -27,15 +25,16 @@ from ..models.items import (
 
 @defines(Item)
 def item(
-    id: int | None = None,
+    id: int | None = None,  # pylint: disable=invalid-name,redefined-builtin
     name: str | None = None,
     pagination: PaginationArguments | None = None,
     url: str | None = None,
 ) -> CacheableResource[Item] | CacheableResourceList[Item]:
     """
-    An item is an object in the games which the player can pick up, keep in their bag, and use in some manner. They have various uses, including healing, powering up, helping catch Pokemon, or to access a new area.
+    An item is an object in the games which the player can pick up, keep in their bag,
+    use in some manner. They have various uses, including healing, powering up, helping
+    Pokemon, or to access a new area.
     """
-
     if not _exactly_one_non_none(
         id,
         name,
@@ -43,7 +42,8 @@ def item(
         url,
     ):
         raise ValueError(
-            "Invalid arguments; exactly one of [id, name, pagination, url] must not be None"
+            "Invalid arguments; "
+            + "exactly one of [id, name, pagination, url] must not be None"
         )
 
     if id is not None:
@@ -70,15 +70,14 @@ def item(
 
 @defines(ItemAttribute)
 def item_attributes(
-    id: int | None = None,
+    id: int | None = None,  # pylint: disable=invalid-name,redefined-builtin
     name: str | None = None,
     pagination: PaginationArguments | None = None,
     url: str | None = None,
 ) -> CacheableResource[ItemAttribute] | CacheableResourceList[ItemAttribute]:
     """
-    Item attributes define particular aspects of items, e.g. "usable in battle" or "consumable".
+    Item attributes define particular aspects of items, e.g. "usable in battle" or
     """
-
     if not _exactly_one_non_none(
         id,
         name,
@@ -86,7 +85,8 @@ def item_attributes(
         url,
     ):
         raise ValueError(
-            "Invalid arguments; exactly one of [id, name, pagination, url] must not be None"
+            "Invalid arguments; "
+            + "exactly one of [id, name, pagination, url] must not be None"
         )
 
     if id is not None:
@@ -115,7 +115,7 @@ def item_attributes(
 
 @defines(ItemCategory)
 def item_categories(
-    id: int | None = None,
+    id: int | None = None,  # pylint: disable=invalid-name,redefined-builtin
     name: str | None = None,
     pagination: PaginationArguments | None = None,
     url: str | None = None,
@@ -123,7 +123,6 @@ def item_categories(
     """
     Item categories determine where items will be placed in the players bag.
     """
-
     if not _exactly_one_non_none(
         id,
         name,
@@ -131,7 +130,8 @@ def item_categories(
         url,
     ):
         raise ValueError(
-            "Invalid arguments; exactly one of [id, name, pagination, url] must not be None"
+            "Invalid arguments; "
+            + "exactly one of [id, name, pagination, url] must not be None"
         )
 
     if id is not None:
@@ -160,7 +160,7 @@ def item_categories(
 
 @defines(ItemFlingEffect)
 def item_fling_effects(
-    id: int | None = None,
+    id: int | None = None,  # pylint: disable=invalid-name,redefined-builtin
     name: str | None = None,
     pagination: PaginationArguments | None = None,
     url: str | None = None,
@@ -168,7 +168,6 @@ def item_fling_effects(
     """
     The various effects of the move "Fling" when used with different items.
     """
-
     if not _exactly_one_non_none(
         id,
         name,
@@ -176,7 +175,8 @@ def item_fling_effects(
         url,
     ):
         raise ValueError(
-            "Invalid arguments; exactly one of [id, name, pagination, url] must not be None"
+            "Invalid arguments; "
+            + "exactly one of [id, name, pagination, url] must not be None"
         )
 
     if id is not None:
@@ -205,7 +205,7 @@ def item_fling_effects(
 
 @defines(ItemPocket)
 def item_pockets(
-    id: int | None = None,
+    id: int | None = None,  # pylint: disable=invalid-name,redefined-builtin
     name: str | None = None,
     pagination: PaginationArguments | None = None,
     url: str | None = None,
@@ -213,7 +213,6 @@ def item_pockets(
     """
     Pockets within the players bag used for storing items by category.
     """
-
     if not _exactly_one_non_none(
         id,
         name,
@@ -221,7 +220,8 @@ def item_pockets(
         url,
     ):
         raise ValueError(
-            "Invalid arguments; exactly one of [id, name, pagination, url] must not be None"
+            "Invalid arguments; "
+            + "exactly one of [id, name, pagination, url] must not be None"
         )
 
     if id is not None:
