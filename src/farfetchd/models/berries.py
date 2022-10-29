@@ -16,10 +16,11 @@ from ..base import Model
 @dataclass
 class Berry(Model["Berry"]):
     # The identifier for this resource.
-    id: int
+    id: int  # pylint: disable=invalid-name
     # The name for this resource.
     name: str
-    # Time it takes the tree to grow one stage, in hours. Berry trees go through four of these growth stages before they can be picked.
+    # Time it takes the tree to grow one stage, in hours. Berry trees go through four of
+    # growth stages before they can be picked.
     growth_time: int
     # The maximum number of these berries that can grow on one tree in Generation IV.
     max_harvest: int
@@ -29,13 +30,15 @@ class Berry(Model["Berry"]):
     size: int
     # The smoothness of this Berry, used in making Pokeblocks or Poffins.
     smoothness: int
-    # The speed at which this Berry dries out the soil as it grows. A higher rate means the soil dries more quickly.
+    # The speed at which this Berry dries out the soil as it grows. A higher rate means
+    # soil dries more quickly.
     soil_dryness: int
     # The firmness of this berry, used in making Pokeblocks or Poffins.
     firmness: NamedAPIResource[BerryFirmness]
-    # A list of references to each flavor a berry can have and the potency of each of those flavors in regard to this berry.
+    # A list of references to each flavor a berry can have and the potency of each of
+    # flavors in regard to this berry.
     flavors: List[BerryFlavorMap]
-    # Berries are actually items. This is a reference to the item specific data for this berry.
+    # Berries are actually items. This is a reference to the item specific data for this
     item: NamedAPIResource[Item]
     # The type inherited by "Natural Gift" when used with this Berry.
     natural_gift_type: NamedAPIResource[Type]
@@ -52,7 +55,7 @@ class BerryFlavorMap(Model["BerryFlavorMap"]):
 @dataclass
 class BerryFirmness(Model["BerryFirmness"]):
     # The identifier for this resource.
-    id: int
+    id: int  # pylint: disable=invalid-name
     # The name for this resource.
     name: str
     # A list of the berries with this firmness.
@@ -64,7 +67,7 @@ class BerryFirmness(Model["BerryFirmness"]):
 @dataclass
 class BerryFlavor(Model["BerryFlavor"]):
     # The identifier for this resource.
-    id: int
+    id: int  # pylint: disable=invalid-name
     # The name for this resource.
     name: str
     # A list of the berries with this flavor.
@@ -84,6 +87,7 @@ class FlavorBerryMap(Model["FlavorBerryMap"]):
 
 
 # import all type hints at of file to ensure no circular reference issues
+# pylint: disable=wrong-import-position,wrong-import-order
 
 from typing import (
     List,

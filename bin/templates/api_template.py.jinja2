@@ -1,6 +1,6 @@
 {% include "generated_code.py.jinja2" %}
 
-# todo: rename this file, or just move class
+{#- todo: rename this file, or just move class #}
 from ..decorators import defines
 from ..resources import CacheableResource, CacheableResourceList, PaginationArguments, ResourceIdentifier
 
@@ -10,15 +10,15 @@ from ..resources import CacheableResource, CacheableResourceList, PaginationArgu
 @defines({{ endpoint.response_typename }})
 def {{ endpoint.name }}(
     {% for name, type in endpoint.args() %}
-        {{ name }}: {{ type }} | None = None,
+        {{ name }}: {{ type }} | None = None, {%- if name == "id" %} # pylint: disable=invalid-name,redefined-builtin {%- endif %}
     {% endfor %}
         pagination: PaginationArguments | None = None,
         url: str | None = None,
 ) -> CacheableResource[{{ endpoint.response_typename }}] | CacheableResourceList[{{ endpoint.response_typename }}]:
     """
-    {{ endpoint.description.strip() }}
+    {{ endpoint.description | formatted_py_comment("", 4) }}
     """
-    {% if endpoint.args()|length > 1 %}
+    {%- if endpoint.args()|length > 1 %}
     if not _exactly_one_non_none(
         {% for arg_name, _ in endpoint.args() %}
             {{ arg_name }},
@@ -27,7 +27,8 @@ def {{ endpoint.name }}(
             url,
     ):
         raise ValueError(
-            'Invalid arguments; exactly one of [{% for arg_name, _ in endpoint.args() %}{{ arg_name }}, {% endfor %}pagination, url] must not be None'
+            "Invalid arguments; "
+            + "exactly one of [{% for arg_name, _ in endpoint.args() %}{{ arg_name }}, {% endfor %}pagination, url] must not be None"
         )
     {% endif %}
     {% for arg_name, _ in endpoint.args() %}

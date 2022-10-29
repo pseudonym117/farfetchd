@@ -16,7 +16,7 @@ from ..base import Model
 @dataclass
 class Location(Model["Location"]):
     # The identifier for this resource.
-    id: int
+    id: int  # pylint: disable=invalid-name
     # The name for this resource.
     name: str
     # The region this location can be found in.
@@ -32,18 +32,20 @@ class Location(Model["Location"]):
 @dataclass
 class LocationArea(Model["LocationArea"]):
     # The identifier for this resource.
-    id: int
+    id: int  # pylint: disable=invalid-name
     # The name for this resource.
     name: str
     # The internal id of an API resource within game data.
     game_index: int
-    # A list of methods in which Pokemon may be encountered in this area and how likely the method will occur depending on the version of the game.
+    # A list of methods in which Pokemon may be encountered in this area and how likely
+    # method will occur depending on the version of the game.
     encounter_method_rates: List[EncounterMethodRate]
     # The region this location area can be found in.
     location: NamedAPIResource[Location]
     # The name of this resource listed in different languages.
     names: List[Name]
-    # A list of Pokemon that can be encountered in this area along with version specific details about the encounter.
+    # A list of Pokemon that can be encountered in this area along with version specific
+    # about the encounter.
     pokemon_encounters: List[PokemonEncounter]
 
 
@@ -67,14 +69,15 @@ class EncounterVersionDetails(Model["EncounterVersionDetails"]):
 class PokemonEncounter(Model["PokemonEncounter"]):
     # The Pokemon being encountered.
     pokemon: NamedAPIResource
-    # A list of versions and encounters with Pokemon that might happen in the referenced location area.
+    # A list of versions and encounters with Pokemon that might happen in the referenced
+    # area.
     version_details: List[VersionEncounterDetail]
 
 
 @dataclass
 class PalParkArea(Model["PalParkArea"]):
     # The identifier for this resource.
-    id: int
+    id: int  # pylint: disable=invalid-name
     # The name for this resource.
     name: str
     # The name of this resource listed in different languages.
@@ -85,7 +88,7 @@ class PalParkArea(Model["PalParkArea"]):
 
 @dataclass
 class PalParkEncounterSpecies(Model["PalParkEncounterSpecies"]):
-    # The base score given to the player when this Pokemon is caught during a pal park run.
+    # The base score given to the player when this Pokemon is caught during a pal park
     base_score: int
     # The base rate for encountering this Pokemon in this pal park area.
     rate: int
@@ -96,7 +99,7 @@ class PalParkEncounterSpecies(Model["PalParkEncounterSpecies"]):
 @dataclass
 class Region(Model["Region"]):
     # The identifier for this resource.
-    id: int
+    id: int  # pylint: disable=invalid-name
     # A list of locations that can be found in this region.
     locations: List[NamedAPIResource[Location]]
     # The name for this resource.
@@ -112,6 +115,7 @@ class Region(Model["Region"]):
 
 
 # import all type hints at of file to ensure no circular reference issues
+# pylint: disable=wrong-import-position,wrong-import-order
 
 from typing import (
     List,

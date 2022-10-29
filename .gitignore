@@ -162,3 +162,5 @@ cython_debug/
 # ignore pipfile, as this is a library, not an application
 Pipfile
 Pipfile.lock
+
+.vscode

@@ -16,7 +16,7 @@ from ..base import Model
 @dataclass
 class Generation(Model["Generation"]):
     # The identifier for this resource.
-    id: int
+    id: int  # pylint: disable=invalid-name
     # The name for this resource.
     name: str
     # A list of abilities that were introduced in this generation.
@@ -38,7 +38,7 @@ class Generation(Model["Generation"]):
 @dataclass
 class Pokedex(Model["Pokedex"]):
     # The identifier for this resource.
-    id: int
+    id: int  # pylint: disable=invalid-name
     # The name for this resource.
     name: str
     # Whether or not this Pokedex originated in the main series of the video games.
@@ -66,7 +66,7 @@ class PokemonEntry(Model["PokemonEntry"]):
 @dataclass
 class Version(Model["Version"]):
     # The identifier for this resource.
-    id: int
+    id: int  # pylint: disable=invalid-name
     # The name for this resource.
     name: str
     # The name of this resource listed in different languages.
@@ -78,10 +78,10 @@ class Version(Model["Version"]):
 @dataclass
 class VersionGroup(Model["VersionGroup"]):
     # The identifier for this resource.
-    id: int
+    id: int  # pylint: disable=invalid-name
     # The name for this resource.
     name: str
-    # Order for sorting. Almost by date of release, except similar versions are grouped together.
+    # Order for sorting. Almost by date of release, except similar versions are grouped
     order: int
     # The generation this version was introduced in.
     generation: NamedAPIResource[Generation]
@@ -96,6 +96,7 @@ class VersionGroup(Model["VersionGroup"]):
 
 
 # import all type hints at of file to ensure no circular reference issues
+# pylint: disable=wrong-import-position,wrong-import-order
 
 from typing import (
     List,

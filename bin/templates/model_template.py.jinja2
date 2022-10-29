@@ -19,14 +19,15 @@ T = TypeVar("T")
 {% for type in types %}
 @dataclass
 class {{ type.name }}({% if type.is_generic() %}Generic[T]{% else %}Model["{{ type.name }}"]{% endif %}):
-    {% for prop in type.properties %}# {{ prop.description.strip() }}
+    {%- for prop in type.properties %}
+    {{ prop.description | formatted_py_comment("#", 4) }}
     {%- if type.name == "NamedAPIResourceList" and prop.name == "results" %}
-    {# special case specifically for resource lists which do not have sensible generic info on the definition page #}
+    {#- special case specifically for resource lists which do not have sensible generic info on the definition page #}
     results: List[NamedAPIResource[T]]
     {%- else %}
-    {{ prop.name }}: {{ prop.type }}
+    {{ prop.name }}: {{ prop.type }} {%- if prop.name == "id" or prop.name == "pp" %} # pylint: disable=invalid-name {%- endif %}
     {%- endif %}
-    {% endfor %}
+    {%- endfor %}
     {% if type.is_generic() %}
     # The type that this {{ type.name }} resolves to
     type: Type[T] | None = None
@@ -45,4 +46,5 @@ class {{ type.name }}({% if type.is_generic() %}Generic[T]{% else %}Model["{{ ty
 {% endfor %}
 
 # import all type hints at of file to ensure no circular reference issues
+# pylint: disable=wrong-import-position,wrong-import-order
 {% include "imports.py.jinja2" %}

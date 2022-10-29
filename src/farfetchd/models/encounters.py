@@ -16,7 +16,7 @@ from ..base import Model
 @dataclass
 class EncounterMethod(Model["EncounterMethod"]):
     # The identifier for this resource.
-    id: int
+    id: int  # pylint: disable=invalid-name
     # The name for this resource.
     name: str
     # A good value for sorting.
@@ -28,7 +28,7 @@ class EncounterMethod(Model["EncounterMethod"]):
 @dataclass
 class EncounterCondition(Model["EncounterCondition"]):
     # The identifier for this resource.
-    id: int
+    id: int  # pylint: disable=invalid-name
     # The name for this resource.
     name: str
     # The name of this resource listed in different languages.
@@ -40,7 +40,7 @@ class EncounterCondition(Model["EncounterCondition"]):
 @dataclass
 class EncounterConditionValue(Model["EncounterConditionValue"]):
     # The identifier for this resource.
-    id: int
+    id: int  # pylint: disable=invalid-name
     # The name for this resource.
     name: str
     # The condition this encounter condition value pertains to.
@@ -50,6 +50,7 @@ class EncounterConditionValue(Model["EncounterConditionValue"]):
 
 
 # import all type hints at of file to ensure no circular reference issues
+# pylint: disable=wrong-import-position,wrong-import-order
 
 from typing import (
     List,

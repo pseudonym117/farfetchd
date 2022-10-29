@@ -24,7 +24,6 @@ class NamedAPIResourceList(Generic[T]):
     # The URL for the previous page in the list.
     previous: str
     # A list of named API resources.
-
     results: List[NamedAPIResource[T]]
 
     # The type that this NamedAPIResourceList resolves to
@@ -58,6 +57,7 @@ class NamedAPIResource(Generic[T]):
 
 
 # import all type hints at of file to ensure no circular reference issues
+# pylint: disable=wrong-import-position,wrong-import-order
 
 from typing import (
     List,

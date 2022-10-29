@@ -5,8 +5,6 @@ Do not modify directly.
 
 Generation script is located @ //farfetchd/bin/generate.py
 """
-
-# todo: rename this file, or just move class
 from ..decorators import defines
 from ..resources import (
     CacheableResource,
@@ -38,15 +36,16 @@ from ..models.pokemon import (
 
 @defines(Ability)
 def abilities(
-    id: int | None = None,
+    id: int | None = None,  # pylint: disable=invalid-name,redefined-builtin
     name: str | None = None,
     pagination: PaginationArguments | None = None,
     url: str | None = None,
 ) -> CacheableResource[Ability] | CacheableResourceList[Ability]:
     """
-    Abilities provide passive effects for Pokemon in battle or in the overworld. Pokemon have multiple possible abilities but can have only one ability at a time. Check out Bulbapedia for greater detail.
+    Abilities provide passive effects for Pokemon in battle or in the overworld. Pokemon
+    multiple possible abilities but can have only one ability at a time. Check out
+    for greater detail.
     """
-
     if not _exactly_one_non_none(
         id,
         name,
@@ -54,7 +53,8 @@ def abilities(
         url,
     ):
         raise ValueError(
-            "Invalid arguments; exactly one of [id, name, pagination, url] must not be None"
+            "Invalid arguments; "
+            + "exactly one of [id, name, pagination, url] must not be None"
         )
 
     if id is not None:
@@ -83,12 +83,14 @@ def abilities(
 
 @defines(Characteristic)
 def characteristics(
-    id: int | None = None,
+    id: int | None = None,  # pylint: disable=invalid-name,redefined-builtin
     pagination: PaginationArguments | None = None,
     url: str | None = None,
 ) -> CacheableResource[Characteristic] | CacheableResourceList[Characteristic]:
     """
-    Characteristics indicate which stat contains a Pokemon's highest IV. A Pokemon's Characteristic is determined by the remainder of its highest IV divided by 5 (gene_modulo). Check out Bulbapedia for greater detail.
+    Characteristics indicate which stat contains a Pokemon's highest IV. A Pokemon's
+    is determined by the remainder of its highest IV divided by 5 (gene_modulo). Check
+    Bulbapedia for greater detail.
     """
 
     if id is not None:
@@ -110,15 +112,15 @@ def characteristics(
 
 @defines(EggGroup)
 def egg_groups(
-    id: int | None = None,
+    id: int | None = None,  # pylint: disable=invalid-name,redefined-builtin
     name: str | None = None,
     pagination: PaginationArguments | None = None,
     url: str | None = None,
 ) -> CacheableResource[EggGroup] | CacheableResourceList[EggGroup]:
     """
-    Egg Groups are categories which determine which Pokemon are able to interbreed. Pokemon may belong to either one or two Egg Groups. Check out Bulbapedia for greater detail.
+    Egg Groups are categories which determine which Pokemon are able to interbreed.
+    may belong to either one or two Egg Groups. Check out Bulbapedia for greater detail.
     """
-
     if not _exactly_one_non_none(
         id,
         name,
@@ -126,7 +128,8 @@ def egg_groups(
         url,
     ):
         raise ValueError(
-            "Invalid arguments; exactly one of [id, name, pagination, url] must not be None"
+            "Invalid arguments; "
+            + "exactly one of [id, name, pagination, url] must not be None"
         )
 
     if id is not None:
@@ -155,15 +158,16 @@ def egg_groups(
 
 @defines(Gender)
 def genders(
-    id: int | None = None,
+    id: int | None = None,  # pylint: disable=invalid-name,redefined-builtin
     name: str | None = None,
     pagination: PaginationArguments | None = None,
     url: str | None = None,
 ) -> CacheableResource[Gender] | CacheableResourceList[Gender]:
     """
-    Genders were introduced in Generation II for the purposes of breeding Pokemon but can also result in visual differences or even different evolutionary lines. Check out Bulbapedia for greater detail.
+    Genders were introduced in Generation II for the purposes of breeding Pokemon but
+    also result in visual differences or even different evolutionary lines. Check out
+    for greater detail.
     """
-
     if not _exactly_one_non_none(
         id,
         name,
@@ -171,7 +175,8 @@ def genders(
         url,
     ):
         raise ValueError(
-            "Invalid arguments; exactly one of [id, name, pagination, url] must not be None"
+            "Invalid arguments; "
+            + "exactly one of [id, name, pagination, url] must not be None"
         )
 
     if id is not None:
@@ -200,15 +205,15 @@ def genders(
 
 @defines(GrowthRate)
 def growth_rates(
-    id: int | None = None,
+    id: int | None = None,  # pylint: disable=invalid-name,redefined-builtin
     name: str | None = None,
     pagination: PaginationArguments | None = None,
     url: str | None = None,
 ) -> CacheableResource[GrowthRate] | CacheableResourceList[GrowthRate]:
     """
-    Growth rates are the speed with which Pokemon gain levels through experience. Check out Bulbapedia for greater detail.
+    Growth rates are the speed with which Pokemon gain levels through experience. Check
+    Bulbapedia for greater detail.
     """
-
     if not _exactly_one_non_none(
         id,
         name,
@@ -216,7 +221,8 @@ def growth_rates(
         url,
     ):
         raise ValueError(
-            "Invalid arguments; exactly one of [id, name, pagination, url] must not be None"
+            "Invalid arguments; "
+            + "exactly one of [id, name, pagination, url] must not be None"
         )
 
     if id is not None:
@@ -245,7 +251,7 @@ def growth_rates(
 
 @defines(Nature)
 def natures(
-    id: int | None = None,
+    id: int | None = None,  # pylint: disable=invalid-name,redefined-builtin
     name: str | None = None,
     pagination: PaginationArguments | None = None,
     url: str | None = None,
@@ -253,7 +259,6 @@ def natures(
     """
     Natures influence how a Pokemon's stats grow. See Bulbapedia for greater detail.
     """
-
     if not _exactly_one_non_none(
         id,
         name,
@@ -261,7 +266,8 @@ def natures(
         url,
     ):
         raise ValueError(
-            "Invalid arguments; exactly one of [id, name, pagination, url] must not be None"
+            "Invalid arguments; "
+            + "exactly one of [id, name, pagination, url] must not be None"
         )
 
     if id is not None:
@@ -290,15 +296,16 @@ def natures(
 
 @defines(PokeathlonStat)
 def pokeathlon_stats(
-    id: int | None = None,
+    id: int | None = None,  # pylint: disable=invalid-name,redefined-builtin
     name: str | None = None,
     pagination: PaginationArguments | None = None,
     url: str | None = None,
 ) -> CacheableResource[PokeathlonStat] | CacheableResourceList[PokeathlonStat]:
     """
-    Pokeathlon Stats are different attributes of a Pokemon's performance in Pokeathlons. In Pokeathlons, competitions happen on different courses; one for each of the different Pokeathlon stats. See Bulbapedia for greater detail.
+    Pokeathlon Stats are different attributes of a Pokemon's performance in Pokeathlons.
+    Pokeathlons, competitions happen on different courses; one for each of the different
+    stats. See Bulbapedia for greater detail.
     """
-
     if not _exactly_one_non_none(
         id,
         name,
@@ -306,7 +313,8 @@ def pokeathlon_stats(
         url,
     ):
         raise ValueError(
-            "Invalid arguments; exactly one of [id, name, pagination, url] must not be None"
+            "Invalid arguments; "
+            + "exactly one of [id, name, pagination, url] must not be None"
         )
 
     if id is not None:
@@ -335,15 +343,18 @@ def pokeathlon_stats(
 
 @defines(Pokemon)
 def pokemon(
-    id: int | None = None,
+    id: int | None = None,  # pylint: disable=invalid-name,redefined-builtin
     name: str | None = None,
     pagination: PaginationArguments | None = None,
     url: str | None = None,
 ) -> CacheableResource[Pokemon] | CacheableResourceList[Pokemon]:
     """
-    Pokemon are the creatures that inhabit the world of the Pokemon games. They can be caught using Pokeballs and trained by battling with other Pokemon.  Each Pokemon belongs to a specific species but may take on a variant which makes it differ from other Pokemon of the same species, such as base stats, available abilities and typings. See Bulbapedia for greater detail.
+    Pokemon are the creatures that inhabit the world of the Pokemon games. They can be
+    using Pokeballs and trained by battling with other Pokemon. Each Pokemon belongs to
+    specific species but may take on a variant which makes it differ from other Pokemon
+    the same species, such as base stats, available abilities and typings. See
+    for greater detail.
     """
-
     if not _exactly_one_non_none(
         id,
         name,
@@ -351,7 +362,8 @@ def pokemon(
         url,
     ):
         raise ValueError(
-            "Invalid arguments; exactly one of [id, name, pagination, url] must not be None"
+            "Invalid arguments; "
+            + "exactly one of [id, name, pagination, url] must not be None"
         )
 
     if id is not None:
@@ -380,7 +392,7 @@ def pokemon(
 
 @defines(LocationAreaEncounter)
 def pokemon_location_areas(
-    id: int | None = None,
+    id: int | None = None,  # pylint: disable=invalid-name,redefined-builtin
     name: str | None = None,
     pagination: PaginationArguments | None = None,
     url: str | None = None,
@@ -390,7 +402,6 @@ def pokemon_location_areas(
     """
     Pokemon Location Areas are ares where Pokemon can be found.
     """
-
     if not _exactly_one_non_none(
         id,
         name,
@@ -398,7 +409,8 @@ def pokemon_location_areas(
         url,
     ):
         raise ValueError(
-            "Invalid arguments; exactly one of [id, name, pagination, url] must not be None"
+            "Invalid arguments; "
+            + "exactly one of [id, name, pagination, url] must not be None"
         )
 
     if id is not None:
@@ -429,15 +441,16 @@ def pokemon_location_areas(
 
 @defines(PokemonColor)
 def pokemon_colors(
-    id: int | None = None,
+    id: int | None = None,  # pylint: disable=invalid-name,redefined-builtin
     name: str | None = None,
     pagination: PaginationArguments | None = None,
     url: str | None = None,
 ) -> CacheableResource[PokemonColor] | CacheableResourceList[PokemonColor]:
     """
-    Colors used for sorting Pokemon in a Pokedex. The color listed in the Pokedex is usually the color most apparent or covering each Pokemon's body. No orange category exists; Pokemon that are primarily orange are listed as red or brown.
+    Colors used for sorting Pokemon in a Pokedex. The color listed in the Pokedex is
+    the color most apparent or covering each Pokemon's body. No orange category exists;
+    that are primarily orange are listed as red or brown.
     """
-
     if not _exactly_one_non_none(
         id,
         name,
@@ -445,7 +458,8 @@ def pokemon_colors(
         url,
     ):
         raise ValueError(
-            "Invalid arguments; exactly one of [id, name, pagination, url] must not be None"
+            "Invalid arguments; "
+            + "exactly one of [id, name, pagination, url] must not be None"
         )
 
     if id is not None:
@@ -474,15 +488,16 @@ def pokemon_colors(
 
 @defines(PokemonForm)
 def pokemon_forms(
-    id: int | None = None,
+    id: int | None = None,  # pylint: disable=invalid-name,redefined-builtin
     name: str | None = None,
     pagination: PaginationArguments | None = None,
     url: str | None = None,
 ) -> CacheableResource[PokemonForm] | CacheableResourceList[PokemonForm]:
     """
-    Some Pokemon may appear in one of multiple, visually different forms. These differences are purely cosmetic. For variations within a Pokemon species, which do differ in more than just visuals, the 'Pokemon' entity is used to represent such a variety.
+    Some Pokemon may appear in one of multiple, visually different forms. These
+    are purely cosmetic. For variations within a Pokemon species, which do differ in
+    than just visuals, the 'Pokemon' entity is used to represent such a variety.
     """
-
     if not _exactly_one_non_none(
         id,
         name,
@@ -490,7 +505,8 @@ def pokemon_forms(
         url,
     ):
         raise ValueError(
-            "Invalid arguments; exactly one of [id, name, pagination, url] must not be None"
+            "Invalid arguments; "
+            + "exactly one of [id, name, pagination, url] must not be None"
         )
 
     if id is not None:
@@ -519,15 +535,15 @@ def pokemon_forms(
 
 @defines(PokemonHabitat)
 def pokemon_habitats(
-    id: int | None = None,
+    id: int | None = None,  # pylint: disable=invalid-name,redefined-builtin
     name: str | None = None,
     pagination: PaginationArguments | None = None,
     url: str | None = None,
 ) -> CacheableResource[PokemonHabitat] | CacheableResourceList[PokemonHabitat]:
     """
-    Habitats are generally different terrain Pokemon can be found in but can also be areas designated for rare or legendary Pokemon.
+    Habitats are generally different terrain Pokemon can be found in but can also be
+    designated for rare or legendary Pokemon.
     """
-
     if not _exactly_one_non_none(
         id,
         name,
@@ -535,7 +551,8 @@ def pokemon_habitats(
         url,
     ):
         raise ValueError(
-            "Invalid arguments; exactly one of [id, name, pagination, url] must not be None"
+            "Invalid arguments; "
+            + "exactly one of [id, name, pagination, url] must not be None"
         )
 
     if id is not None:
@@ -564,7 +581,7 @@ def pokemon_habitats(
 
 @defines(PokemonShape)
 def pokemon_shapes(
-    id: int | None = None,
+    id: int | None = None,  # pylint: disable=invalid-name,redefined-builtin
     name: str | None = None,
     pagination: PaginationArguments | None = None,
     url: str | None = None,
@@ -572,7 +589,6 @@ def pokemon_shapes(
     """
     Shapes used for sorting Pokemon in a Pokedex.
     """
-
     if not _exactly_one_non_none(
         id,
         name,
@@ -580,7 +596,8 @@ def pokemon_shapes(
         url,
     ):
         raise ValueError(
-            "Invalid arguments; exactly one of [id, name, pagination, url] must not be None"
+            "Invalid arguments; "
+            + "exactly one of [id, name, pagination, url] must not be None"
         )
 
     if id is not None:
@@ -609,15 +626,17 @@ def pokemon_shapes(
 
 @defines(PokemonSpecies)
 def pokemon_species(
-    id: int | None = None,
+    id: int | None = None,  # pylint: disable=invalid-name,redefined-builtin
     name: str | None = None,
     pagination: PaginationArguments | None = None,
     url: str | None = None,
 ) -> CacheableResource[PokemonSpecies] | CacheableResourceList[PokemonSpecies]:
     """
-    A Pokemon Species forms the basis for at least one Pokemon. Attributes of a Pokemon species are shared across all varieties of Pokemon within the species. A good example is Wormadam; Wormadam is the species which can be found in three different varieties, Wormadam-Trash, Wormadam-Sandy and Wormadam-Plant.
+    A Pokemon Species forms the basis for at least one Pokemon. Attributes of a Pokemon
+    are shared across all varieties of Pokemon within the species. A good example is
+    Wormadam is the species which can be found in three different varieties,
+    Wormadam-Sandy and Wormadam-Plant.
     """
-
     if not _exactly_one_non_none(
         id,
         name,
@@ -625,7 +644,8 @@ def pokemon_species(
         url,
     ):
         raise ValueError(
-            "Invalid arguments; exactly one of [id, name, pagination, url] must not be None"
+            "Invalid arguments; "
+            + "exactly one of [id, name, pagination, url] must not be None"
         )
 
     if id is not None:
@@ -654,15 +674,15 @@ def pokemon_species(
 
 @defines(Stat)
 def stats(
-    id: int | None = None,
+    id: int | None = None,  # pylint: disable=invalid-name,redefined-builtin
     name: str | None = None,
     pagination: PaginationArguments | None = None,
     url: str | None = None,
 ) -> CacheableResource[Stat] | CacheableResourceList[Stat]:
     """
-    Stats determine certain aspects of battles. Each Pokemon has a value for each stat which grows as they gain levels and can be altered momentarily by effects in battles.
+    Stats determine certain aspects of battles. Each Pokemon has a value for each stat
+    grows as they gain levels and can be altered momentarily by effects in battles.
     """
-
     if not _exactly_one_non_none(
         id,
         name,
@@ -670,7 +690,8 @@ def stats(
         url,
     ):
         raise ValueError(
-            "Invalid arguments; exactly one of [id, name, pagination, url] must not be None"
+            "Invalid arguments; "
+            + "exactly one of [id, name, pagination, url] must not be None"
         )
 
     if id is not None:
@@ -697,15 +718,16 @@ def stats(
 
 @defines(Type)
 def types(
-    id: int | None = None,
+    id: int | None = None,  # pylint: disable=invalid-name,redefined-builtin
     name: str | None = None,
     pagination: PaginationArguments | None = None,
     url: str | None = None,
 ) -> CacheableResource[Type] | CacheableResourceList[Type]:
     """
-    Types are properties for Pokemon and their moves. Each type has three properties: which types of Pokemon it is super effective against, which types of Pokemon it is not very effective against, and which types of Pokemon it is completely ineffective against.
+    Types are properties for Pokemon and their moves. Each type has three properties:
+    types of Pokemon it is super effective against, which types of Pokemon it is not
+    effective against, and which types of Pokemon it is completely ineffective against.
     """
-
     if not _exactly_one_non_none(
         id,
         name,
@@ -713,7 +735,8 @@ def types(
         url,
     ):
         raise ValueError(
-            "Invalid arguments; exactly one of [id, name, pagination, url] must not be None"
+            "Invalid arguments; "
+            + "exactly one of [id, name, pagination, url] must not be None"
         )
 
     if id is not None:

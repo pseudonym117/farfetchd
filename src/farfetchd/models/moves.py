@@ -16,7 +16,7 @@ from ..base import Model
 @dataclass
 class Move(Model["Move"]):
     # The identifier for this resource.
-    id: int
+    id: int  # pylint: disable=invalid-name
     # The name for this resource.
     name: str
     # The percent value of how likely this move is to be successful.
@@ -24,8 +24,9 @@ class Move(Model["Move"]):
     # The percent value of how likely it is this moves effect will happen.
     effect_chance: int
     # Power points. The number of times this move can be used.
-    pp: int
-    # A value between -8 and 8. Sets the order in which moves are executed during battle. See Bulbapedia for greater detail.
+    pp: int  # pylint: disable=invalid-name
+    # A value between -8 and 8. Sets the order in which moves are executed during
+    # See Bulbapedia for greater detail.
     priority: int
     # The base power of this move with a value of 0 if it does not have a base power.
     power: int
@@ -67,9 +68,11 @@ class Move(Model["Move"]):
 
 @dataclass
 class ContestComboSets(Model["ContestComboSets"]):
-    # A detail of moves this move can be used before or after, granting additional appeal points in contests.
+    # A detail of moves this move can be used before or after, granting additional
+    # points in contests.
     normal: ContestComboDetail
-    # A detail of moves this move can be used before or after, granting additional appeal points in super contests.
+    # A detail of moves this move can be used before or after, granting additional
+    # points in super contests.
     super: ContestComboDetail
 
 
@@ -101,9 +104,11 @@ class MoveMetaData(Model["MoveMetaData"]):
     min_hits: int
     # The maximum number of times this move hits. Null if it always only hits once.
     max_hits: int
-    # The minimum number of turns this move continues to take effect. Null if it always only lasts one turn.
+    # The minimum number of turns this move continues to take effect. Null if it always
+    # lasts one turn.
     min_turns: int
-    # The maximum number of turns this move continues to take effect. Null if it always only lasts one turn.
+    # The maximum number of turns this move continues to take effect. Null if it always
+    # lasts one turn.
     max_turns: int
     # HP drain (if positive) or Recoil damage (if negative), in percent of damage done.
     drain: int
@@ -136,7 +141,7 @@ class PastMoveStatValues(Model["PastMoveStatValues"]):
     # The base power of this move with a value of 0 if it does not have a base power.
     power: int
     # Power points. The number of times this move can be used.
-    pp: int
+    pp: int  # pylint: disable=invalid-name
     # The effect of this move listed in different languages.
     effect_entries: List[VerboseEffect]
     # The elemental type of this move.
@@ -148,7 +153,7 @@ class PastMoveStatValues(Model["PastMoveStatValues"]):
 @dataclass
 class MoveAilment(Model["MoveAilment"]):
     # The identifier for this resource.
-    id: int
+    id: int  # pylint: disable=invalid-name
     # The name for this resource.
     name: str
     # A list of moves that cause this ailment.
@@ -160,7 +165,7 @@ class MoveAilment(Model["MoveAilment"]):
 @dataclass
 class MoveBattleStyle(Model["MoveBattleStyle"]):
     # The identifier for this resource.
-    id: int
+    id: int  # pylint: disable=invalid-name
     # The name for this resource.
     name: str
     # The name of this resource listed in different languages.
@@ -170,7 +175,7 @@ class MoveBattleStyle(Model["MoveBattleStyle"]):
 @dataclass
 class MoveCategory(Model["MoveCategory"]):
     # The identifier for this resource.
-    id: int
+    id: int  # pylint: disable=invalid-name
     # The name for this resource.
     name: str
     # A list of moves that fall into this category.
@@ -182,7 +187,7 @@ class MoveCategory(Model["MoveCategory"]):
 @dataclass
 class MoveDamageClass(Model["MoveDamageClass"]):
     # The identifier for this resource.
-    id: int
+    id: int  # pylint: disable=invalid-name
     # The name for this resource.
     name: str
     # The description of this resource listed in different languages.
@@ -196,7 +201,7 @@ class MoveDamageClass(Model["MoveDamageClass"]):
 @dataclass
 class MoveLearnMethod(Model["MoveLearnMethod"]):
     # The identifier for this resource.
-    id: int
+    id: int  # pylint: disable=invalid-name
     # The name for this resource.
     name: str
     # The description of this resource listed in different languages.
@@ -210,7 +215,7 @@ class MoveLearnMethod(Model["MoveLearnMethod"]):
 @dataclass
 class MoveTarget(Model["MoveTarget"]):
     # The identifier for this resource.
-    id: int
+    id: int  # pylint: disable=invalid-name
     # The name for this resource.
     name: str
     # The description of this resource listed in different languages.
@@ -222,6 +227,7 @@ class MoveTarget(Model["MoveTarget"]):
 
 
 # import all type hints at of file to ensure no circular reference issues
+# pylint: disable=wrong-import-position,wrong-import-order
 
 from typing import (
     List,

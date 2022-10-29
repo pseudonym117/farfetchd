@@ -16,7 +16,7 @@ from ..base import Model
 @dataclass
 class Machine(Model["Machine"]):
     # The identifier for this resource.
-    id: int
+    id: int  # pylint: disable=invalid-name
     # The TM or HM item that corresponds to this machine.
     item: NamedAPIResource[Item]
     # The move that is taught by this machine.
@@ -26,6 +26,7 @@ class Machine(Model["Machine"]):
 
 
 # import all type hints at of file to ensure no circular reference issues
+# pylint: disable=wrong-import-position,wrong-import-order
 
 from .games import (
     VersionGroup,

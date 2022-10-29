@@ -16,12 +16,13 @@ from ..base import Model
 @dataclass
 class Language(Model["Language"]):
     # The identifier for this resource.
-    id: int
+    id: int  # pylint: disable=invalid-name
     # The name for this resource.
     name: str
     # Whether or not the games are published in this language.
     official: bool
-    # The two-letter code of the country where this language is spoken. Note that it is not unique.
+    # The two-letter code of the country where this language is spoken. Note that it is
+    # unique.
     iso639: str
     # The two-letter code of the language. Note that it is not unique.
     iso3166: str
@@ -61,7 +62,10 @@ class Encounter(Model["Encounter"]):
 
 @dataclass
 class FlavorText(Model["FlavorText"]):
-    # The localized flavor text for an API resource in a specific language. Note that this text is left unprocessed as it is found in game files. This means that it contains special characters that one might want to replace with their visible decodable version. Please check out this issue to find out more.
+    # The localized flavor text for an API resource in a specific language. Note that
+    # text is left unprocessed as it is found in game files. This means that it contains
+    # characters that one might want to replace with their visible decodable version.
+    # check out this issue to find out more.
     flavor_text: str
     # The language this name is in.
     language: NamedAPIResource[Language]
@@ -132,6 +136,7 @@ class VersionGroupFlavorText(Model["VersionGroupFlavorText"]):
 
 
 # import all type hints at of file to ensure no circular reference issues
+# pylint: disable=wrong-import-position,wrong-import-order
 
 from typing import (
     List,

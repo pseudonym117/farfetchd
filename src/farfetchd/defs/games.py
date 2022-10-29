@@ -5,8 +5,6 @@ Do not modify directly.
 
 Generation script is located @ //farfetchd/bin/generate.py
 """
-
-# todo: rename this file, or just move class
 from ..decorators import defines
 from ..resources import (
     CacheableResource,
@@ -26,15 +24,16 @@ from ..models.games import (
 
 @defines(Generation)
 def generations(
-    id: int | None = None,
+    id: int | None = None,  # pylint: disable=invalid-name,redefined-builtin
     name: str | None = None,
     pagination: PaginationArguments | None = None,
     url: str | None = None,
 ) -> CacheableResource[Generation] | CacheableResourceList[Generation]:
     """
-    A generation is a grouping of the Pokemon games that separates them based on the Pokemon they include. In each generation, a new set of Pokemon, Moves, Abilities and Types that did not exist in the previous generation are released.
+    A generation is a grouping of the Pokemon games that separates them based on the
+    they include. In each generation, a new set of Pokemon, Moves, Abilities and Types
+    did not exist in the previous generation are released.
     """
-
     if not _exactly_one_non_none(
         id,
         name,
@@ -42,7 +41,8 @@ def generations(
         url,
     ):
         raise ValueError(
-            "Invalid arguments; exactly one of [id, name, pagination, url] must not be None"
+            "Invalid arguments; "
+            + "exactly one of [id, name, pagination, url] must not be None"
         )
 
     if id is not None:
@@ -71,15 +71,17 @@ def generations(
 
 @defines(Pokedex)
 def pokedexes(
-    id: int | None = None,
+    id: int | None = None,  # pylint: disable=invalid-name,redefined-builtin
     name: str | None = None,
     pagination: PaginationArguments | None = None,
     url: str | None = None,
 ) -> CacheableResource[Pokedex] | CacheableResourceList[Pokedex]:
     """
-    A Pokedex is a handheld electronic encyclopedia device; one which is capable of recording and retaining information of the various Pokemon in a given region with the exception of the national dex and some smaller dexes related to portions of a region. See Bulbapedia for greater detail.
+    A Pokedex is a handheld electronic encyclopedia device; one which is capable of
+    and retaining information of the various Pokemon in a given region with the
+    of the national dex and some smaller dexes related to portions of a region. See
+    for greater detail.
     """
-
     if not _exactly_one_non_none(
         id,
         name,
@@ -87,7 +89,8 @@ def pokedexes(
         url,
     ):
         raise ValueError(
-            "Invalid arguments; exactly one of [id, name, pagination, url] must not be None"
+            "Invalid arguments; "
+            + "exactly one of [id, name, pagination, url] must not be None"
         )
 
     if id is not None:
@@ -116,7 +119,7 @@ def pokedexes(
 
 @defines(Version)
 def version(
-    id: int | None = None,
+    id: int | None = None,  # pylint: disable=invalid-name,redefined-builtin
     name: str | None = None,
     pagination: PaginationArguments | None = None,
     url: str | None = None,
@@ -124,7 +127,6 @@ def version(
     """
     Versions of the games, e.g., Red, Blue or Yellow.
     """
-
     if not _exactly_one_non_none(
         id,
         name,
@@ -132,7 +134,8 @@ def version(
         url,
     ):
         raise ValueError(
-            "Invalid arguments; exactly one of [id, name, pagination, url] must not be None"
+            "Invalid arguments; "
+            + "exactly one of [id, name, pagination, url] must not be None"
         )
 
     if id is not None:
@@ -161,7 +164,7 @@ def version(
 
 @defines(VersionGroup)
 def version_groups(
-    id: int | None = None,
+    id: int | None = None,  # pylint: disable=invalid-name,redefined-builtin
     name: str | None = None,
     pagination: PaginationArguments | None = None,
     url: str | None = None,
@@ -169,7 +172,6 @@ def version_groups(
     """
     Version groups categorize highly similar versions of the games.
     """
-
     if not _exactly_one_non_none(
         id,
         name,
@@ -177,7 +179,8 @@ def version_groups(
         url,
     ):
         raise ValueError(
-            "Invalid arguments; exactly one of [id, name, pagination, url] must not be None"
+            "Invalid arguments; "
+            + "exactly one of [id, name, pagination, url] must not be None"
         )
 
     if id is not None:
