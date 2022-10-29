@@ -1,8 +1,9 @@
-import aiohttp
 import threading
 import logging
 
 from typing import TypeVar, overload
+
+import aiohttp
 
 
 from .resolver import Resolver

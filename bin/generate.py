@@ -60,31 +60,31 @@ async def write_models(
     assert "generic" not in section_types
 
     generic_section_types = []
-    for types in section_types.values():
+    for defined_types in section_types.values():
         to_move = []
-        for type in types:
-            if type.is_generic():
-                to_move.append(type)
-        for type in to_move:
-            types.remove(type)
+        for defined_type in defined_types:
+            if defined_type.is_generic():
+                to_move.append(defined_type)
+        for defined_type in to_move:
+            defined_types.remove(defined_type)
         generic_section_types.extend(to_move)
     section_types["generic"] = generic_section_types
 
     type_to_section_name = {}
-    for section, types in section_types.items():
-        for type in types:
-            type_to_section_name[type.name] = section
+    for section, defined_types in section_types.items():
+        for defined_type in defined_types:
+            type_to_section_name[defined_type.name] = section
     model_template = env.get_template("model_template.py.jinja2")
 
     os.makedirs(output_dir, exist_ok=True)
-    with open(f"{output_dir}/__init__.py", "w+") as init_py:
-        for section, types in section_types.items():
-            if not types:
+    with open(f"{output_dir}/__init__.py", "w+", encoding="utf-8"):
+        for section, defined_types in section_types.items():
+            if not defined_types:
                 continue
 
             required_types = set()
-            for type in types:
-                for imp in type.extra_type_imports():
+            for defined_type in defined_types:
+                for imp in defined_type.extra_type_imports():
                     required_types.add(imp)
 
             extra_import_dict = collections.defaultdict(lambda: [])
@@ -106,23 +106,19 @@ async def write_models(
             )
 
             typing_imports = []
-            if any([type.uses_lists() for type in types]):
+            if any([type.uses_lists() for type in defined_types]):
                 typing_imports.append("List")
             if typing_imports:
                 extra_imports.insert(0, ExtraImport("typing", sorted(typing_imports)))
 
             rendered = await model_template.render_async(
-                types=types, extra_imports=extra_imports
+                types=defined_types, extra_imports=extra_imports
             )
 
             blacked = black.format_str(rendered, mode=black.FileMode())
 
-            with open(f"{output_dir}/{section}.py", "w+") as f:
-                f.write(blacked)
-
-            # init_py.write(
-            #     f"from .{section} import {', '.join(sorted([model.name for model in types]))}\n"
-            # )
+            with open(f"{output_dir}/{section}.py", "w+", encoding="utf-8") as file:
+                file.write(blacked)
 
 
 async def write_defs(
@@ -132,9 +128,9 @@ async def write_defs(
     section_types: Dict[str, List[TypeInfo]],
 ):
     type_to_section_name = {}
-    for section, types in section_types.items():
-        for type in types:
-            type_to_section_name[type.name] = section
+    for section, defined_types in section_types.items():
+        for defined_type in defined_types:
+            type_to_section_name[defined_type.name] = section
 
     real_apis = {
         section: [api for api in apis if api.url]
@@ -145,7 +141,8 @@ async def write_defs(
     api_template = env.get_template("api_template.py.jinja2")
 
     os.makedirs(output_dir, exist_ok=True)
-    with open(f"{output_dir}/__init__.py", "w+") as init_py:
+    with open(f"{output_dir}/__init__.py", "w+", encoding="utf-8") as init_py:
+        init_lines = []
         for section, apis in real_apis.items():
             required_types = set([api.response_typename for api in apis])
             extra_import_dict = collections.defaultdict(lambda: [])
@@ -170,12 +167,16 @@ async def write_defs(
             blacked = black.format_str(rendered, mode=black.FileMode())
             # blacked = rendered
 
-            with open(f"{output_dir}/{section}.py", "w+") as f:
-                f.write(blacked)
+            with open(f"{output_dir}/{section}.py", "w+", encoding="utf-8") as file:
+                file.write(blacked)
 
-            init_py.write(
-                f"from .{section} import {', '.join(sorted([api.name for api in apis]))}\n"
+            init_lines.append(
+                f"from .{section} import {','.join(sorted([api.name for api in apis]))}"
             )
+
+        raw_init = "\n".join(init_lines)
+        blacked = black.format_str(raw_init, mode=black.FileMode())
+        init_py.write(blacked)
 
     # print(json.dumps(real_apis, indent=2, cls=DataclassJsonEncoder))
 
@@ -210,7 +211,7 @@ type_remapping = {
 
 type_builtins = {"str", "int", "bool"}
 
-complex_type_re = re.compile("(list )?(\w+ )?\\(?(\w+)\\)?")
+complex_type_re = re.compile(r"(list )?(\w+ )?\(?(\w+)\)?")
 
 
 @dataclasses.dataclass
@@ -307,8 +308,8 @@ class ApiInfo:
     def args(self) -> List[(str, str)]:
         match = re.search(r"/\{(id)?( or )?(name)?\}/", self.url)
         if match:
-            id, multi, name = match.groups()
-            return [i for i in [(id, "int"), (name, "str")] if i[0]]
+            id_arg, _, name_arg = match.groups()
+            return [i for i in [(id_arg, "int"), (name_arg, "str")] if i[0]]
         return []
 
 

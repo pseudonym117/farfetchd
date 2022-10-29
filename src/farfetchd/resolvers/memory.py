@@ -27,14 +27,16 @@ class MemoryCacheResolver(Resolver):
     Very simple in-memory cache implementation.
 
     Does NOT respond to system low memory notifications. Should be added.
-    Also does NOT clean up expired entries until they are accessed. Needs to be addressed.
+    Also does NOT clean up expired entries until they are accessed.
+    Needs to be addressed.
     """
 
     def __init__(self, ttl: timedelta) -> None:
         super().__init__()
         self._ttl = ttl
 
-        # write lock - used only when inserting new items. Could be narrowed down to smaller scopes
+        # write lock - used only when inserting new items.
+        # Could be narrowed down to smaller scopes
         self._insertion_lock = threading.Lock()
         # type -> key-name -> key -> entry
         self._cache: Dict[Type, Dict[str, Dict[str, CacheEntry[Model]]]] = {}
@@ -82,7 +84,7 @@ class MemoryCacheResolver(Resolver):
                 del resource_type_cache[id_value]
             except KeyError:
                 # key already deleted, possibly by another thread. This is fine
-                logger.warn(
+                logger.warning(
                     "failed to clear cache entry (%s / %s / %s) - most likely already deleted",
                     obj_type,
                     id_type,
@@ -102,16 +104,16 @@ class MemoryCacheResolver(Resolver):
         obj_type = type(to_store)
 
         # possible keys currently are id and name
-        id = name = None
+        obj_id = name = None
         if hasattr(to_store, "id"):
-            id = to_store.id
+            obj_id = to_store.id
         if hasattr(to_store, "name"):
             name = to_store.name
 
         expire_at = datetime.now() + self._ttl
         cache_entry = CacheEntry(to_store, expire_at)
 
-        if not id and not name:
+        if not obj_id and not name:
             # nothing to cache
             return
 
@@ -119,11 +121,11 @@ class MemoryCacheResolver(Resolver):
             if obj_type not in self._cache:
                 self._cache[obj_type] = {}
             obj_cache = self._cache[obj_type]
-            if id:
+            if obj_id:
                 if "id" not in obj_cache:
                     obj_cache["id"] = {}
                 id_cache = obj_cache["id"]
-                id_cache[id] = cache_entry
+                id_cache[obj_id] = cache_entry
             if name:
                 if "name" not in obj_cache:
                     obj_cache["name"] = {}
