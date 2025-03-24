@@ -31,6 +31,21 @@ class NamedAPIResourceList(Generic[T]):
 
 
 @dataclass
+class APIResourceList(Generic[T]):
+    # The total number of resources available from this API.
+    count: int
+    # The URL for the next page in the list.
+    next: str
+    # The URL for the previous page in the list.
+    previous: str
+    # A list of unnamed API resources.
+    results: List[APIResource]
+
+    # The type that this APIResourceList resolves to
+    type: Type[T] | None = None
+
+
+@dataclass
 class APIResource(Generic[T]):
     # The URL of the referenced resource.
     url: str

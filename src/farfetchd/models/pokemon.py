@@ -73,6 +73,10 @@ class Characteristic(Model["Characteristic"]):
     # The possible values of the highest stat that would result in a Pokemon recieving
     # characteristic when divided by 5.
     possible_values: List[int]
+    # The stat which results in this characteristic.
+    highest_stat: NamedAPIResource[Stat]
+    # The descriptions of this characteristic listed in different languages.
+    descriptions: List[Description]
 
 
 @dataclass
@@ -238,6 +242,9 @@ class Pokemon(Model["Pokemon"]):
     # A set of sprites used to depict this Pokemon in the game. A visual representation
     # the various sprites can be found at PokeAPI/sprites
     sprites: PokemonSprites
+    # A set of cries used to depict this Pokemon in the game. A visual representation of
+    # various cries can be found at PokeAPI/cries
+    cries: PokemonCries
     # The species this Pokemon belongs to.
     species: NamedAPIResource[PokemonSpecies]
     # A list of base stat values for this Pokemon.
@@ -342,6 +349,14 @@ class PokemonSprites(Model["PokemonSprites"]):
     back_female: str
     # The shiny female depiction of this Pokemon from the back in battle.
     back_shiny_female: str
+
+
+@dataclass
+class PokemonCries(Model["PokemonCries"]):
+    # The latest depiction of this Pokemon's cry.
+    latest: str
+    # The legacy depiction of this Pokemon's cry.
+    legacy: str
 
 
 @dataclass
@@ -467,8 +482,13 @@ class PokemonSpecies(Model["PokemonSpecies"]):
     is_legendary: bool
     # Whether or not this is a mythical Pokemon.
     is_mythical: bool
-    # Initial hatch counter: one must walk 255 × (hatch_counter + 1) steps before this
-    # egg hatches, unless utilizing bonuses like Flame Body's.
+    # Initial hatch counter: one must walk Y × (hatch_counter + 1) steps before this
+    # egg hatches, unless utilizing bonuses like Flame Body's. Y varies per generation.
+    # Generations II, III, and VII, Egg cycles are 256 steps long. In Generation IV, Egg
+    # are 255 steps long. In Pokemon Brilliant Diamond and Shining Pearl, Egg cycles are
+    # 255 steps long, but are shorter on special dates. In Generations V and VI, Egg
+    # are 257 steps long. In Pokemon Sword and Shield, and in Pokemon Scarlet and
+    # Egg cycles are 128 steps long.
     hatch_counter: int
     # Whether or not this Pokemon has visual gender differences.
     has_gender_differences: bool

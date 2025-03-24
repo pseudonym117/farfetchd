@@ -5,6 +5,7 @@ Do not modify directly.
 
 Generation script is located @ //farfetchd/bin/generate.py
 """
+
 from ..decorators import defines
 from ..resources import (
     CacheableResource,
@@ -122,9 +123,10 @@ def encounter_condition_values(
     name: str | None = None,
     pagination: PaginationArguments | None = None,
     url: str | None = None,
-) -> CacheableResource[EncounterConditionValue] | CacheableResourceList[
-    EncounterConditionValue
-]:
+) -> (
+    CacheableResource[EncounterConditionValue]
+    | CacheableResourceList[EncounterConditionValue]
+):
     """
     Encounter condition values are the various states that an encounter condition can
     i.e., time of day can be either day or night.

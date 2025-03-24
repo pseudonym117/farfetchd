@@ -5,6 +5,7 @@ Do not modify directly.
 
 Generation script is located @ //farfetchd/bin/generate.py
 """
+
 from ..decorators import defines
 from ..resources import (
     CacheableResource,
@@ -396,9 +397,10 @@ def pokemon_location_areas(
     name: str | None = None,
     pagination: PaginationArguments | None = None,
     url: str | None = None,
-) -> CacheableResource[LocationAreaEncounter] | CacheableResourceList[
-    LocationAreaEncounter
-]:
+) -> (
+    CacheableResource[LocationAreaEncounter]
+    | CacheableResourceList[LocationAreaEncounter]
+):
     """
     Pokemon Location Areas are ares where Pokemon can be found.
     """
