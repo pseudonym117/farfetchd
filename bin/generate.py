@@ -296,8 +296,9 @@ class PropertyType:
 
 
 generic_types = {
-    "NamedAPIResource",
     "APIResource",
+    "APIResourceList",
+    "NamedAPIResource",
     # todo: handle adding generic type to this type in APIs
     "NamedAPIResourceList",
 }

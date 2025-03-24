@@ -5,6 +5,7 @@ Do not modify directly.
 
 Generation script is located @ //farfetchd/bin/generate.py
 """
+
 from ..decorators import defines
 from ..resources import (
     CacheableResource,
